@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A multidisciplinary designer creating thoughtful brands and digital experiences with feeling.">
+  <title>Your Name — Independent Creative</title>
+  <style>
+    :root {
+      --pink-50: #fff9fb;
+      --pink-100: #fcebf1;
+      --pink-200: #f7d6e2;
+      --pink-300: #efb8cc;
+      --pink-500: #d86b93;
+      --berry: #7b2e4b;
+      --ink: #402534;
+      --cream: #fffaf5;
+      --line: rgba(64, 37, 52, 0.18);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--pink-50);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    ::selection { background: var(--pink-300); color: var(--berry); }
+    .shell { width: min(1280px, calc(100% - 72px)); margin-inline: auto; }
+
+    .nav {
+      height: 92px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+    }
+    .wordmark {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.08em;
+    }
+    .wordmark span { color: var(--pink-500); }
+    .nav-links { display: flex; align-items: center; gap: 36px; font-size: 14px; }
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 100%;
+      height: 1px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 220ms ease;
+    }
+    .nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
+    .nav-contact {
+      background: var(--ink);
+      color: white;
+      border-radius: 999px;
+      padding: 13px 20px;
+      transition: transform 180ms ease, background 180ms ease;
+    }
+    .nav-contact:hover { background: var(--berry); transform: translateY(-2px); }
+
+    .hero {
+      min-height: calc(100svh - 92px);
+      padding: clamp(58px, 9vw, 118px) 0 56px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+    .eyebrow, .hero-kicker, .section-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+    .hero-kicker { display: flex; align-items: center; gap: 9px; }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--pink-500);
+      box-shadow: 0 0 0 5px var(--pink-100);
+    }
+    .hero-heading { position: relative; margin: 7vh 0; }
+    h1, h2 {
+      margin: 0;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-weight: 400;
+      letter-spacing: -0.065em;
+      line-height: 0.89;
+    }
+    h1 { font-size: clamp(72px, 11.6vw, 176px); }
+    em { color: var(--pink-500); font-weight: 400; }
+    .hero-note {
+      position: absolute;
+      right: 1%;
+      top: 13%;
+      margin: 0;
+      font-family: Georgia, serif;
+      font-size: 15px;
+      line-height: 1.5;
+      transform: rotate(4deg);
+    }
+    .hero-bottom { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; }
+    .hero-bottom > p {
+      width: min(520px, 70%);
+      margin: 0;
+      font-family: Georgia, serif;
+      font-size: clamp(20px, 2vw, 30px);
+      line-height: 1.35;
+    }
+    .circle-link {
+      width: 104px;
+      height: 104px;
+      border: 1px solid var(--ink);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 12px;
+      transition: 220ms ease;
+    }
+    .circle-link:hover { background: var(--ink); color: white; transform: rotate(-5deg); }
+    .flower-stamp {
+      position: absolute;
+      right: 13%;
+      top: 27%;
+      width: 78px;
+      height: 78px;
+      border-radius: 45% 55% 38% 62%;
+      background: var(--pink-200);
+      display: grid;
+      place-items: center;
+      color: var(--pink-500);
+      font-size: 28px;
+      transform: rotate(12deg);
+      animation: float 5s ease-in-out infinite;
+    }
+    @keyframes float { 50% { transform: rotate(19deg) translateY(-9px); } }
+
+    .work { background: var(--ink); color: var(--cream); padding: 130px 0 150px; }
+    .section-heading {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      align-items: start;
+      margin-bottom: 82px;
+    }
+    .section-heading h2 { font-size: clamp(58px, 8vw, 112px); }
+    .section-heading p { margin-top: 7px; color: var(--pink-300); }
+    .project-list { display: grid; gap: 110px; }
+    .project {
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.75fr);
+      gap: 54px;
+      align-items: end;
+    }
+    .project:nth-child(even) { grid-template-columns: minmax(300px, 0.75fr) minmax(0, 1.55fr); }
+    .project:nth-child(even) .project-art { grid-column: 2; }
+    .project:nth-child(even) .project-copy { grid-column: 1; grid-row: 1; }
+    .project-art {
+      aspect-ratio: 1.3;
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+    .art-one {
+      background:
+        radial-gradient(circle at 72% 25%, #fff5f8 0 7%, transparent 7.5%),
+        radial-gradient(circle at 64% 31%, #f190b2 0 18%, transparent 18.5%),
+        radial-gradient(circle at 37% 72%, #a93861 0 15%, transparent 15.5%),
+        linear-gradient(135deg, #f9cfdd, #e98aae);
+    }
+    .art-one::before, .art-one::after {
+      content: '';
+      position: absolute;
+      width: 45%;
+      aspect-ratio: 1;
+      border-radius: 70% 30% 55% 45%;
+      background: rgba(255,255,255,0.42);
+      transform: rotate(35deg);
+    }
+    .art-one::before { left: -7%; top: -12%; }
+    .art-one::after { right: -5%; bottom: -20%; transform: rotate(-25deg); }
+    .art-one span {
+      position: relative;
+      z-index: 1;
+      font-family: Georgia, serif;
+      font-size: clamp(60px, 10vw, 138px);
+      letter-spacing: -0.1em;
+      color: var(--berry);
+    }
+    .art-two { background: #f5bfcf; }
+    .art-two::before {
+      content: '';
+      position: absolute;
+      width: 62%;
+      height: 74%;
+      background: #fff8f3;
+      box-shadow: 18px 18px 0 rgba(123,46,75,.18);
+      transform: rotate(-6deg);
+    }
+    .art-two span {
+      z-index: 1;
+      width: 45%;
+      font-family: Georgia, serif;
+      font-size: clamp(22px, 4vw, 48px);
+      text-align: center;
+      padding-bottom: 22%;
+      border-bottom: 1px solid var(--ink);
+    }
+    .art-three {
+      background:
+        radial-gradient(ellipse at 35% 56%, rgba(255,255,255,.72) 0 12%, transparent 30%),
+        radial-gradient(ellipse at 65% 43%, #9d4564 0 12%, transparent 32%),
+        linear-gradient(125deg, #efc8d4, #ca7292 56%, #7b2e4b);
+    }
+    .art-three::after {
+      content: '';
+      position: absolute;
+      inset: 12%;
+      border: 1px solid rgba(255,255,255,.6);
+      border-radius: 50%;
+    }
+    .art-three span {
+      position: relative;
+      z-index: 1;
+      color: white;
+      font-family: Georgia, serif;
+      font-size: clamp(42px, 7vw, 92px);
+      font-style: italic;
+      line-height: .75;
+      letter-spacing: -.07em;
+      text-align: center;
+    }
+    .project-copy {
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      gap: 18px;
+      padding-bottom: 5px;
+    }
+    .project-number, .project-type {
+      color: var(--pink-300);
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .project-type { margin: 0 0 14px; }
+    .project-copy h3 {
+      margin: 0;
+      font-family: Georgia, serif;
+      font-size: clamp(38px, 4vw, 58px);
+      font-weight: 400;
+      letter-spacing: -.05em;
+    }
+    .project-description { margin: 20px 0 0; color: #dccbd2; max-width: 400px; font-size: 14px; line-height: 1.7; }
+    .project-arrow { font-size: 24px; color: var(--pink-300); }
+
+    .about {
+      padding: 150px 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12vw;
+    }
+    .about h2 { font-size: clamp(54px, 6.6vw, 94px); margin-top: 50px; }
+    .about-copy { align-self: end; }
+    .about-copy p { font-size: 15px; line-height: 1.8; }
+    .about-copy .about-lead { font-family: Georgia, serif; font-size: clamp(23px, 2.3vw, 33px); line-height: 1.4; margin-top: 0; }
+    .text-link { display: inline-flex; gap: 18px; margin-top: 28px; padding-bottom: 7px; border-bottom: 1px solid var(--ink); font-size: 13px; }
+
+    .services { padding: 130px 0; background: var(--pink-200); }
+    .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12vw; }
+    .services h2 { font-size: clamp(52px, 6vw, 84px); margin-top: 50px; }
+    .services ol { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
+    .services li {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      padding: 21px 0;
+      font-family: Georgia, serif;
+      font-size: clamp(24px, 2.7vw, 38px);
+    }
+    .services li span { font-family: Arial, sans-serif; font-size: 9px; letter-spacing: .14em; color: var(--berry); }
+
+    .footer { color: white; background: var(--berry); padding: 130px 0 42px; }
+    .footer h2 { font-size: clamp(70px, 11vw, 156px); margin: 70px 0 62px; }
+    .footer h2 em { color: var(--pink-300); }
+    .email-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 0;
+      border-top: 1px solid rgba(255,255,255,.35);
+      border-bottom: 1px solid rgba(255,255,255,.35);
+      font-family: Georgia, serif;
+      font-size: clamp(25px, 4vw, 54px);
+      transition: padding 220ms ease;
+    }
+    .email-link:hover { padding-inline: 14px; }
+    .footer-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 90px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .footer-links { display: flex; gap: 28px; }
+
+    @media (max-width: 800px) {
+      .shell { width: min(100% - 38px, 680px); }
+      .nav { height: 76px; }
+      .nav-links { gap: 16px; }
+      .nav-link { display: none; }
+      .hero { min-height: calc(100svh - 76px); padding: 60px 0 36px; }
+      .hero-heading { margin: 12vh 0 9vh; }
+      h1 { font-size: clamp(57px, 17vw, 100px); }
+      .hero-note { display: none; }
+      .flower-stamp { width: 54px; height: 54px; right: 5%; top: 25%; }
+      .hero-bottom > p { width: calc(100% - 84px); font-size: 19px; }
+      .circle-link { width: 72px; height: 72px; flex: 0 0 auto; }
+      .work, .about, .services { padding-block: 90px; }
+      .section-heading, .about, .services-grid { grid-template-columns: 1fr; gap: 50px; }
+      .section-heading { margin-bottom: 60px; }
+      .section-heading h2 { font-size: 56px; }
+      .project-list { gap: 76px; }
+      .project, .project:nth-child(even) { grid-template-columns: 1fr; gap: 28px; }
+      .project:nth-child(even) .project-art, .project:nth-child(even) .project-copy { grid-column: 1; grid-row: auto; }
+      .project-copy { grid-template-columns: 28px 1fr auto; gap: 12px; }
+      .project-copy h3 { font-size: 38px; }
+      .about h2, .services h2 { margin-top: 35px; }
+      .footer { padding-top: 90px; }
+      .footer h2 { margin: 54px 0 48px; }
+      .footer-meta { align-items: flex-start; gap: 30px; margin-top: 60px; }
+      .footer-links { flex-direction: column; gap: 12px; text-align: right; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav shell" aria-label="Main navigation">
+    <a class="wordmark" href="#top" aria-label="Your Name, home">YN<span>.</span></a>
+    <div class="nav-links">
+      <a class="nav-link" href="#work">Work</a>
+      <a class="nav-link" href="#about">About</a>
+      <a class="nav-contact" href="#contact">Let's talk <span aria-hidden="true">↗</span></a>
+    </div>
+  </nav>
+
+  <header class="hero shell" id="top">
+    <div class="hero-kicker"><span class="status-dot"></span>Independent creative · Available for select projects</div>
+    <div class="hero-heading">
+      <p class="hero-note">Based somewhere lovely<br>Working worldwide</p>
+      <h1>I make ideas<br><em>feel like you.</em></h1>
+    </div>
+    <div class="hero-bottom">
+      <p>I'm <strong>Your Name</strong>, a multidisciplinary designer creating thoughtful brands and digital experiences with feeling.</p>
+      <a class="circle-link" href="#work" aria-label="View selected work"><span>See work</span><b aria-hidden="true">↓</b></a>
+    </div>
+    <div class="flower-stamp" aria-hidden="true">✦</div>
+  </header>
+
+  <main>
+    <section class="work" id="work">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="section-kicker">Selected work · 2023—2026</p>
+          <h2>A few things<br>I'm proud of.</h2>
+        </div>
+        <div class="project-list">
+          <article class="project">
+            <div class="project-art art-one" aria-label="Petal and Stem project artwork"><span>P&amp;S</span></div>
+            <div class="project-copy">
+              <span class="project-number">01</span>
+              <div><p class="project-type">Brand identity · Art direction</p><h3>Petal &amp; Stem</h3><p class="project-description">A joyful visual world for a modern flower studio, made to feel tactile, generous, and a little unexpected.</p></div>
+              <span class="project-arrow" aria-hidden="true">↗</span>
+            </div>
+          </article>
+          <article class="project">
+            <div class="project-art art-two" aria-label="Sunday Journal project artwork"><span>SUNDAY / 07</span></div>
+            <div class="project-copy">
+              <span class="project-number">02</span>
+              <div><p class="project-type">Editorial · Digital experience</p><h3>Sunday Journal</h3><p class="project-description">A slower, calmer reading experience that turns thoughtful stories into a beautiful weekly ritual.</p></div>
+              <span class="project-arrow" aria-hidden="true">↗</span>
+            </div>
+          </article>
+          <article class="project">
+            <div class="project-art art-three" aria-label="Soft Focus project artwork"><span>SOFT<br>FOCUS</span></div>
+            <div class="project-copy">
+              <span class="project-number">03</span>
+              <div><p class="project-type">Campaign · Creative direction</p><h3>Soft Focus</h3><p class="project-description">A dreamy launch campaign built around softness, self-expression, and the confidence to be seen.</p></div>
+              <span class="project-arrow" aria-hidden="true">↗</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="about shell" id="about">
+      <div>
+        <p class="section-kicker">Nice to meet you</p>
+        <h2>Equal parts<br><em>curious &amp; careful.</em></h2>
+      </div>
+      <div class="about-copy">
+        <p class="about-lead">I believe the best creative work starts with paying attention—to the tiny details, the real problem, and the people we're making it for.</p>
+        <p>My approach blends strategy, storytelling, and visual craft. I work closely with founders and thoughtful teams to turn early ideas into identities and experiences that are clear, memorable, and full of life.</p>
+        <a class="text-link" href="#contact">More about me <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
+    <section class="services">
+      <div class="shell services-grid">
+        <div><p class="eyebrow">What I do</p><h2>From first thought<br>to final flourish.</h2></div>
+        <ol>
+          <li><span>01</span>Brand strategy</li>
+          <li><span>02</span>Visual identity</li>
+          <li><span>03</span>Creative direction</li>
+          <li><span>04</span>Web design</li>
+          <li><span>05</span>Editorial design</li>
+          <li><span>06</span>Campaigns</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="contact">
+    <div class="shell">
+      <p class="eyebrow">Have something in mind?</p>
+      <h2>Let's make<br><em>something lovely.</em></h2>
+      <a class="email-link" href="mailto:hello@yourname.com">hello@yourname.com <span aria-hidden="true">↗</span></a>
+      <div class="footer-meta">
+        <p>© 2026 Your Name</p>
+        <div class="footer-links"><a href="#top">Instagram</a><a href="#top">LinkedIn</a><a href="#top">Back to top ↑</a></div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
