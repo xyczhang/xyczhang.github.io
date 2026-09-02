@@ -6,6 +6,66 @@
   <meta name="description" content="Student at Carnegie Mellon University in Statistics and Machine Learning">
   <title> Xuyao Zhang Portfolio </title>
   <style>
+    .glow-title {
+  animation: glowFlash 3s ease-in-out infinite;
+}
+
+.glow-title em {
+  animation: pinkGlowFlash 3s ease-in-out infinite;
+}
+
+@keyframes glowFlash {
+  0%, 100% {
+    text-shadow: 0 0 2px rgba(216, 107, 147, 0.2);
+  }
+
+  25% {
+    text-shadow:
+      0 0 8px rgba(216, 107, 147, 0.45),
+      0 0 18px rgba(216, 107, 147, 0.25);
+  }
+
+  50% {
+    text-shadow:
+      0 0 14px rgba(216, 107, 147, 0.8),
+      0 0 30px rgba(216, 107, 147, 0.55),
+      0 0 48px rgba(239, 184, 204, 0.35);
+  }
+
+  75% {
+    text-shadow:
+      0 0 5px rgba(216, 107, 147, 0.35),
+      0 0 12px rgba(216, 107, 147, 0.2);
+  }
+}
+
+@keyframes pinkGlowFlash {
+  0%, 100% {
+    color: #d86b93;
+    text-shadow: 0 0 4px rgba(216, 107, 147, 0.3);
+  }
+
+  40% {
+    color: #ef8fb3;
+    text-shadow:
+      0 0 12px rgba(239, 143, 179, 0.8),
+      0 0 28px rgba(216, 107, 147, 0.55);
+  }
+
+  65% {
+    color: #f7b6ce;
+    text-shadow:
+      0 0 18px rgba(247, 182, 206, 0.9),
+      0 0 40px rgba(239, 143, 179, 0.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-title,
+  .glow-title em {
+    animation: none;
+  }
+}
     :root {
       --pink-50: #fff9fb;
       --pink-100: #fcebf1;
@@ -370,7 +430,7 @@
     <div class="hero-kicker"><span class="status-dot"></span>Independent creative · Available for select projects</div>
     <div class="hero-heading">
       <p class="hero-note">Pittsburgh, PA </p>
-      <h1>I make ideas<br><em>feel like you.</em></h1>
+      <h1 class="glow-title">I make ideas<br><em>feel like you.</em></h1>
     </div>
     <div class="hero-bottom">
       <p>I'm <strong>Xuyao Zhang</strong>, a student at Carnegie Mellon University majoring in Statistics and Machine Learning.</p>
