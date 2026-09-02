@@ -6,57 +6,35 @@
   <meta name="description" content="Student at Carnegie Mellon University in Statistics and Machine Learning">
   <title> Xuyao Zhang Portfolio </title>
   <style>
-    .glow-title {
-  animation: glowFlash 7s ease-in-out infinite;
-}
-
+    .glow-title,
 .glow-title em {
-  animation: pinkGlowFlash 7s ease-in-out infinite;
+  animation: glowOnly 5s ease-in-out infinite;
 }
 
-@keyframes glowFlash {
-  0%, 100% {
-    text-shadow: 0 0 2px rgba(216, 107, 147, 0.2);
+@keyframes glowOnly {
+  0%,
+  100% {
+    text-shadow:
+      0 0 2px rgba(216, 107, 147, 0.15);
   }
 
   25% {
     text-shadow:
-      0 0 8px rgba(216, 107, 147, 0.45),
-      0 0 18px rgba(216, 107, 147, 0.25);
+      0 0 8px rgba(216, 107, 147, 0.35),
+      0 0 16px rgba(216, 107, 147, 0.2);
   }
 
   50% {
     text-shadow:
-      0 0 14px rgba(216, 107, 147, 0.8),
-      0 0 30px rgba(216, 107, 147, 0.55),
-      0 0 48px rgba(239, 184, 204, 0.35);
+      0 0 12px rgba(216, 107, 147, 0.75),
+      0 0 26px rgba(216, 107, 147, 0.5),
+      0 0 44px rgba(239, 184, 204, 0.4);
   }
 
   75% {
     text-shadow:
-      0 0 5px rgba(216, 107, 147, 0.35),
-      0 0 12px rgba(216, 107, 147, 0.2);
-  }
-}
-
-@keyframes pinkGlowFlash {
-  0%, 100% {
-    color: #d86b93;
-    text-shadow: 0 0 4px rgba(216, 107, 147, 0.3);
-  }
-
-  40% {
-    color: #ef8fb3;
-    text-shadow:
-      0 0 12px rgba(239, 143, 179, 0.8),
-      0 0 28px rgba(216, 107, 147, 0.55);
-  }
-
-  65% {
-    color: #f7b6ce;
-    text-shadow:
-      0 0 18px rgba(247, 182, 206, 0.9),
-      0 0 40px rgba(239, 143, 179, 0.6);
+      0 0 6px rgba(216, 107, 147, 0.3),
+      0 0 12px rgba(216, 107, 147, 0.18);
   }
 }
 
