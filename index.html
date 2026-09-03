@@ -6,136 +6,171 @@
   <meta name="description" content="Student at Carnegie Mellon University in Statistics and Machine Learning">
   <title> Xuyao Zhang Portfolio </title>
   <style>
-    /* Scroll-activated border flowers */
-header,
-main > section,
-footer {
-  position: relative;
+/* Space reserved for flowers */
+:root {
+  --flower-gutter: clamp(58px, 6vw, 88px);
 }
 
-.edge-bloom {
-  --size: clamp(76px, 9vw, 132px);
-
-  position: absolute;
-  width: var(--size);
-  height: var(--size);
-  z-index: 5;
-  pointer-events: none;
-  opacity: 0.4;
-  transition:
-    opacity 700ms ease,
-    transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+/* Keeps all normal content away from the flower borders */
+.shell {
+  width: min(
+    1280px,
+    calc(100% - (var(--flower-gutter) * 2))
+  );
 }
 
-.edge-bloom.left {
-  left: 0;
-  transform: translateX(-60%) rotate(-14deg) scale(0.58);
-}
-
-.edge-bloom.right {
-  right: 0;
-  transform: translateX(60%) rotate(14deg) scale(0.58);
-}
-
-.edge-bloom.left.open {
-  opacity: 0.95;
-  transform: translateX(-40%) rotate(-3deg) scale(1);
-}
-
-.edge-bloom.right.open {
-  opacity: 0.95;
-  transform: translateX(40%) rotate(3deg) scale(1);
-}
-
-.edge-flower {
-  position: absolute;
+/* Fixed flower borders */
+.flower-rails {
+  position: fixed;
   inset: 0;
+  z-index: 50;
+  overflow: hidden;
+  pointer-events: none;
 }
 
-.edge-petal {
+.flower-rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--flower-gutter);
+}
+
+.flower-rail.left {
+  left: 0;
+}
+
+.flower-rail.right {
+  right: 0;
+}
+
+.rail-flower {
+  position: absolute;
+  top: var(--flower-y);
+  width: var(--flower-size);
+  height: var(--flower-size);
+  opacity: 0.42;
+
+  transition:
+    transform 850ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 700ms ease;
+}
+
+.flower-rail.left .rail-flower {
+  left: 0;
+  transform:
+    translate(-50%, -50%)
+    rotate(-12deg)
+    scale(0.48);
+}
+
+.flower-rail.right .rail-flower {
+  right: 0;
+  transform:
+    translate(50%, -50%)
+    rotate(12deg)
+    scale(0.48);
+}
+
+.flower-rail.left .rail-flower.open {
+  opacity: 0.96;
+  transform:
+    translate(-42%, -50%)
+    rotate(-2deg)
+    scale(1);
+}
+
+.flower-rail.right .rail-flower.open {
+  opacity: 0.96;
+  transform:
+    translate(42%, -50%)
+    rotate(2deg)
+    scale(1);
+}
+
+.rail-petal {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 32%;
+  width: 34%;
   height: 48%;
   border-radius: 55% 55% 48% 48%;
   transform-origin: 50% 100%;
 
   background:
     radial-gradient(
-      circle at 50% 75%,
-      rgba(216, 107, 147, 0.72),
-      transparent 42%
+      circle at 50% 78%,
+      rgba(196, 73, 119, 0.7),
+      transparent 38%
     ),
     linear-gradient(
       to top,
-      #e98eaf,
-      #f6bed2 55%,
-      #fff2f7
+      #e58aaa,
+      #f5b9cf 58%,
+      #fff0f6
     );
 
   box-shadow:
-    inset 0 -8px 12px rgba(184, 67, 110, 0.16),
-    0 4px 12px rgba(123, 46, 75, 0.12);
+    inset 0 -6px 10px rgba(123, 46, 75, 0.16),
+    0 3px 10px rgba(123, 46, 75, 0.14);
 
   transform:
     translate(-50%, -100%)
-    rotate(var(--angle))
-    translateY(22px)
+    rotate(var(--petal-angle))
+    translateY(20px)
     scale(0.18);
 
   transition:
-    transform 950ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 700ms ease;
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
 
-  transition-delay: calc(var(--petal-number) * 35ms);
+  transition-delay: calc(var(--petal-number) * 30ms);
 }
 
-.edge-bloom.open .edge-petal {
+.rail-flower.open .rail-petal {
   transform:
     translate(-50%, -100%)
-    rotate(var(--angle))
+    rotate(var(--petal-angle))
     translateY(-2px)
     scale(1);
-
-  filter: drop-shadow(0 3px 5px rgba(216, 107, 147, 0.15));
 }
 
-.edge-flower-center {
+.rail-flower-center {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 23%;
-  height: 23%;
+  width: 22%;
+  height: 22%;
   border-radius: 50%;
 
   background:
     radial-gradient(circle, #7b2e4b 0 9%, transparent 10%),
-    radial-gradient(circle at 35% 35%, #ffe6a7, #d9a148 70%);
+    radial-gradient(circle at 35% 35%, #ffe6a7, #d49a3d 70%);
 
   box-shadow:
-    0 0 0 5px rgba(255, 225, 174, 0.22),
-    0 0 16px rgba(216, 107, 147, 0.25);
+    0 0 0 4px rgba(255, 224, 169, 0.2),
+    0 0 12px rgba(216, 107, 147, 0.28);
 
   transform: translate(-50%, -50%) scale(0.4);
-  transition: transform 700ms ease 180ms;
+  transition: transform 700ms ease 150ms;
 }
 
-.edge-bloom.open .edge-flower-center {
+.rail-flower.open .rail-flower-center {
   transform: translate(-50%, -50%) scale(1);
 }
 
 @media (max-width: 600px) {
-  .edge-bloom {
-    --size: 76px;
-    opacity: 0.32;
+  :root {
+    --flower-gutter: 42px;
+  }
+
+  .shell {
+    width: calc(100% - 84px);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .edge-bloom,
-  .edge-petal,
-  .edge-flower-center {
+  .rail-flower,
+  .rail-petal,
+  .rail-flower-center {
     transition: none;
   }
 }
@@ -590,6 +625,123 @@ footer {
     document.querySelectorAll(".edge-bloom").forEach(function (flower) {
       observer.observe(flower);
     });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    /*
+      Remove flowers created by the previous version,
+      in case that code is still present.
+    */
+    document
+      .querySelectorAll(".edge-bloom, .flower-rails")
+      .forEach(function (element) {
+        element.remove();
+      });
+
+    const flowerCount = window.innerWidth <= 600 ? 9 : 13;
+
+    const rails = document.createElement("div");
+    rails.className = "flower-rails";
+    rails.setAttribute("aria-hidden", "true");
+
+    ["left", "right"].forEach(function (side) {
+      const rail = document.createElement("div");
+      rail.className = "flower-rail " + side;
+
+      for (let flowerIndex = 0; flowerIndex < flowerCount; flowerIndex++) {
+        const flower = document.createElement("div");
+        flower.className = "rail-flower";
+        flower.dataset.flowerIndex = flowerIndex;
+
+        const verticalPosition =
+          ((flowerIndex + 0.5) / flowerCount) * 100;
+
+        const flowerSize =
+          window.innerWidth <= 600
+            ? 38 + (flowerIndex % 3) * 4
+            : 52 + (flowerIndex % 3) * 10;
+
+        flower.style.setProperty(
+          "--flower-y",
+          verticalPosition + "%"
+        );
+
+        flower.style.setProperty(
+          "--flower-size",
+          flowerSize + "px"
+        );
+
+        for (let petalIndex = 0; petalIndex < 8; petalIndex++) {
+          const petal = document.createElement("span");
+          petal.className = "rail-petal";
+
+          petal.style.setProperty(
+            "--petal-angle",
+            petalIndex * 45 + "deg"
+          );
+
+          petal.style.setProperty(
+            "--petal-number",
+            petalIndex
+          );
+
+          flower.appendChild(petal);
+        }
+
+        const center = document.createElement("span");
+        center.className = "rail-flower-center";
+
+        flower.appendChild(center);
+        rail.appendChild(flower);
+      }
+
+      rails.appendChild(rail);
+    });
+
+    document.body.appendChild(rails);
+
+    const flowers = document.querySelectorAll(".rail-flower");
+
+    function updateFlowers() {
+      const maximumScroll =
+        document.documentElement.scrollHeight -
+        window.innerHeight;
+
+      const scrollProgress =
+        maximumScroll > 0
+          ? window.scrollY / maximumScroll
+          : 0;
+
+      const activePosition =
+        scrollProgress * (flowerCount + 4) - 2;
+
+      flowers.forEach(function (flower) {
+        const flowerIndex = Number(flower.dataset.flowerIndex);
+        const distance = Math.abs(flowerIndex - activePosition);
+
+        flower.classList.toggle("open", distance < 2.6);
+      });
+    }
+
+    let animationFramePending = false;
+
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!animationFramePending) {
+          animationFramePending = true;
+
+          requestAnimationFrame(function () {
+            updateFlowers();
+            animationFramePending = false;
+          });
+        }
+      },
+      { passive: true }
+    );
+
+    updateFlowers();
   });
 </script>
 <body>
