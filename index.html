@@ -5,6 +5,139 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Student at Carnegie Mellon University in Statistics and Machine Learning">
   <title> Xuyao Zhang Portfolio </title>
+  /* Scroll-activated border flowers */
+header,
+main > section,
+footer {
+  position: relative;
+}
+
+.edge-bloom {
+  --size: clamp(76px, 9vw, 132px);
+
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.4;
+  transition:
+    opacity 700ms ease,
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.edge-bloom.left {
+  left: 0;
+  transform: translateX(-60%) rotate(-14deg) scale(0.58);
+}
+
+.edge-bloom.right {
+  right: 0;
+  transform: translateX(60%) rotate(14deg) scale(0.58);
+}
+
+.edge-bloom.left.open {
+  opacity: 0.95;
+  transform: translateX(-40%) rotate(-3deg) scale(1);
+}
+
+.edge-bloom.right.open {
+  opacity: 0.95;
+  transform: translateX(40%) rotate(3deg) scale(1);
+}
+
+.edge-flower {
+  position: absolute;
+  inset: 0;
+}
+
+.edge-petal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 32%;
+  height: 48%;
+  border-radius: 55% 55% 48% 48%;
+  transform-origin: 50% 100%;
+
+  background:
+    radial-gradient(
+      circle at 50% 75%,
+      rgba(216, 107, 147, 0.72),
+      transparent 42%
+    ),
+    linear-gradient(
+      to top,
+      #e98eaf,
+      #f6bed2 55%,
+      #fff2f7
+    );
+
+  box-shadow:
+    inset 0 -8px 12px rgba(184, 67, 110, 0.16),
+    0 4px 12px rgba(123, 46, 75, 0.12);
+
+  transform:
+    translate(-50%, -100%)
+    rotate(var(--angle))
+    translateY(22px)
+    scale(0.18);
+
+  transition:
+    transform 950ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 700ms ease;
+
+  transition-delay: calc(var(--petal-number) * 35ms);
+}
+
+.edge-bloom.open .edge-petal {
+  transform:
+    translate(-50%, -100%)
+    rotate(var(--angle))
+    translateY(-2px)
+    scale(1);
+
+  filter: drop-shadow(0 3px 5px rgba(216, 107, 147, 0.15));
+}
+
+.edge-flower-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 23%;
+  height: 23%;
+  border-radius: 50%;
+
+  background:
+    radial-gradient(circle, #7b2e4b 0 9%, transparent 10%),
+    radial-gradient(circle at 35% 35%, #ffe6a7, #d9a148 70%);
+
+  box-shadow:
+    0 0 0 5px rgba(255, 225, 174, 0.22),
+    0 0 16px rgba(216, 107, 147, 0.25);
+
+  transform: translate(-50%, -50%) scale(0.4);
+  transition: transform 700ms ease 180ms;
+}
+
+.edge-bloom.open .edge-flower-center {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+@media (max-width: 600px) {
+  .edge-bloom {
+    --size: 76px;
+    opacity: 0.32;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edge-bloom,
+  .edge-petal,
+  .edge-flower-center {
+    transition: none;
+  }
+}
   <style>
     .glow-title,
 .glow-title em {
@@ -394,6 +527,71 @@
     }
   </style>
 </head>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const sections = document.querySelectorAll(
+      "header, main > section, footer"
+    );
+
+    sections.forEach(function (section, sectionIndex) {
+      ["left", "right"].forEach(function (side) {
+        const bloom = document.createElement("div");
+        bloom.className = "edge-bloom " + side;
+        bloom.setAttribute("aria-hidden", "true");
+
+        /*
+          Adjust these percentages if you want the flowers
+          higher or lower along each section.
+        */
+        if (side === "left") {
+          bloom.style.top =
+            18 + ((sectionIndex * 17) % 42) + "%";
+        } else {
+          bloom.style.top =
+            48 + ((sectionIndex * 11) % 28) + "%";
+        }
+
+        const flower = document.createElement("div");
+        flower.className = "edge-flower";
+
+        /* Create eight overlapping petals */
+        for (let i = 0; i < 8; i++) {
+          const petal = document.createElement("span");
+          petal.className = "edge-petal";
+          petal.style.setProperty("--angle", i * 45 + "deg");
+          petal.style.setProperty("--petal-number", i);
+          flower.appendChild(petal);
+        }
+
+        const center = document.createElement("span");
+        center.className = "edge-flower-center";
+
+        flower.appendChild(center);
+        bloom.appendChild(flower);
+        section.appendChild(bloom);
+      });
+    });
+
+    const observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          entry.target.classList.toggle(
+            "open",
+            entry.isIntersecting
+          );
+        });
+      },
+      {
+        threshold: 0.15,
+        rootMargin: "-8% 0px -8% 0px"
+      }
+    );
+
+    document.querySelectorAll(".edge-bloom").forEach(function (flower) {
+      observer.observe(flower);
+    });
+  });
+</script>
 <body>
   <nav class="nav shell" aria-label="Main navigation">
     <a class="wordmark" href="#top" aria-label="Your Name, home">XZ<span>.</span></a>
