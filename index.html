@@ -687,6 +687,15 @@ body {
   background: linear-gradient(to top, #cc678d, #f3a9c3);
 }
 
+/* Keep every flower permanently hidden after the intro */
+body.flower-intro-finished .floral-frame,
+body.flower-intro-finished .flower-border,
+body.flower-intro-finished .frame-flower,
+body.flower-intro-finished .edge-bloom,
+body.flower-intro-finished .flower-rails {
+  display: none !important;
+}
+
 .flower-style-dahlia .frame-petal {
   width: 27%;
   height: 48%;
@@ -855,226 +864,201 @@ body.flower-intro-finished .shell {
   </style>
 </head>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    document
-      .querySelectorAll(
-        ".edge-bloom, .flower-rails, .floral-frame"
-      )
-      .forEach(function (element) {
-        element.remove();
-      });
+document.addEventListener("DOMContentLoaded", function () {
+  const flowerSelector =
+    ".floral-frame, .flower-border, .frame-flower, " +
+    ".edge-bloom, .flower-rails";
 
-    const isMobile = window.innerWidth <= 700;
-
-    const frame = document.createElement("div");
-    frame.className = "floral-frame";
-    frame.setAttribute("aria-hidden", "true");
-
-    ["top", "bottom", "left", "right"].forEach(function (side) {
-      const fade = document.createElement("div");
-      fade.className = "frame-fade " + side;
-      frame.appendChild(fade);
+  function removeAllFlowers() {
+    document.querySelectorAll(flowerSelector).forEach(function (flower) {
+      flower.remove();
     });
+  }
 
-    const borders = [
-      {
-        side: "left",
-        count: isMobile ? 7 : 9
-      },
-      {
-        side: "right",
-        count: isMobile ? 7 : 9
-      },
-      {
-        side: "top",
-        count: isMobile ? 5 : 9
-      },
-      {
-        side: "bottom",
-        count: isMobile ? 5 : 9
+  /* Remove flowers left behind by older code */
+  removeAllFlowers();
+  document.body.classList.remove("flower-intro-finished");
+
+  const isMobile = window.innerWidth <= 700;
+  const frame = document.createElement("div");
+
+  frame.className = "floral-frame";
+  frame.setAttribute("aria-hidden", "true");
+
+  /* Create the soft background around each edge */
+  ["top", "bottom", "left", "right"].forEach(function (side) {
+    const fade = document.createElement("div");
+    fade.className = "frame-fade " + side;
+    frame.appendChild(fade);
+  });
+
+  const borderSettings = [
+    {
+      side: "left",
+      count: isMobile ? 7 : 9
+    },
+    {
+      side: "right",
+      count: isMobile ? 7 : 9
+    },
+    {
+      side: "top",
+      count: isMobile ? 6 : 11
+    },
+    {
+      side: "bottom",
+      count: isMobile ? 6 : 11
+    }
+  ];
+
+  /* Different petal counts create flower variety */
+  const flowerDesigns = [
+    { outerPetals: 5, innerPetals: 5 },
+    { outerPetals: 6, innerPetals: 6 },
+    { outerPetals: 8, innerPetals: 8 },
+    { outerPetals: 10, innerPetals: 5 },
+    { outerPetals: 12, innerPetals: 8 }
+  ];
+
+  let flowerNumber = 0;
+
+  borderSettings.forEach(function (settings) {
+    const border = document.createElement("div");
+    border.className = "flower-border " + settings.side;
+
+    for (let i = 0; i < settings.count; i++) {
+      const design =
+        flowerDesigns[flowerNumber % flowerDesigns.length];
+
+      const flower = document.createElement("div");
+      flower.className = "frame-flower";
+      flower.dataset.flowerNumber = flowerNumber;
+
+      /*
+        Keep flowers slightly away from the exact corners.
+        This prevents a large pile of flowers in the top-left.
+      */
+      const cornerSpace =
+        settings.side === "top" || settings.side === "bottom"
+          ? 5
+          : 7;
+
+      const position =
+        cornerSpace +
+        (i / Math.max(settings.count - 1, 1)) *
+          (100 - cornerSpace * 2);
+
+      let flowerSize;
+
+      if (isMobile) {
+        flowerSize =
+          settings.side === "top" || settings.side === "bottom"
+            ? 115 + (i % 4) * 14
+            : 95 + (i % 4) * 12;
+      } else {
+        flowerSize =
+          settings.side === "top" || settings.side === "bottom"
+            ? 175 + (i % 4) * 24
+            : 140 + (i % 4) * 20;
       }
-    ];
 
-    const flowerDesigns = [
-      {
-        className: "flower-style-cherry",
-        outerPetals: 8,
-        innerPetals: 8
-      },
-      {
-        className: "flower-style-magnolia",
-        outerPetals: 6,
-        innerPetals: 6
-      },
-      {
-        className: "flower-style-dahlia",
-        outerPetals: 12,
-        innerPetals: 10
-      },
-      {
-        className: "flower-style-wild",
-        outerPetals: 10,
-        innerPetals: 5
-      }
-    ];
+      flower.style.setProperty(
+        "--flower-position",
+        position + "%"
+      );
 
-    let totalFlowerNumber = 0;
+      flower.style.setProperty(
+        "--flower-size",
+        flowerSize + "px"
+      );
 
-    borders.forEach(function (settings) {
-      const border = document.createElement("div");
-      border.className = "flower-border " + settings.side;
+      /* Create outer petals */
+      for (
+        let petalIndex = 0;
+        petalIndex < design.outerPetals;
+        petalIndex++
+      ) {
+        const petal = document.createElement("span");
 
-      for (let i = 0; i < settings.count; i++) {
-        const design =
-          flowerDesigns[totalFlowerNumber % flowerDesigns.length];
+        petal.className = "frame-petal";
 
-        const flower = document.createElement("div");
-
-        flower.className =
-          "frame-flower " + design.className;
-
-        const position =
-          settings.count === 1
-            ? 50
-            : (i / (settings.count - 1)) * 100;
-
-        let flowerSize;
-
-        if (isMobile) {
-          if (
-            settings.side === "top" ||
-            settings.side === "bottom"
-          ) {
-            flowerSize = 125 + (i % 3) * 18;
-          } else {
-            flowerSize = 90 + (i % 3) * 14;
-          }
-        } else {
-          /*
-            Top and bottom flowers are intentionally
-            larger than the side flowers.
-          */
-          if (
-            settings.side === "top" ||
-            settings.side === "bottom"
-          ) {
-            flowerSize = 185 + (i % 4) * 28;
-          } else {
-            flowerSize = 135 + (i % 4) * 20;
-          }
-        }
-
-        flower.style.setProperty(
-          "--flower-position",
-          position + "%"
+        petal.style.setProperty(
+          "--petal-angle",
+          petalIndex * (360 / design.outerPetals) + "deg"
         );
 
-        flower.style.setProperty(
-          "--flower-size",
-          flowerSize + "px"
+        petal.style.setProperty(
+          "--petal-number",
+          petalIndex
         );
 
-        for (
-          let petalIndex = 0;
-          petalIndex < design.outerPetals;
-          petalIndex++
-        ) {
-          const petal = document.createElement("span");
-          petal.className = "frame-petal";
-
-          petal.style.setProperty(
-            "--petal-angle",
-            (petalIndex * 360) / design.outerPetals + "deg"
-          );
-
-          petal.style.setProperty(
-            "--petal-number",
-            petalIndex
-          );
-
-          flower.appendChild(petal);
-        }
-
-        for (
-          let petalIndex = 0;
-          petalIndex < design.innerPetals;
-          petalIndex++
-        ) {
-          const petal = document.createElement("span");
-          petal.className = "frame-petal inner";
-
-          petal.style.setProperty(
-            "--petal-angle",
-            (petalIndex * 360) / design.innerPetals +
-              360 / design.innerPetals / 2 +
-              "deg"
-          );
-
-          petal.style.setProperty(
-            "--petal-number",
-            petalIndex + 3
-          );
-
-          flower.appendChild(petal);
-        }
-
-        const center = document.createElement("span");
-        center.className = "frame-flower-center";
-
-        flower.appendChild(center);
-        border.appendChild(flower);
-
-        totalFlowerNumber++;
+        flower.appendChild(petal);
       }
 
-      frame.appendChild(border);
-    });
+      /* Create the smaller inner petals */
+      for (
+        let petalIndex = 0;
+        petalIndex < design.innerPetals;
+        petalIndex++
+      ) {
+        const petal = document.createElement("span");
 
-    document.body.appendChild(frame);
+        petal.className = "frame-petal inner";
 
-    const flowers = document.querySelectorAll(".frame-flower");
-    let closingTimer;
+        petal.style.setProperty(
+          "--petal-angle",
+          petalIndex * (360 / design.innerPetals) +
+            180 / design.innerPetals +
+            "deg"
+        );
 
-    function openAllFlowers() {
+        petal.style.setProperty(
+          "--petal-number",
+          petalIndex + 2
+        );
+
+        flower.appendChild(petal);
+      }
+
+      const center = document.createElement("span");
+      center.className = "frame-flower-center";
+
+      flower.appendChild(center);
+      border.appendChild(flower);
+
+      flowerNumber++;
+    }
+
+    frame.appendChild(border);
+  });
+
+  document.body.appendChild(frame);
+
+  const flowers = frame.querySelectorAll(".frame-flower");
+
+  /* Make every flower bloom simultaneously */
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
       flowers.forEach(function (flower) {
         flower.classList.add("open");
       });
-    }
-
-    function closeAllFlowers() {
-      flowers.forEach(function (flower) {
-        flower.classList.remove("open");
-      });
-    }
-
-    /*
-      Every flower opens simultaneously when scrolling.
-      They close together shortly after scrolling stops.
-    */
-    window.addEventListener(
-      "scroll",
-      function () {
-        openAllFlowers();
-
-        clearTimeout(closingTimer);
-
-        closingTimer = setTimeout(function () {
-          closeAllFlowers();
-        }, 1400);
-      },
-      { passive: true }
-    );
-
-    /*
-      Show the completed floral frame briefly when
-      the page first opens.
-    */
-    openAllFlowers();
-
-    closingTimer = setTimeout(function () {
-      closeAllFlowers();
-    }, 1800);
+    });
   });
+
+  /* Start fading after 2.3 seconds */
+  setTimeout(function () {
+    frame.classList.add("fade-away");
+  }, 2300);
+
+  /* Permanently delete every flower after the fade */
+  setTimeout(function () {
+    document.body.classList.add("flower-intro-finished");
+    removeAllFlowers();
+  }, 3300);
+
+  /* Extra cleanup for any older flower code */
+  setTimeout(removeAllFlowers, 4000);
+});
 </script>
     <body>
   <nav class="nav shell" aria-label="Main navigation">
