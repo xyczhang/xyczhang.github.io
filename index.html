@@ -1529,6 +1529,57 @@ body.flower-intro-finished .flower-intro-message {
   }
 }
 
+/* Gradually shrink the opening flowers away */
+.floral-frame.shrink-away .frame-flower {
+  animation: openingFlowerShrink 900ms
+    cubic-bezier(0.55, 0, 0.45, 1) forwards !important;
+}
+
+.floral-frame.shrink-away .flower-field,
+.floral-frame.shrink-away .frame-fade {
+  animation: openingBackgroundFade 900ms ease forwards;
+}
+
+.floral-frame.shrink-away .flower-intro-message {
+  animation: openingMessageFade 600ms ease forwards;
+}
+
+@keyframes openingFlowerShrink {
+  from {
+    scale: 1;
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  to {
+    scale: 0;
+    opacity: 0;
+    filter: blur(5px);
+  }
+}
+
+@keyframes openingBackgroundFade {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes openingMessageFade {
+  from {
+    opacity: 1;
+    scale: 1;
+  }
+
+  to {
+    opacity: 0;
+    scale: 0.8;
+  }
+}
+
   </style>
 </head>
 <script>
@@ -1833,15 +1884,29 @@ frame.appendChild(flowerField);
   });
 
 let flowersDismissed = false;
-
   function dismissFlowersOnClick() {
     if (flowersDismissed) return;
 
     flowersDismissed = true;
-    document.body.classList.add("flower-intro-finished");
-    removeAllFlowers();
-  }
 
+    const openingFrame =
+      document.querySelector(".floral-frame");
+
+    if (!openingFrame) {
+      document.body.classList.add("flower-intro-finished");
+      return;
+    }
+
+    /* Begin the gradual shrinking animation */
+    openingFrame.classList.add("shrink-away");
+
+    /* Delete the flowers after the animation finishes */
+    setTimeout(function () {
+      document.body.classList.add("flower-intro-finished");
+      removeAllFlowers();
+    }, 900);
+  }
+  
   /* Remove flowers only after a real click or tap */
   document.addEventListener("click", dismissFlowersOnClick, {
     once: true
