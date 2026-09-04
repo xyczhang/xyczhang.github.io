@@ -653,6 +653,54 @@ body {
       html { scroll-behavior: auto; }
       *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
     }
+    /* Opening flower animation */
+.floral-frame {
+  opacity: 1;
+  transition:
+    opacity 900ms ease,
+    filter 900ms ease;
+}
+
+.floral-frame.fade-away {
+  opacity: 0;
+  filter: blur(8px);
+}
+
+/* Keep content away from the flowers during the intro */
+body:not(.flower-intro-finished) .shell {
+  width: min(
+    1280px,
+    calc(100% - var(--frame-side) - var(--frame-side))
+  );
+}
+
+body,
+.shell {
+  transition:
+    padding 700ms ease,
+    width 700ms ease;
+}
+
+/* Restore the normal website after flowers disappear */
+body.flower-intro-finished {
+  --frame-side: 36px;
+  --frame-top: 0px;
+}
+
+body.flower-intro-finished .shell {
+  width: min(1280px, calc(100% - 72px));
+}
+
+@media (max-width: 700px) {
+  body.flower-intro-finished {
+    --frame-side: 19px;
+    --frame-top: 0px;
+  }
+
+  body.flower-intro-finished .shell {
+    width: min(calc(100% - 38px), 680px);
+  }
+}
   </style>
 </head>
 <script>
@@ -789,53 +837,35 @@ body {
       frame.appendChild(border);
     });
 
-    document.body.appendChild(frame);
+  document.body.appendChild(frame);
+  const flowers = document.querySelectorAll(".frame-flower");
 
-    const flowers = document.querySelectorAll(".frame-flower");
-
-    function updateFlowers() {
-      const maximumScroll =
-        document.documentElement.scrollHeight -
-        window.innerHeight;
-
-      const progress =
-        maximumScroll > 0
-          ? window.scrollY / maximumScroll
-          : 0;
-
-      flowers.forEach(function (flower, index) {
-        /*
-          Creates waves of flowers opening and closing
-          while the page is scrolled.
-        */
-        const wave =
-          Math.sin(progress * Math.PI * 7 + index * 0.68);
-
-        flower.classList.toggle("open", wave > -0.28);
+    /* Bloom every flower simultaneously */
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        flowers.forEach(function (flower) {
+          flower.classList.add("open");
+        });
       });
-    }
+    });
 
-    let waitingForFrame = false;
+    /* Fade the entire flower frame away */
+    setTimeout(function () {
+      frame.classList.add("fade-away");
+    }, 2300);
 
-    window.addEventListener(
-      "scroll",
-      function () {
-        if (!waitingForFrame) {
-          waitingForFrame = true;
+    /* Return the website to its normal spacing */
+    setTimeout(function () {
+      document.body.classList.add("flower-intro-finished");
+    }, 3100);
 
-          requestAnimationFrame(function () {
-            updateFlowers();
-            waitingForFrame = false;
-          });
-        }
-      },
-      { passive: true }
-    );
-
-    updateFlowers();
+    /* Remove the invisible flowers completely */
+    setTimeout(function () {
+      frame.remove();
+    }, 4000);
   });
 </script>
-<body>
+    <body>
   <nav class="nav shell" aria-label="Main navigation">
     <a class="wordmark" href="#top" aria-label="Your Name, home">YN<span>.</span></a>
     <div class="nav-links">
