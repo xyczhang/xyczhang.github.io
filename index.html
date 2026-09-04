@@ -1608,142 +1608,355 @@ body.flower-intro-finished .flower-intro-message {
   }
 }
 
+/* Smooth shrinking exit for the opening flower screen */
+.flower-field {
+  transition: background-color 850ms ease;
+}
+
+.floral-frame.shrink-away .flower-field {
+  background-color: rgba(255, 249, 251, 0);
+}
+
+.floral-frame.shrink-away .flower-field .frame-flower {
+  animation: none !important;
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.02)
+    rotate(var(--field-rotation));
+
+  opacity: 0;
+
+  transition:
+    transform 800ms cubic-bezier(0.4, 0, 0.2, 1)
+      var(--shrink-delay),
+    opacity 650ms ease var(--shrink-delay) !important;
+
+  will-change: transform, opacity;
+}
+
+.floral-frame.shrink-away .flower-intro-message {
+  opacity: 0;
+  transform: scale(0.92);
+
+  transition:
+    opacity 450ms ease,
+    transform 650ms ease;
+}
+
+/* Clickable stacked About photographs */
+.photo-stack {
+  width: 290px;
+  max-width: 100%;
+}
+
+.photo-deck {
+  position: relative;
+  width: 260px;
+  height: 340px;
+  max-width: 100%;
+}
+
+.photo-deck .photo-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  display: block;
+  width: 230px;
+  height: 300px;
+  margin: 0;
+  padding: 9px;
+
+  appearance: none;
+  cursor: pointer;
+
+  background: var(--pink-200);
+  border: 2px solid var(--pink-300);
+  border-radius: 25px;
+
+  box-shadow:
+    0 16px 35px rgba(123, 46, 75, 0.16);
+
+  transition:
+    transform 550ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 400ms ease,
+    box-shadow 400ms ease;
+
+  transform-origin: center;
+}
+
+.photo-deck .photo-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+  pointer-events: none;
+}
+
+/* Front photo */
+.photo-card[data-position="0"] {
+  z-index: 4;
+  opacity: 1;
+  transform:
+    translate(0, 0)
+    rotate(-2deg)
+    scale(1);
+}
+
+/* Second photo */
+.photo-card[data-position="1"] {
+  z-index: 3;
+  opacity: 0.95;
+  transform:
+    translate(18px, 10px)
+    rotate(4deg)
+    scale(0.96);
+}
+
+/* Third photo */
+.photo-card[data-position="2"] {
+  z-index: 2;
+  opacity: 0.88;
+  transform:
+    translate(-12px, 21px)
+    rotate(-6deg)
+    scale(0.92);
+}
+
+/* Back photo */
+.photo-card[data-position="3"] {
+  z-index: 1;
+  opacity: 0.8;
+  transform:
+    translate(27px, 30px)
+    rotate(7deg)
+    scale(0.88);
+}
+
+.photo-deck .photo-card:hover {
+  box-shadow:
+    0 20px 45px rgba(123, 46, 75, 0.25);
+}
+
+.photo-deck-hint {
+  margin: 12px 0 0;
+  color: var(--berry);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+@media (max-width: 800px) {
+  .photo-stack {
+    width: 250px;
+  }
+
+  .photo-deck {
+    width: 235px;
+    height: 310px;
+  }
+
+  .photo-deck .photo-card {
+    width: 205px;
+    height: 270px;
+  }
+}
+
   </style>
 </head>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const flowerSelector =
-    ".floral-frame, .flower-border, .frame-flower, " +
-    ".edge-bloom, .flower-rails";
+    ".floral-frame, .flower-field, .flower-border, " +
+    ".frame-flower, .edge-bloom, .flower-rails";
 
   function removeAllFlowers() {
-    document.querySelectorAll(flowerSelector).forEach(function (flower) {
-      flower.remove();
-    });
+    document
+      .querySelectorAll(flowerSelector)
+      .forEach(function (element) {
+        element.remove();
+      });
   }
 
-  /* Remove flowers left behind by older code */
+  /* Remove anything created by older flower code */
   removeAllFlowers();
   document.body.classList.remove("flower-intro-finished");
 
   const isMobile = window.innerWidth <= 700;
-  const frame = document.createElement("div");
 
+  const frame = document.createElement("div");
   frame.className = "floral-frame";
   frame.setAttribute("aria-hidden", "true");
 
-  /* Create the soft background around each edge */
-  ["top", "bottom", "left", "right"].forEach(function (side) {
-    const fade = document.createElement("div");
-    fade.className = "frame-fade " + side;
-    frame.appendChild(fade);
-  });
+  const flowerField = document.createElement("div");
+  flowerField.className = "flower-field";
 
-  const borderSettings = [
+  /*
+    Lower petal counts keep the animation smooth while
+    preserving the different flower appearances.
+  */
+  const flowerDesigns = [
     {
-      side: "left",
-      count: isMobile ? 7 : 9
+      className: "flower-cherry",
+      outerPetals: 5,
+      innerPetals: 3,
+      sizeMultiplier: 0.9
     },
     {
-      side: "right",
-      count: isMobile ? 7 : 9
+      className: "flower-daisy",
+      outerPetals: 8,
+      innerPetals: 4,
+      sizeMultiplier: 0.9
     },
     {
-      side: "top",
-      count: isMobile ? 6 : 11
+      className: "flower-peony",
+      outerPetals: 8,
+      innerPetals: 6,
+      sizeMultiplier: 1.12
     },
     {
-      side: "bottom",
-      count: isMobile ? 6 : 11
+      className: "flower-star",
+      outerPetals: 7,
+      innerPetals: 4,
+      sizeMultiplier: 0.94
+    },
+    {
+      className: "flower-plum",
+      outerPetals: 5,
+      innerPetals: 3,
+      sizeMultiplier: 0.84
+    },
+    {
+      className: "flower-camellia",
+      outerPetals: 8,
+      innerPetals: 5,
+      sizeMultiplier: 1.08
     }
   ];
 
-  const flowerDesigns = [
-  {
-    className: "flower-cherry",
-    outerPetals: 5,
-    innerPetals: 5,
-    sizeMultiplier: 0.9
-  },
-  {
-    className: "flower-daisy",
-    outerPetals: 12,
-    innerPetals: 8,
-    sizeMultiplier: 0.88
-  },
-  {
-    className: "flower-peony",
-    outerPetals: 12,
-    innerPetals: 10,
-    sizeMultiplier: 1.15
-  },
-  {
-    className: "flower-star",
-    outerPetals: 7,
-    innerPetals: 7,
-    sizeMultiplier: 0.95
-  },
-  {
-    className: "flower-plum",
-    outerPetals: 5,
-    innerPetals: 5,
-    sizeMultiplier: 0.82
-  },
-  {
-    className: "flower-camellia",
-    outerPetals: 9,
-    innerPetals: 7,
-    sizeMultiplier: 1.1
+  function createFlower(design, flowerNumber) {
+    const flower = document.createElement("div");
+
+    flower.className =
+      "frame-flower " + design.className;
+
+    flower.dataset.flowerNumber = flowerNumber;
+
+    /* Outer petals */
+    for (
+      let petalIndex = 0;
+      petalIndex < design.outerPetals;
+      petalIndex++
+    ) {
+      const petal = document.createElement("span");
+      petal.className = "frame-petal";
+
+      petal.style.setProperty(
+        "--petal-angle",
+        petalIndex * (360 / design.outerPetals) + "deg"
+      );
+
+      petal.style.setProperty(
+        "--petal-number",
+        petalIndex
+      );
+
+      flower.appendChild(petal);
+    }
+
+    /* Inner petals */
+    for (
+      let petalIndex = 0;
+      petalIndex < design.innerPetals;
+      petalIndex++
+    ) {
+      const petal = document.createElement("span");
+      petal.className = "frame-petal inner";
+
+      petal.style.setProperty(
+        "--petal-angle",
+        petalIndex * (360 / design.innerPetals) +
+          180 / design.innerPetals +
+          "deg"
+      );
+
+      petal.style.setProperty(
+        "--petal-number",
+        petalIndex + 2
+      );
+
+      flower.appendChild(petal);
+    }
+
+    const center = document.createElement("span");
+    center.className = "frame-flower-center";
+    flower.appendChild(center);
+
+    return flower;
   }
-];
+
+  /*
+    Only create full-screen background flowers.
+    No border flowers are created.
+  */
+  const columns = isMobile ? 3 : 5;
+  const rows = isMobile ? 5 : 4;
 
   let flowerNumber = 0;
 
-  borderSettings.forEach(function (settings) {
-    const border = document.createElement("div");
-    border.className = "flower-border " + settings.side;
-
-    for (let i = 0; i < settings.count; i++) {
+  for (let row = 0; row < rows; row++) {
+    for (let column = 0; column < columns; column++) {
       const design =
-        flowerDesigns[flowerNumber % flowerDesigns.length];
+        flowerDesigns[
+          flowerNumber % flowerDesigns.length
+        ];
 
-      const flower = document.createElement("div");
-      flower.className = "frame-flower " + design.className;
-      flower.dataset.flowerNumber = flowerNumber;
+      const flower =
+        createFlower(design, flowerNumber);
 
-      /*
-        Keep flowers slightly away from the exact corners.
-        This prevents a large pile of flowers in the top-left.
-      */
-      const cornerSpace =
-        settings.side === "top" || settings.side === "bottom"
-          ? 5
-          : 7;
+      let xPosition =
+        (column / Math.max(columns - 1, 1)) * 100;
 
-      const position =
-        cornerSpace +
-        (i / Math.max(settings.count - 1, 1)) *
-          (100 - cornerSpace * 2);
-
-      let flowerSize;
-
-      if (isMobile) {
-        flowerSize =
-          settings.side === "top" || settings.side === "bottom"
-            ? 115 + (i % 4) * 14
-            : 95 + (i % 4) * 12;
-      } else {
-        flowerSize =
-          settings.side === "top" || settings.side === "bottom"
-            ? 175 + (i % 4) * 24
-            : 140 + (i % 4) * 20;
+      if (row % 2 === 1) {
+        xPosition += 4;
       }
 
-      flowerSize = Math.round(flowerSize * design.sizeMultiplier);
+      xPosition = Math.max(-3, Math.min(103, xPosition));
+
+      const yPosition =
+        (row / Math.max(rows - 1, 1)) * 100;
+
+      const baseSize = isMobile ? 205 : 325;
+      const sizeVariation =
+        ((row + column) % 3) * (isMobile ? 18 : 32);
+
+      const flowerSize = Math.round(
+        (baseSize + sizeVariation) *
+          design.sizeMultiplier
+      );
+
+      const rotation =
+        ((row * 17 + column * 23) % 34) - 17;
+
+      /*
+        Small delays create a smooth shrinking ripple
+        without making the animation feel slow.
+      */
+      const shrinkDelay =
+               ((row + column) % 4) * 35;
 
       flower.style.setProperty(
-        "--flower-position",
-        position + "%"
+        "--flower-x",
+        xPosition + "%"
+      );
+
+      flower.style.setProperty(
+        "--flower-y",
+        yPosition + "%"
       );
 
       flower.style.setProperty(
@@ -1751,158 +1964,43 @@ document.addEventListener("DOMContentLoaded", function () {
         flowerSize + "px"
       );
 
-      /* Create outer petals */
-      for (
-        let petalIndex = 0;
-        petalIndex < design.outerPetals;
-        petalIndex++
-      ) {
-        const petal = document.createElement("span");
+      flower.style.setProperty(
+        "--field-rotation",
+        rotation + "deg"
+      );
 
-        petal.className = "frame-petal";
+      flower.style.setProperty(
+        "--shrink-delay",
+        shrinkDelay + "ms"
+      );
 
-        petal.style.setProperty(
-          "--petal-angle",
-          petalIndex * (360 / design.outerPetals) + "deg"
-        );
-
-        petal.style.setProperty(
-          "--petal-number",
-          petalIndex
-        );
-
-        flower.appendChild(petal);
-      }
-
-      /* Create the smaller inner petals */
-      for (
-        let petalIndex = 0;
-        petalIndex < design.innerPetals;
-        petalIndex++
-      ) {
-        const petal = document.createElement("span");
-
-        petal.className = "frame-petal inner";
-
-        petal.style.setProperty(
-          "--petal-angle",
-          petalIndex * (360 / design.innerPetals) +
-            180 / design.innerPetals +
-            "deg"
-        );
-
-        petal.style.setProperty(
-          "--petal-number",
-          petalIndex + 2
-        );
-
-        flower.appendChild(petal);
-      }
-
-      const center = document.createElement("span");
-      center.className = "frame-flower-center";
-
-      flower.appendChild(center);
-      border.appendChild(flower);
-
+      flowerField.appendChild(flower);
       flowerNumber++;
     }
-
-    frame.appendChild(border);
-  });
-
-  /*
-  Create enough flowers to cover the entire opening screen.
-  These clone the different flower varieties already created
-  around the border.
-*/
-const flowerField = document.createElement("div");
-flowerField.className = "flower-field";
-
-const flowerTemplates = Array.from(
-  frame.querySelectorAll(".flower-border .frame-flower")
-);
-
-const columns = isMobile ? 3 : 5;
-const rows = isMobile ? 5 : 4;
-
-for (let row = 0; row < rows; row++) {
-  for (let column = 0; column < columns; column++) {
-    const templateNumber =
-      (row * columns + column) % flowerTemplates.length;
-
-    const flower =
-      flowerTemplates[templateNumber].cloneNode(true);
-
-    /*
-      Slightly stagger each row so the flowers overlap
-      without forming perfectly straight lines.
-    */
-    let xPosition =
-      columns === 1
-        ? 50
-        : (column / (columns - 1)) * 100;
-
-    if (row % 2 === 1) {
-      xPosition += 4;
-    }
-
-    const yPosition =
-      rows === 1
-        ? 50
-        : (row / (rows - 1)) * 100;
-
-    const baseSize = isMobile ? 195 : 320;
-    const sizeVariation =
-      ((row + column) % 3) * (isMobile ? 16 : 30);
-
-    const rotation =
-      ((row * 17 + column * 23) % 34) - 17;
-
-    flower.style.setProperty(
-      "--flower-x",
-      Math.max(-3, Math.min(103, xPosition)) + "%"
-    );
-
-    flower.style.setProperty(
-      "--flower-y",
-      yPosition + "%"
-    );
-
-    flower.style.setProperty(
-      "--flower-size",
-      baseSize + sizeVariation + "px"
-    );
-
-    flower.style.setProperty(
-      "--field-rotation",
-      rotation + "deg"
-    );
-
-    flowerField.appendChild(flower);
   }
-}
-/* Create the centered opening message */
-const introMessage = document.createElement("div");
-introMessage.className = "flower-intro-message";
 
-const introTitle = document.createElement("h2");
-introTitle.textContent = "hey!";
+  frame.appendChild(flowerField);
 
-const introHint = document.createElement("p");
-introHint.textContent = "<click here>";
+  /* Centered opening message */
+  const introMessage = document.createElement("div");
+  introMessage.className = "flower-intro-message";
 
-introMessage.appendChild(introTitle);
-introMessage.appendChild(introHint);
-frame.appendChild(introMessage);
+  const introTitle = document.createElement("h2");
+  introTitle.textContent = "hey!";
 
-frame.appendChild(flowerField);
+  const introHint = document.createElement("p");
+  introHint.textContent = "<click here>";
+
+  introMessage.appendChild(introTitle);
+  introMessage.appendChild(introHint);
+  frame.appendChild(introMessage);
 
   document.body.appendChild(frame);
 
-  const flowers = frame.querySelectorAll(".frame-flower");
+  const flowers =
+    flowerField.querySelectorAll(".frame-flower");
 
-  /* Make every flower bloom simultaneously */
+  /* Bloom all opening flowers together */
   requestAnimationFrame(function () {
     requestAnimationFrame(function () {
       flowers.forEach(function (flower) {
@@ -1911,93 +2009,146 @@ frame.appendChild(flowerField);
     });
   });
 
-let flowersDismissed = false;
-  function dismissFlowersOnClick() {
+  let flowersDismissed = false;
+
+  function dismissOpeningFlowers() {
     if (flowersDismissed) return;
 
     flowersDismissed = true;
+    frame.classList.add("shrink-away");
 
-    const openingFrame =
-      document.querySelector(".floral-frame");
-
-    if (!openingFrame) {
-      document.body.classList.add("flower-intro-finished");
-      return;
-    }
-
-    /* Begin the gradual shrinking animation */
-    openingFrame.classList.add("shrink-away");
-
-    /* Delete the flowers after the animation finishes */
+    /*
+      Wait until the shrinking transition finishes
+      before deleting the flower screen.
+    */
     setTimeout(function () {
-      document.body.classList.add("flower-intro-finished");
+      document.body.classList.add(
+        "flower-intro-finished"
+      );
+
       removeAllFlowers();
-    }, 900);
+    }, 1050);
   }
-  
-  /* Remove flowers only after a real click or tap */
-  document.addEventListener("click", dismissFlowersOnClick, {
-    once: true
-  });
 
+  document.addEventListener(
+    "click",
+    dismissOpeningFlowers,
+    { once: true }
+  );
+
+  /* Temporary flower stamps created by later clicks */
   const stampColors = [
-  {
-    light: "#f4a9c2",
-    dark: "#c84f7d"
-  },
-  {
-    light: "#ffd2e1",
-    dark: "#df769b"
-  },
-  {
-    light: "#ee87ad",
-    dark: "#ad3866"
-  },
-  {
-    light: "#f8bfd1",
-    dark: "#d85f89"
-  }
-];
+    {
+      light: "#f4a9c2",
+      dark: "#c84f7d"
+    },
+    {
+      light: "#ffd2e1",
+      dark: "#df769b"
+    },
+    {
+      light: "#ee87ad",
+      dark: "#ad3866"
+    },
+    {
+      light: "#f8bfd1",
+      dark: "#d85f89"
+    }
+  ];
 
-function createFlowerStamp(event) {
-  const stamp = document.createElement("div");
-  stamp.className = "cursor-flower-stamp";
+  function createFlowerStamp(event) {
+    const stamp = document.createElement("div");
+    stamp.className = "cursor-flower-stamp";
 
-  const colors =
-    stampColors[
-      Math.floor(Math.random() * stampColors.length)
-    ];
+    const colors =
+      stampColors[
+        Math.floor(Math.random() * stampColors.length)
+      ];
 
-  stamp.style.setProperty("--stamp-x", event.clientX + "px");
-  stamp.style.setProperty("--stamp-y", event.clientY + "px");
-  stamp.style.setProperty("--stamp-color", colors.light);
-  stamp.style.setProperty("--stamp-dark", colors.dark);
-
-  const petalCount = 7;
-
-  for (let i = 0; i < petalCount; i++) {
-    const petal = document.createElement("span");
-    petal.className = "stamp-petal";
-
-    petal.style.setProperty(
-      "--stamp-angle",
-      i * (360 / petalCount) + "deg"
+    stamp.style.setProperty(
+      "--stamp-x",
+      event.clientX + "px"
     );
 
-    stamp.appendChild(petal);
+    stamp.style.setProperty(
+      "--stamp-y",
+      event.clientY + "px"
+    );
+
+    stamp.style.setProperty(
+      "--stamp-color",
+      colors.light
+    );
+
+    stamp.style.setProperty(
+      "--stamp-dark",
+      colors.dark
+    );
+
+    const petalCount = 7;
+
+    for (let i = 0; i < petalCount; i++) {
+      const petal = document.createElement("span");
+      petal.className = "stamp-petal";
+
+      petal.style.setProperty(
+        "--stamp-angle",
+        i * (360 / petalCount) + "deg"
+      );
+
+      stamp.appendChild(petal);
+    }
+
+    document.body.appendChild(stamp);
+
+    setTimeout(function () {
+      stamp.remove();
+    }, 1100);
   }
 
-  document.body.appendChild(stamp);
-
-  /* Delete the stamp after its animation finishes */
-  setTimeout(function () {
-    stamp.remove();
-  }, 1100);
-}
-
-document.addEventListener("click", createFlowerStamp);
+  document.addEventListener("click", createFlowerStamp);
 });
 </script>
+<script>
+  const photoDeck = document.querySelector(".photo-deck");
+
+  if (photoDeck) {
+    let photoCards = Array.from(
+      photoDeck.querySelectorAll(".photo-card")
+    );
+
+    function updatePhotoPositions() {
+      photoCards.forEach(function (card, index) {
+        card.dataset.position = index;
+      });
+    }
+
+    photoCards.forEach(function (clickedCard) {
+      clickedCard.addEventListener("click", function () {
+        const clickedPosition =
+          photoCards.indexOf(clickedCard);
+
+        if (clickedPosition === 0) {
+          /*
+            Clicking the front photo sends it to the back.
+          */
+          photoCards.push(photoCards.shift());
+        } else {
+          /*
+            Clicking a rear photo brings it directly forward.
+          */
+          photoCards.splice(clickedPosition, 1);
+          photoCards.unshift(clickedCard);
+        }
+
+        updatePhotoPositions();
+      });
+    });
+
+    updatePhotoPositions();
+  }
+</script>
+
     <body>
   <nav class="nav shell" aria-label="Main navigation">
     <a class="wordmark" href="#top" aria-label="Your Name, home">XZ<span>.</span></a>
@@ -2111,19 +2262,54 @@ document.addEventListener("click", createFlowerStamp);
   <div class="about-photo-column">
     <p class="section-kicker">Nice to meet you</p>
 
-    <div class="profile-photo">
-      <img
-        src="profile.jpg"
-        alt="Portrait of Xuyao Zhang"
-      >
-    </div>
+    <div class="photo-stack">
+  <div class="photo-deck" aria-label="About me photographs">
+    <button
+      class="profile-photo photo-card"
+      data-position="0"
+      type="button"
+      aria-label="Show next photograph"
+    >
+      <img src="profile1.jpg" alt="Xuyao Zhang">
+    </button>
+
+    <button
+      class="profile-photo photo-card"
+      data-position="1"
+      type="button"
+      aria-label="Bring photograph two forward"
+    >
+      <img src="profile2.jpg" alt="Xuyao Zhang">
+    </button>
+
+    <button
+      class="profile-photo photo-card"
+      data-position="2"
+      type="button"
+      aria-label="Bring photograph three forward"
+    >
+      <img src="profile3.jpg" alt="Xuyao Zhang">
+    </button>
+
+    <button
+      class="profile-photo photo-card"
+      data-position="3"
+      type="button"
+      aria-label="Bring photograph four forward"
+    >
+      <img src="profile4.jpg" alt="Xuyao Zhang">
+    </button>
+  </div>
+
+  <p class="photo-deck-hint">Click a photo to rotate the stack ↻</p>
+  </div>
   </div>
 
   <div class="about-copy">
     <h2 class="about-title">A little about me.</h2>
 
     <p class="about-lead">
-      Add a short introduction about yourself here.
+      Hello! little about me
     </p>
 
     <p>
