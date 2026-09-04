@@ -3,137 +3,267 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Student at Carnegie Mellon University in Statistics and Machine Learning">
-  <title> Xuyao Zhang Portfolio </title>
+  <meta name="description" content="A multidisciplinary designer creating thoughtful brands and digital experiences with feeling.">
+  <title>Your Name — Independent Creative</title>
   <style>
-/* Space reserved for flowers */
+    /* Large layered floral frame */
 :root {
-  --flower-gutter: clamp(58px, 6vw, 88px);
+  --frame-side: clamp(85px, 9vw, 135px);
+  --frame-top: clamp(75px, 8vw, 110px);
 }
 
-/* Keeps all normal content away from the flower borders */
+/* Reserve space so flowers do not cover text */
+body {
+  padding-top: var(--frame-top);
+  padding-bottom: var(--frame-top);
+}
+
 .shell {
   width: min(
     1280px,
-    calc(100% - (var(--flower-gutter) * 2))
+    calc(100% - var(--frame-side) - var(--frame-side))
   );
 }
 
-/* Fixed flower borders */
-.flower-rails {
+/* Fixed frame around the browser */
+.floral-frame {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: 100;
   overflow: hidden;
   pointer-events: none;
 }
 
-.flower-rail {
+.flower-border {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  width: var(--flower-gutter);
+  z-index: 2;
 }
 
-.flower-rail.left {
+.flower-border.left,
+.flower-border.right {
+  top: 0;
+  bottom: 0;
+  width: var(--frame-side);
+}
+
+.flower-border.top,
+.flower-border.bottom {
+  left: 0;
+  right: 0;
+  height: var(--frame-top);
+}
+
+.flower-border.left {
   left: 0;
 }
 
-.flower-rail.right {
+.flower-border.right {
   right: 0;
 }
 
-.rail-flower {
+.flower-border.top {
+  top: 0;
+}
+
+.flower-border.bottom {
+  bottom: 0;
+}
+
+/* Soft masks keep the center readable */
+.frame-fade {
   position: absolute;
-  top: var(--flower-y);
+  z-index: 1;
+}
+
+.frame-fade.top,
+.frame-fade.bottom {
+  left: 0;
+  right: 0;
+  height: var(--frame-top);
+}
+
+.frame-fade.top {
+  top: 0;
+  background: linear-gradient(
+    to bottom,
+    #fff9fb 0%,
+    rgba(255, 249, 251, 0.98) 55%,
+    transparent 100%
+  );
+}
+
+.frame-fade.bottom {
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    #fff9fb 0%,
+    rgba(255, 249, 251, 0.98) 55%,
+    transparent 100%
+  );
+}
+
+.frame-fade.left,
+.frame-fade.right {
+  top: 0;
+  bottom: 0;
+  width: var(--frame-side);
+}
+
+.frame-fade.left {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    #fff9fb 0%,
+    rgba(255, 249, 251, 0.8) 55%,
+    transparent 100%
+  );
+}
+
+.frame-fade.right {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    #fff9fb 0%,
+    rgba(255, 249, 251, 0.8) 55%,
+    transparent 100%
+  );
+}
+
+/* Individual flowers */
+.frame-flower {
+  position: absolute;
   width: var(--flower-size);
   height: var(--flower-size);
-  opacity: 0.42;
+  opacity: 0.5;
 
   transition:
-    transform 850ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
     opacity 700ms ease;
 }
 
-.flower-rail.left .rail-flower {
+.flower-border.left .frame-flower {
   left: 0;
-  transform:
-    translate(-50%, -50%)
-    rotate(-12deg)
-    scale(0.48);
+  top: var(--flower-position);
+  transform: translate(-48%, -50%) scale(0.48) rotate(-12deg);
 }
 
-.flower-rail.right .rail-flower {
+.flower-border.right .frame-flower {
   right: 0;
-  transform:
-    translate(50%, -50%)
-    rotate(12deg)
-    scale(0.48);
+  top: var(--flower-position);
+  transform: translate(48%, -50%) scale(0.48) rotate(12deg);
 }
 
-.flower-rail.left .rail-flower.open {
-  opacity: 0.96;
-  transform:
-    translate(-42%, -50%)
-    rotate(-2deg)
-    scale(1);
+.flower-border.top .frame-flower {
+  top: 0;
+  left: var(--flower-position);
+  transform: translate(-50%, -48%) scale(0.48) rotate(-8deg);
 }
 
-.flower-rail.right .rail-flower.open {
-  opacity: 0.96;
-  transform:
-    translate(42%, -50%)
-    rotate(2deg)
-    scale(1);
+.flower-border.bottom .frame-flower {
+  bottom: 0;
+  left: var(--flower-position);
+  transform: translate(-50%, 48%) scale(0.48) rotate(8deg);
 }
 
-.rail-petal {
+.flower-border.left .frame-flower.open {
+  transform: translate(-38%, -50%) scale(1) rotate(-3deg);
+}
+
+.flower-border.right .frame-flower.open {
+  transform: translate(38%, -50%) scale(1) rotate(3deg);
+}
+
+.flower-border.top .frame-flower.open {
+  transform: translate(-50%, -38%) scale(1) rotate(-2deg);
+}
+
+.flower-border.bottom .frame-flower.open {
+  transform: translate(-50%, 38%) scale(1) rotate(2deg);
+}
+
+.frame-flower.open {
+  opacity: 0.98;
+}
+
+/* Outer flower layer */
+.frame-petal {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 34%;
-  height: 48%;
-  border-radius: 55% 55% 48% 48%;
+  width: 36%;
+  height: 52%;
+  border-radius: 58% 58% 46% 46%;
   transform-origin: 50% 100%;
 
   background:
     radial-gradient(
-      circle at 50% 78%,
-      rgba(196, 73, 119, 0.7),
+      circle at 50% 75%,
+      rgba(191, 58, 108, 0.65),
+      transparent 40%
+    ),
+    linear-gradient(
+      to top,
+      #dc7199,
+      #f0a4c0 50%,
+      #ffe9f2
+    );
+
+  box-shadow:
+    inset 0 -10px 15px rgba(123, 46, 75, 0.2),
+    0 5px 18px rgba(123, 46, 75, 0.16);
+
+  transform:
+    translate(-50%, -100%)
+    rotate(var(--petal-angle))
+    translateY(28px)
+    scale(0.14);
+
+  transition: transform 950ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--petal-number) * 25ms);
+}
+
+.frame-flower.open .frame-petal {
+  transform:
+    translate(-50%, -100%)
+    rotate(var(--petal-angle))
+    translateY(-3px)
+    scale(1);
+}
+
+/* Smaller second layer of petals */
+.frame-petal.inner {
+  width: 27%;
+  height: 40%;
+
+  background:
+    radial-gradient(
+      circle at 50% 75%,
+      rgba(151, 46, 86, 0.7),
       transparent 38%
     ),
     linear-gradient(
       to top,
-      #e58aaa,
-      #f5b9cf 58%,
-      #fff0f6
+      #ca5f88,
+      #ed9fbc 55%,
+      #ffdce9
     );
-
-  box-shadow:
-    inset 0 -6px 10px rgba(123, 46, 75, 0.16),
-    0 3px 10px rgba(123, 46, 75, 0.14);
 
   transform:
     translate(-50%, -100%)
     rotate(var(--petal-angle))
     translateY(20px)
-    scale(0.18);
-
-  transition:
-    transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
-
-  transition-delay: calc(var(--petal-number) * 30ms);
+    scale(0.12);
 }
 
-.rail-flower.open .rail-petal {
+.frame-flower.open .frame-petal.inner {
   transform:
     translate(-50%, -100%)
     rotate(var(--petal-angle))
-    translateY(-2px)
-    scale(1);
+    translateY(3px)
+    scale(0.95);
 }
 
-.rail-flower-center {
+.frame-flower-center {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -142,77 +272,40 @@
   border-radius: 50%;
 
   background:
-    radial-gradient(circle, #7b2e4b 0 9%, transparent 10%),
-    radial-gradient(circle at 35% 35%, #ffe6a7, #d49a3d 70%);
+    radial-gradient(circle, #7b2e4b 0 8%, transparent 9%),
+    radial-gradient(circle at 35% 35%, #fff0b5, #d39535 72%);
 
   box-shadow:
-    0 0 0 4px rgba(255, 224, 169, 0.2),
-    0 0 12px rgba(216, 107, 147, 0.28);
+    0 0 0 7px rgba(255, 222, 164, 0.22),
+    0 0 24px rgba(216, 107, 147, 0.35);
 
-  transform: translate(-50%, -50%) scale(0.4);
-  transition: transform 700ms ease 150ms;
+  transform: translate(-50%, -50%) scale(0.35);
+  transition: transform 750ms ease 180ms;
 }
 
-.rail-flower.open .rail-flower-center {
+.frame-flower.open .frame-flower-center {
   transform: translate(-50%, -50%) scale(1);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   :root {
-    --flower-gutter: 42px;
+    --frame-side: 55px;
+    --frame-top: 60px;
   }
 
   .shell {
-    width: calc(100% - 84px);
+    width: calc(100% - 110px);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rail-flower,
-  .rail-petal,
-  .rail-flower-center {
+  .frame-flower,
+  .frame-petal,
+  .frame-flower-center {
     transition: none;
   }
 }
-    .glow-title,
-.glow-title em {
-  animation: glowOnly 5s ease-in-out infinite;
-}
-
-@keyframes glowOnly {
-  0%,
-  100% {
-    text-shadow:
-      0 0 2px rgba(216, 107, 147, 0.15);
-  }
-
-  25% {
-    text-shadow:
-      0 0 8px rgba(216, 107, 147, 0.35),
-      0 0 16px rgba(216, 107, 147, 0.2);
-  }
-
-  50% {
-    text-shadow:
-      0 0 12px rgba(216, 107, 147, 0.75),
-      0 0 26px rgba(216, 107, 147, 0.5),
-      0 0 44px rgba(239, 184, 204, 0.4);
-  }
-
-  75% {
-    text-shadow:
-      0 0 6px rgba(216, 107, 147, 0.3),
-      0 0 12px rgba(216, 107, 147, 0.18);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .glow-title,
-  .glow-title em {
-    animation: none;
-  }
-}
-    :root {
+      :root {
       --pink-50: #fff9fb;
       --pink-100: #fcebf1;
       --pink-200: #f7d6e2;
@@ -564,107 +657,80 @@
 </head>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const sections = document.querySelectorAll(
-      "header, main > section, footer"
-    );
-
-    sections.forEach(function (section, sectionIndex) {
-      ["left", "right"].forEach(function (side) {
-        const bloom = document.createElement("div");
-        bloom.className = "edge-bloom " + side;
-        bloom.setAttribute("aria-hidden", "true");
-
-        /*
-          Adjust these percentages if you want the flowers
-          higher or lower along each section.
-        */
-        if (side === "left") {
-          bloom.style.top =
-            18 + ((sectionIndex * 17) % 42) + "%";
-        } else {
-          bloom.style.top =
-            48 + ((sectionIndex * 11) % 28) + "%";
-        }
-
-        const flower = document.createElement("div");
-        flower.className = "edge-flower";
-
-        /* Create eight overlapping petals */
-        for (let i = 0; i < 8; i++) {
-          const petal = document.createElement("span");
-          petal.className = "edge-petal";
-          petal.style.setProperty("--angle", i * 45 + "deg");
-          petal.style.setProperty("--petal-number", i);
-          flower.appendChild(petal);
-        }
-
-        const center = document.createElement("span");
-        center.className = "edge-flower-center";
-
-        flower.appendChild(center);
-        bloom.appendChild(flower);
-        section.appendChild(bloom);
-      });
-    });
-
-    const observer = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          entry.target.classList.toggle(
-            "open",
-            entry.isIntersecting
-          );
-        });
-      },
-      {
-        threshold: 0.15,
-        rootMargin: "-8% 0px -8% 0px"
-      }
-    );
-
-    document.querySelectorAll(".edge-bloom").forEach(function (flower) {
-      observer.observe(flower);
-    });
-  });
-</script>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
     /*
-      Remove flowers created by the previous version,
-      in case that code is still present.
+      Remove any flowers created by older versions.
     */
     document
-      .querySelectorAll(".edge-bloom, .flower-rails")
+      .querySelectorAll(
+        ".edge-bloom, .flower-rails, .floral-frame"
+      )
       .forEach(function (element) {
         element.remove();
       });
 
-    const flowerCount = window.innerWidth <= 600 ? 9 : 13;
+    const isMobile = window.innerWidth <= 700;
 
-    const rails = document.createElement("div");
-    rails.className = "flower-rails";
-    rails.setAttribute("aria-hidden", "true");
+    const frame = document.createElement("div");
+    frame.className = "floral-frame";
+    frame.setAttribute("aria-hidden", "true");
 
-    ["left", "right"].forEach(function (side) {
-      const rail = document.createElement("div");
-      rail.className = "flower-rail " + side;
+    ["top", "bottom", "left", "right"].forEach(function (side) {
+      const fade = document.createElement("div");
+      fade.className = "frame-fade " + side;
+      frame.appendChild(fade);
+    });
 
-      for (let flowerIndex = 0; flowerIndex < flowerCount; flowerIndex++) {
+    const borderSettings = [
+      {
+        side: "left",
+        count: isMobile ? 7 : 9
+      },
+      {
+        side: "right",
+        count: isMobile ? 7 : 9
+      },
+      {
+        side: "top",
+        count: isMobile ? 5 : 10
+      },
+      {
+        side: "bottom",
+        count: isMobile ? 5 : 10
+      }
+    ];
+
+    let flowerNumber = 0;
+
+    borderSettings.forEach(function (settings) {
+      const border = document.createElement("div");
+      border.className = "flower-border " + settings.side;
+
+      for (let i = 0; i < settings.count; i++) {
         const flower = document.createElement("div");
-        flower.className = "rail-flower";
-        flower.dataset.flowerIndex = flowerIndex;
+        flower.className = "frame-flower";
+        flower.dataset.flowerNumber = flowerNumber++;
 
-        const verticalPosition =
-          ((flowerIndex + 0.5) / flowerCount) * 100;
+        const position =
+          settings.count === 1
+            ? 50
+            : (i / (settings.count - 1)) * 100;
 
-        const flowerSize =
-          window.innerWidth <= 600
-            ? 38 + (flowerIndex % 3) * 4
-            : 52 + (flowerIndex % 3) * 10;
+        let flowerSize;
+
+        if (isMobile) {
+          flowerSize = 88 + (i % 3) * 12;
+        } else if (
+          settings.side === "top" ||
+          settings.side === "bottom"
+        ) {
+          flowerSize = 125 + (i % 3) * 22;
+        } else {
+          flowerSize = 135 + (i % 3) * 24;
+        }
 
         flower.style.setProperty(
-          "--flower-y",
-          verticalPosition + "%"
+          "--flower-position",
+          position + "%"
         );
 
         flower.style.setProperty(
@@ -672,9 +738,12 @@
           flowerSize + "px"
         );
 
+        /*
+          Eight large outer petals.
+        */
         for (let petalIndex = 0; petalIndex < 8; petalIndex++) {
           const petal = document.createElement("span");
-          petal.className = "rail-petal";
+          petal.className = "frame-petal";
 
           petal.style.setProperty(
             "--petal-angle",
@@ -689,52 +758,74 @@
           flower.appendChild(petal);
         }
 
+        /*
+          Eight smaller inner petals, rotated between
+          the outer petals to create the layered effect.
+        */
+        for (let petalIndex = 0; petalIndex < 8; petalIndex++) {
+          const petal = document.createElement("span");
+          petal.className = "frame-petal inner";
+
+          petal.style.setProperty(
+            "--petal-angle",
+            petalIndex * 45 + 22.5 + "deg"
+          );
+
+          petal.style.setProperty(
+            "--petal-number",
+            petalIndex + 3
+          );
+
+          flower.appendChild(petal);
+        }
+
         const center = document.createElement("span");
-        center.className = "rail-flower-center";
+        center.className = "frame-flower-center";
 
         flower.appendChild(center);
-        rail.appendChild(flower);
+        border.appendChild(flower);
       }
 
-      rails.appendChild(rail);
+      frame.appendChild(border);
     });
 
-    document.body.appendChild(rails);
+    document.body.appendChild(frame);
 
-    const flowers = document.querySelectorAll(".rail-flower");
+    const flowers = document.querySelectorAll(".frame-flower");
 
     function updateFlowers() {
       const maximumScroll =
         document.documentElement.scrollHeight -
         window.innerHeight;
 
-      const scrollProgress =
+      const progress =
         maximumScroll > 0
           ? window.scrollY / maximumScroll
           : 0;
 
-      const activePosition =
-        scrollProgress * (flowerCount + 4) - 2;
+      flowers.forEach(function (flower, index) {
+        /*
+          Creates waves of flowers opening and closing
+          while the page is scrolled.
+        */
+        const wave =
+          Math.sin(progress * Math.PI * 7 + index * 0.68);
 
-      flowers.forEach(function (flower) {
-        const flowerIndex = Number(flower.dataset.flowerIndex);
-        const distance = Math.abs(flowerIndex - activePosition);
-
-        flower.classList.toggle("open", distance < 2.6);
+        flower.classList.toggle("open", wave > -0.28);
       });
     }
 
-    let animationFramePending = false;
+    let waitingForFrame = false;
 
     window.addEventListener(
       "scroll",
       function () {
-        if (!animationFramePending) {
-          animationFramePending = true;
+        if (!waitingForFrame) {
+          waitingForFrame = true;
 
           requestAnimationFrame(function () {
             updateFlowers();
-            animationFramePending = false;
+            waitingForFrame = false;
           });
         }
       },
@@ -746,22 +837,22 @@
 </script>
 <body>
   <nav class="nav shell" aria-label="Main navigation">
-    <a class="wordmark" href="#top" aria-label="Your Name, home">XZ<span>.</span></a>
+    <a class="wordmark" href="#top" aria-label="Your Name, home">YN<span>.</span></a>
     <div class="nav-links">
       <a class="nav-link" href="#work">Work</a>
       <a class="nav-link" href="#about">About</a>
-      <a class="nav-contact" href="#contact"> Connect with Me! <span aria-hidden="true">↗</span></a>
+      <a class="nav-contact" href="#contact">Let's talk <span aria-hidden="true">↗</span></a>
     </div>
   </nav>
 
   <header class="hero shell" id="top">
     <div class="hero-kicker"><span class="status-dot"></span>Independent creative · Available for select projects</div>
     <div class="hero-heading">
-      <p class="hero-note">Pittsburgh, PA </p>
-      <h1 class="glow-title">Hi,<br><em><strong>I'm Xuyao Zhang</strong> </em></h1>
+      <p class="hero-note">Based somewhere lovely<br>Working worldwide</p>
+      <h1>I make ideas<br><em>feel like you.</em></h1>
     </div>
     <div class="hero-bottom">
-      <p> a student at Carnegie Mellon University majoring in Statistics and Machine Learning.</p>
+      <p>I'm <strong>Your Name</strong>, a multidisciplinary designer creating thoughtful brands and digital experiences with feeling.</p>
       <a class="circle-link" href="#work" aria-label="View selected work"><span>See work</span><b aria-hidden="true">↓</b></a>
     </div>
     <div class="flower-stamp" aria-hidden="true">✦</div>
@@ -832,11 +923,11 @@
 
   <footer class="footer" id="contact">
     <div class="shell">
-      <p class="eyebrow">Wanna know more?</p>
-      <h2>Feel free<br><em>to reach out!</em></h2>
-      <a class="email-link" href="mailto:hello@yourname.com"> chloezha@andrew.cmu.edu <span aria-hidden="true">↗</span></a>
+      <p class="eyebrow">Have something in mind?</p>
+      <h2>Let's make<br><em>something lovely.</em></h2>
+      <a class="email-link" href="mailto:hello@yourname.com">hello@yourname.com <span aria-hidden="true">↗</span></a>
       <div class="footer-meta">
-        <p>© 2026 Xuyao Zhang</p>
+        <p>© 2026 Your Name</p>
         <div class="footer-links"><a href="#top">Instagram</a><a href="#top">LinkedIn</a><a href="#top">Back to top ↑</a></div>
       </div>
     </div>
