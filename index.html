@@ -1372,46 +1372,19 @@ frame.appendChild(flowerField);
   });
 
 let flowersDismissed = false;
-let fadeTimer;
-let removalTimer;
 
-function dismissFlowers() {
-  if (flowersDismissed) {
-    return;
-  }
+  function dismissFlowersOnClick() {
+    if (flowersDismissed) return;
 
-  flowersDismissed = true;
-
-  clearTimeout(fadeTimer);
-  clearTimeout(removalTimer);
-
-  document.body.classList.add("flower-intro-finished");
-  removeAllFlowers();
-}
-
-/* Immediately remove every flower on the first click */
-document.addEventListener("click", dismissFlowers, {
-  once: true
-});
-
-/* Automatically fade if the visitor does not click */
-fadeTimer = setTimeout(function () {
-  frame.classList.add("fade-away");
-}, 2300);
-
-/* Automatically remove the flowers after fading */
-removalTimer = setTimeout(function () {
-  dismissFlowers();
-}, 3300);
-
-  /* Permanently delete every flower after the fade */
-  setTimeout(function () {
+    flowersDismissed = true;
     document.body.classList.add("flower-intro-finished");
     removeAllFlowers();
-  }, 3300);
+  }
 
-  /* Extra cleanup for any older flower code */
-  setTimeout(removeAllFlowers, 4000);
+  /* Remove flowers only after a real click or tap */
+  document.addEventListener("click", dismissFlowersOnClick, {
+    once: true
+  });
 });
 </script>
     <body>
