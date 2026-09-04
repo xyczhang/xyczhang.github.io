@@ -653,6 +653,157 @@ body {
       html { scroll-behavior: auto; }
       *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
     }
+    /* Flower design variations */
+
+.flower-style-cherry .frame-petal {
+  width: 38%;
+  height: 52%;
+  border-radius: 60% 60% 48% 48%;
+  background:
+    radial-gradient(
+      circle at 50% 78%,
+      rgba(185, 65, 108, 0.65),
+      transparent 40%
+    ),
+    linear-gradient(to top, #dc729a, #f5b5cc 55%, #fff2f7);
+}
+
+.flower-style-magnolia .frame-petal {
+  width: 46%;
+  height: 62%;
+  border-radius: 70% 38% 65% 42%;
+  background:
+    linear-gradient(
+      to top,
+      #dd8da9,
+      #f4c4d5 58%,
+      #fff8fb
+    );
+}
+
+.flower-style-magnolia .frame-petal.inner {
+  width: 32%;
+  height: 48%;
+  background: linear-gradient(to top, #cc678d, #f3a9c3);
+}
+
+.flower-style-dahlia .frame-petal {
+  width: 27%;
+  height: 48%;
+  border-radius: 70% 70% 32% 32%;
+  background:
+    linear-gradient(
+      to top,
+      #bd476f,
+      #e881a8 52%,
+      #fac6d8
+    );
+}
+
+.flower-style-dahlia .frame-petal.inner {
+  width: 21%;
+  height: 37%;
+  background: linear-gradient(to top, #9f3159, #df7099);
+}
+
+.flower-style-wild .frame-petal {
+  width: 34%;
+  height: 58%;
+  border-radius: 75% 25% 72% 38%;
+  background:
+    linear-gradient(
+      145deg,
+      #fff0f6,
+      #ee9eba 52%,
+      #cf5d87
+    );
+}
+
+.flower-style-wild .frame-petal.inner {
+  width: 25%;
+  height: 43%;
+  border-radius: 30% 75% 40% 70%;
+  background: linear-gradient(to top, #c04f78, #f0a0bc);
+}
+
+/* Different centers */
+
+.flower-style-cherry .frame-flower-center {
+  background:
+    radial-gradient(circle, #8c3153 0 8%, transparent 9%),
+    radial-gradient(circle, #ffe7a0, #d49836 72%);
+}
+
+.flower-style-magnolia .frame-flower-center {
+  background:
+    radial-gradient(circle, #9c5a24 0 7%, transparent 8%),
+    radial-gradient(circle, #fff4be, #e5b457 74%);
+}
+
+.flower-style-dahlia .frame-flower-center {
+  background:
+    radial-gradient(circle, #5f1732, #a74265 65%, #e695b1);
+}
+
+.flower-style-wild .frame-flower-center {
+  background:
+    radial-gradient(circle, #7b2e4b 0 12%, transparent 13%),
+    radial-gradient(circle, #ffd98c, #c7832b 72%);
+}
+
+/* Variables allow every side to use the same animation */
+
+.flower-border.left .frame-flower {
+  --open-x: -36%;
+  --open-y: -50%;
+  --open-rotation: -3 deg;
+}
+
+.flower-border.right .frame-flower {
+  --open-x: 36%;
+  --open-y: -50%;
+  --open-rotation: 3deg;
+}
+
+.flower-border.top .frame-flower {
+  --open-x: -50%;
+  --open-y: -34%;
+  --open-rotation: -2deg;
+}
+
+.flower-border.bottom .frame-flower {
+  --open-x: -50%;
+  --open-y: 34%;
+  --open-rotation: 2deg;
+}
+
+/* All flowers breathe at exactly the same time */
+
+.flower-border .frame-flower.open {
+  transform:
+    translate(var(--open-x), var(--open-y))
+    rotate(var(--open-rotation))
+    scale(1);
+
+  animation: synchronizedFlowerPulse 2.2s ease-in-out infinite;
+}
+
+@keyframes synchronizedFlowerPulse {
+  0%,
+  100% {
+    transform:
+      translate(var(--open-x), var(--open-y))
+      rotate(var(--open-rotation))
+      scale(0.82);
+  }
+
+  50% {
+    transform:
+      translate(var(--open-x), var(--open-y))
+      rotate(var(--open-rotation))
+      scale(1.08);
+  }
+}
     /* Opening flower animation */
 .floral-frame {
   opacity: 1;
@@ -705,9 +856,6 @@ body.flower-intro-finished .shell {
 </head>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    /*
-      Remove any flowers created by older versions.
-    */
     document
       .querySelectorAll(
         ".edge-bloom, .flower-rails, .floral-frame"
@@ -728,7 +876,7 @@ body.flower-intro-finished .shell {
       frame.appendChild(fade);
     });
 
-    const borderSettings = [
+    const borders = [
       {
         side: "left",
         count: isMobile ? 7 : 9
@@ -739,24 +887,51 @@ body.flower-intro-finished .shell {
       },
       {
         side: "top",
-        count: isMobile ? 5 : 10
+        count: isMobile ? 5 : 9
       },
       {
         side: "bottom",
-        count: isMobile ? 5 : 10
+        count: isMobile ? 5 : 9
       }
     ];
 
-    let flowerNumber = 0;
+    const flowerDesigns = [
+      {
+        className: "flower-style-cherry",
+        outerPetals: 8,
+        innerPetals: 8
+      },
+      {
+        className: "flower-style-magnolia",
+        outerPetals: 6,
+        innerPetals: 6
+      },
+      {
+        className: "flower-style-dahlia",
+        outerPetals: 12,
+        innerPetals: 10
+      },
+      {
+        className: "flower-style-wild",
+        outerPetals: 10,
+        innerPetals: 5
+      }
+    ];
 
-    borderSettings.forEach(function (settings) {
+    let totalFlowerNumber = 0;
+
+    borders.forEach(function (settings) {
       const border = document.createElement("div");
       border.className = "flower-border " + settings.side;
 
       for (let i = 0; i < settings.count; i++) {
+        const design =
+          flowerDesigns[totalFlowerNumber % flowerDesigns.length];
+
         const flower = document.createElement("div");
-        flower.className = "frame-flower";
-        flower.dataset.flowerNumber = flowerNumber++;
+
+        flower.className =
+          "frame-flower " + design.className;
 
         const position =
           settings.count === 1
@@ -766,14 +941,27 @@ body.flower-intro-finished .shell {
         let flowerSize;
 
         if (isMobile) {
-          flowerSize = 88 + (i % 3) * 12;
-        } else if (
-          settings.side === "top" ||
-          settings.side === "bottom"
-        ) {
-          flowerSize = 125 + (i % 3) * 22;
+          if (
+            settings.side === "top" ||
+            settings.side === "bottom"
+          ) {
+            flowerSize = 125 + (i % 3) * 18;
+          } else {
+            flowerSize = 90 + (i % 3) * 14;
+          }
         } else {
-          flowerSize = 135 + (i % 3) * 24;
+          /*
+            Top and bottom flowers are intentionally
+            larger than the side flowers.
+          */
+          if (
+            settings.side === "top" ||
+            settings.side === "bottom"
+          ) {
+            flowerSize = 185 + (i % 4) * 28;
+          } else {
+            flowerSize = 135 + (i % 4) * 20;
+          }
         }
 
         flower.style.setProperty(
@@ -786,16 +974,17 @@ body.flower-intro-finished .shell {
           flowerSize + "px"
         );
 
-        /*
-          Eight large outer petals.
-        */
-        for (let petalIndex = 0; petalIndex < 8; petalIndex++) {
+        for (
+          let petalIndex = 0;
+          petalIndex < design.outerPetals;
+          petalIndex++
+        ) {
           const petal = document.createElement("span");
           petal.className = "frame-petal";
 
           petal.style.setProperty(
             "--petal-angle",
-            petalIndex * 45 + "deg"
+            (petalIndex * 360) / design.outerPetals + "deg"
           );
 
           petal.style.setProperty(
@@ -806,17 +995,19 @@ body.flower-intro-finished .shell {
           flower.appendChild(petal);
         }
 
-        /*
-          Eight smaller inner petals, rotated between
-          the outer petals to create the layered effect.
-        */
-        for (let petalIndex = 0; petalIndex < 8; petalIndex++) {
+        for (
+          let petalIndex = 0;
+          petalIndex < design.innerPetals;
+          petalIndex++
+        ) {
           const petal = document.createElement("span");
           petal.className = "frame-petal inner";
 
           petal.style.setProperty(
             "--petal-angle",
-            petalIndex * 45 + 22.5 + "deg"
+            (petalIndex * 360) / design.innerPetals +
+              360 / design.innerPetals / 2 +
+              "deg"
           );
 
           petal.style.setProperty(
@@ -832,37 +1023,57 @@ body.flower-intro-finished .shell {
 
         flower.appendChild(center);
         border.appendChild(flower);
+
+        totalFlowerNumber++;
       }
 
       frame.appendChild(border);
     });
 
-  document.body.appendChild(frame);
-  const flowers = document.querySelectorAll(".frame-flower");
+    document.body.appendChild(frame);
 
-    /* Bloom every flower simultaneously */
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        flowers.forEach(function (flower) {
-          flower.classList.add("open");
-        });
+    const flowers = document.querySelectorAll(".frame-flower");
+    let closingTimer;
+
+    function openAllFlowers() {
+      flowers.forEach(function (flower) {
+        flower.classList.add("open");
       });
-    });
+    }
 
-    /* Fade the entire flower frame away */
-    setTimeout(function () {
-      frame.classList.add("fade-away");
-    }, 2300);
+    function closeAllFlowers() {
+      flowers.forEach(function (flower) {
+        flower.classList.remove("open");
+      });
+    }
 
-    /* Return the website to its normal spacing */
-    setTimeout(function () {
-      document.body.classList.add("flower-intro-finished");
-    }, 3100);
+    /*
+      Every flower opens simultaneously when scrolling.
+      They close together shortly after scrolling stops.
+    */
+    window.addEventListener(
+      "scroll",
+      function () {
+        openAllFlowers();
 
-    /* Remove the invisible flowers completely */
-    setTimeout(function () {
-      frame.remove();
-    }, 4000);
+        clearTimeout(closingTimer);
+
+        closingTimer = setTimeout(function () {
+          closeAllFlowers();
+        }, 1400);
+      },
+      { passive: true }
+    );
+
+    /*
+      Show the completed floral frame briefly when
+      the page first opens.
+    */
+    openAllFlowers();
+
+    closingTimer = setTimeout(function () {
+      closeAllFlowers();
+    }, 1800);
   });
 </script>
     <body>
