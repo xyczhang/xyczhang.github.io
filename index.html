@@ -1346,6 +1346,36 @@ body.flower-intro-finished .flower-intro-message {
   }
 }
 
+/* Make the pink section-menu splotch draggable */
+.section-menu {
+  position: fixed;
+}
+
+.section-menu .flower-stamp {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.section-menu.dragging .flower-stamp {
+  cursor: grabbing;
+  animation: none;
+}
+
+/* Keep the menu outline visible near screen edges */
+.section-menu.menu-near-left .section-outline {
+  left: 0;
+  right: auto;
+  transform-origin: top left;
+}
+
+.section-menu.menu-near-bottom .section-outline {
+  top: auto;
+  bottom: calc(100% + 16px);
+  transform-origin: bottom right;
+}
+
   </style>
 </head>
 <script>
@@ -1739,7 +1769,6 @@ document.addEventListener("click", createFlowerStamp);
     </div>
     <div class="hero-bottom">
       <p> a freshman studying Statistics and Machine Learning at Carnegie Mellon!</p>
-      <a class="circle-link" href="#work" aria-label="View selected work"><span>See work</span><b aria-hidden="true">↓</b></a>
     </div>
     <div class="section-menu">
   <button
@@ -1843,22 +1872,147 @@ document.addEventListener("click", createFlowerStamp);
     </div>
   </footer>
   <script>
-  const sectionMenu = document.querySelector(".section-menu");
+ const sectionMenu = document.querySelector(".section-menu");
   const sectionMenuButton =
     sectionMenu.querySelector(".flower-stamp");
+
+  let pointerIsDown = false;
+  let wasDragged = false;
+  let suppressNextClick = false;
+
+  let startingPointerX = 0;
+  let startingPointerY = 0;
+  let startingMenuLeft = 0;
+  let startingMenuTop = 0;
 
   function closeSectionMenu() {
     sectionMenu.classList.remove("open");
     sectionMenuButton.setAttribute("aria-expanded", "false");
   }
 
-  sectionMenuButton.addEventListener("click", function () {
+  function updateMenuDirection() {
+    const rectangle = sectionMenu.getBoundingClientRect();
+
+    sectionMenu.classList.toggle(
+      "menu-near-left",
+      rectangle.left < 230
+    );
+
+    sectionMenu.classList.toggle(
+      "menu-near-bottom",
+      rectangle.top > window.innerHeight - 330
+    );
+  }
+
+  sectionMenuButton.addEventListener("pointerdown", function (event) {
+    if (event.button !== 0) return;
+
+    const rectangle = sectionMenu.getBoundingClientRect();
+
+    pointerIsDown = true;
+    wasDragged = false;
+
+    startingPointerX = event.clientX;
+    startingPointerY = event.clientY;
+    startingMenuLeft = rectangle.left;
+    startingMenuTop = rectangle.top;
+
+    sectionMenu.style.left = rectangle.left + "px";
+    sectionMenu.style.top = rectangle.top + "px";
+    sectionMenu.style.right = "auto";
+
+    sectionMenuButton.setPointerCapture(event.pointerId);
+  });
+
+  sectionMenuButton.addEventListener("pointermove", function (event) {
+    if (!pointerIsDown) return;
+
+    const movementX = event.clientX - startingPointerX;
+    const movementY = event.clientY - startingPointerY;
+
+    if (Math.hypot(movementX, movementY) > 5) {
+      wasDragged = true;
+    }
+
+    if (!wasDragged) return;
+
+    event.preventDefault();
+    closeSectionMenu();
+    sectionMenu.classList.add("dragging");
+
+    const menuWidth = sectionMenuButton.offsetWidth;
+    const menuHeight = sectionMenuButton.offsetHeight;
+
+    const newLeft = Math.max(
+      0,
+      Math.min(
+        window.innerWidth - menuWidth,
+        startingMenuLeft + movementX
+      )
+    );
+
+    const newTop = Math.max(
+      0,
+      Math.min(
+        window.innerHeight - menuHeight,
+        startingMenuTop + movementY
+      )
+    );
+
+    sectionMenu.style.left = newLeft + "px";
+    sectionMenu.style.top = newTop + "px";
+
+    updateMenuDirection();
+  });
+
+  function finishDragging(event) {
+    if (!pointerIsDown) return;
+
+    pointerIsDown = false;
+    sectionMenu.classList.remove("dragging");
+
+    if (
+      sectionMenuButton.hasPointerCapture(event.pointerId)
+    ) {
+      sectionMenuButton.releasePointerCapture(event.pointerId);
+    }
+
+    if (wasDragged) {
+      suppressNextClick = true;
+
+      setTimeout(function () {
+        suppressNextClick = false;
+      }, 0);
+    }
+
+    updateMenuDirection();
+  }
+
+  sectionMenuButton.addEventListener(
+    "pointerup",
+    finishDragging
+  );
+
+  sectionMenuButton.addEventListener(
+    "pointercancel",
+    finishDragging
+  );
+
+  sectionMenuButton.addEventListener("click", function (event) {
+    if (suppressNextClick) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+
     const isOpen = sectionMenu.classList.toggle("open");
 
     sectionMenuButton.setAttribute(
       "aria-expanded",
       String(isOpen)
     );
+
+    updateMenuDirection();
   });
 
   sectionMenu
@@ -1878,6 +2032,8 @@ document.addEventListener("click", createFlowerStamp);
       closeSectionMenu();
     }
   });
+
+  window.addEventListener("resize", updateMenuDirection);
 </script>
 </body>
 </html>
