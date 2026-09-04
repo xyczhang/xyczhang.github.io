@@ -1580,6 +1580,34 @@ body.flower-intro-finished .flower-intro-message {
   }
 }
 
+/* Flower animation performance improvements */
+.flower-border .frame-flower.open {
+  animation: none !important;
+}
+
+.frame-petal {
+  box-shadow: 0 2px 7px rgba(123, 46, 75, 0.12);
+  transition-duration: 650ms;
+}
+
+.floral-frame.fade-away,
+.floral-frame.shrink-away,
+.floral-frame.shrink-away .frame-flower {
+  filter: none !important;
+}
+
+@keyframes openingFlowerShrink {
+  from {
+    scale: 1;
+    opacity: 1;
+  }
+
+  to {
+    scale: 0;
+    opacity: 0;
+  }
+}
+
   </style>
 </head>
 <script>
@@ -1795,8 +1823,8 @@ const flowerTemplates = Array.from(
   frame.querySelectorAll(".flower-border .frame-flower")
 );
 
-const columns = isMobile ? 4 : 7;
-const rows = isMobile ? 8 : 6;
+const columns = isMobile ? 3 : 5;
+const rows = isMobile ? 5 : 4;
 
 for (let row = 0; row < rows; row++) {
   for (let column = 0; column < columns; column++) {
@@ -1824,9 +1852,9 @@ for (let row = 0; row < rows; row++) {
         ? 50
         : (row / (rows - 1)) * 100;
 
-    const baseSize = isMobile ? 155 : 235;
+    const baseSize = isMobile ? 195 : 320;
     const sizeVariation =
-      ((row + column) % 4) * (isMobile ? 18 : 28);
+      ((row + column) % 3) * (isMobile ? 16 : 30);
 
     const rotation =
       ((row * 17 + column * 23) % 34) - 17;
