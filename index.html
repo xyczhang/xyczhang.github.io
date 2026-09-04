@@ -1376,6 +1376,70 @@ body.flower-intro-finished .flower-intro-message {
   transform-origin: bottom right;
 }
 
+/* Circular drag instruction */
+.drag-hint {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 140px;
+  height: 140px;
+
+  overflow: visible;
+  pointer-events: none;
+
+  transform: translate(-50%, -50%);
+  opacity: 1;
+
+  transition:
+    opacity 350ms ease,
+    visibility 350ms ease;
+}
+
+.drag-hint path {
+  fill: none;
+}
+
+.drag-hint text {
+  fill: var(--berry);
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.drag-hint-orbit {
+  transform-origin: 70px 70px;
+  animation: rotateDragHint 12s linear infinite;
+}
+
+@keyframes rotateDragHint {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Hide the instruction after the first real click */
+.section-menu.hint-hidden .drag-hint {
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media (max-width: 800px) {
+  .drag-hint {
+    width: 112px;
+    height: 112px;
+  }
+
+  .drag-hint text {
+    font-size: 8px;
+  }
+}
+
   </style>
 </head>
 <script>
@@ -1771,6 +1835,47 @@ document.addEventListener("click", createFlowerStamp);
       <p> a freshman studying Statistics and Machine Learning at Carnegie Mellon!</p>
     </div>
     <div class="section-menu">
+      <div class="section-menu">
+  <svg
+    class="drag-hint"
+    viewBox="0 0 140 140"
+    aria-hidden="true"
+  >
+    <defs>
+      <path
+        id="drag-hint-path"
+        d="M 70,70
+           m -54,0
+           a 54,54 0 1,1 108,0
+           a 54,54 0 1,1 -108,0"
+      />
+    </defs>
+
+    <g class="drag-hint-orbit">
+      <text>
+        <textPath
+          href="#drag-hint-path"
+          startOffset="50%"
+          text-anchor="middle"
+        >
+          DRAG ME AROUND • DRAG ME AROUND •
+        </textPath>
+      </text>
+    </g>
+  </svg>
+
+  <button
+    class="flower-stamp"
+    type="button"
+    aria-expanded="false"
+    aria-controls="section-outline"
+    aria-label="Open website sections"
+  >
+    ✦
+  </button>
+
+  <!-- Keep your section-outline navigation here -->
+</div>
   <button
     class="flower-stamp"
     type="button"
@@ -2004,6 +2109,8 @@ document.addEventListener("click", createFlowerStamp);
       event.stopImmediatePropagation();
       return;
     }
+
+    sectionMenu.classList.add("hint-hidden");
 
     const isOpen = sectionMenu.classList.toggle("open");
 
