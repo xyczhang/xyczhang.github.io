@@ -1122,6 +1122,98 @@ body.flower-intro-finished .shell {
 body.flower-intro-finished .flower-intro-message {
   display: none;
 }
+/* Temporary flower stamp created by clicks */
+.cursor-flower-stamp {
+  position: fixed;
+  left: var(--stamp-x);
+  top: var(--stamp-y);
+  width: 82px;
+  height: 82px;
+  z-index: 1000;
+  pointer-events: none;
+
+  animation: flowerStampPop 1.1s ease-out forwards;
+}
+
+.cursor-flower-stamp .stamp-petal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  width: 27%;
+  height: 48%;
+  border-radius: 65% 65% 45% 45%;
+  transform-origin: 50% 100%;
+
+  background: linear-gradient(
+    to top,
+    var(--stamp-dark),
+    var(--stamp-color) 55%,
+    #fff2f7
+  );
+
+  box-shadow: 0 3px 10px rgba(123, 46, 75, 0.2);
+
+  transform:
+    translate(-50%, -100%)
+    rotate(var(--stamp-angle))
+    translateY(-3px);
+}
+
+.cursor-flower-stamp::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  width: 20%;
+  height: 20%;
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle at 35% 35%,
+    #fff3ae,
+    #d18e32 75%
+  );
+
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 12px rgba(255, 223, 128, 0.6);
+}
+
+@keyframes flowerStampPop {
+  0% {
+    opacity: 0;
+    transform:
+      translate(-50%, -50%)
+      scale(0.15)
+      rotate(-15deg);
+  }
+
+  30% {
+    opacity: 1;
+    transform:
+      translate(-50%, -50%)
+      scale(1.15)
+      rotate(4deg);
+  }
+
+  65% {
+    opacity: 0.9;
+    transform:
+      translate(-50%, -50%)
+      scale(1)
+      rotate(0deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      translate(-50%, -50%)
+      scale(0.75)
+      rotate(10deg);
+  }
+}
+
   </style>
 </head>
 <script>
@@ -1439,6 +1531,63 @@ let flowersDismissed = false;
   document.addEventListener("click", dismissFlowersOnClick, {
     once: true
   });
+
+  const stampColors = [
+  {
+    light: "#f4a9c2",
+    dark: "#c84f7d"
+  },
+  {
+    light: "#ffd2e1",
+    dark: "#df769b"
+  },
+  {
+    light: "#ee87ad",
+    dark: "#ad3866"
+  },
+  {
+    light: "#f8bfd1",
+    dark: "#d85f89"
+  }
+];
+
+function createFlowerStamp(event) {
+  const stamp = document.createElement("div");
+  stamp.className = "cursor-flower-stamp";
+
+  const colors =
+    stampColors[
+      Math.floor(Math.random() * stampColors.length)
+    ];
+
+  stamp.style.setProperty("--stamp-x", event.clientX + "px");
+  stamp.style.setProperty("--stamp-y", event.clientY + "px");
+  stamp.style.setProperty("--stamp-color", colors.light);
+  stamp.style.setProperty("--stamp-dark", colors.dark);
+
+  const petalCount = 7;
+
+  for (let i = 0; i < petalCount; i++) {
+    const petal = document.createElement("span");
+    petal.className = "stamp-petal";
+
+    petal.style.setProperty(
+      "--stamp-angle",
+      i * (360 / petalCount) + "deg"
+    );
+
+    stamp.appendChild(petal);
+  }
+
+  document.body.appendChild(stamp);
+
+  /* Delete the stamp after its animation finishes */
+  setTimeout(function () {
+    stamp.remove();
+  }, 1100);
+}
+
+document.addEventListener("click", createFlowerStamp);
 });
 </script>
     <body>
@@ -1455,10 +1604,10 @@ let flowersDismissed = false;
     <div class="hero-kicker"><span class="status-dot"></span> Pittsburgh, PA · chloezha@andrew.cmu.edu</div>
     <div class="hero-heading">
       <p class="hero-note">Based somewhere lovely<br>Working worldwide</p>
-      <h1>Hi!<br><em> I'm Xuyao Zhang,</em></h1>
+      <h1>Hi! I'm <br><em> Xuyao Zhang,</em></h1>
     </div>
     <div class="hero-bottom">
-      <p> currently a freshman studying Statistics and Machine Learning at Carnegie Mellon!</p>
+      <p> a freshman studying Statistics and Machine Learning at Carnegie Mellon!</p>
       <a class="circle-link" href="#work" aria-label="View selected work"><span>See work</span><b aria-hidden="true">↓</b></a>
     </div>
     <div class="flower-stamp" aria-hidden="true">✦</div>
