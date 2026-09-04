@@ -1037,6 +1037,50 @@ body.flower-intro-finished .shell {
     #d49a39 70%
   );
 }
+
+/* Full-screen opening flower field */
+.flower-field {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  overflow: hidden;
+  background: rgba(255, 249, 251, 0.96);
+  pointer-events: none;
+}
+
+.flower-field .frame-flower {
+  left: var(--flower-x);
+  top: var(--flower-y);
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.15)
+    rotate(var(--field-rotation));
+
+  opacity: 0;
+}
+
+.flower-field .frame-flower.open {
+  transform:
+    translate(-50%, -50%)
+    scale(1)
+    rotate(var(--field-rotation));
+
+  opacity: 1;
+}
+
+/* Layer alternating flowers */
+.flower-field .frame-flower:nth-child(3n) {
+  z-index: 3;
+}
+
+.flower-field .frame-flower:nth-child(3n + 1) {
+  z-index: 2;
+}
+
+.flower-field .frame-flower:nth-child(3n + 2) {
+  z-index: 1;
+}
   </style>
 </head>
 <script>
@@ -1239,6 +1283,80 @@ document.addEventListener("DOMContentLoaded", function () {
 
     frame.appendChild(border);
   });
+
+  /*
+  Create enough flowers to cover the entire opening screen.
+  These clone the different flower varieties already created
+  around the border.
+*/
+const flowerField = document.createElement("div");
+flowerField.className = "flower-field";
+
+const flowerTemplates = Array.from(
+  frame.querySelectorAll(".flower-border .frame-flower")
+);
+
+const columns = isMobile ? 4 : 7;
+const rows = isMobile ? 8 : 6;
+
+for (let row = 0; row < rows; row++) {
+  for (let column = 0; column < columns; column++) {
+    const templateNumber =
+      (row * columns + column) % flowerTemplates.length;
+
+    const flower =
+      flowerTemplates[templateNumber].cloneNode(true);
+
+    /*
+      Slightly stagger each row so the flowers overlap
+      without forming perfectly straight lines.
+    */
+    let xPosition =
+      columns === 1
+        ? 50
+        : (column / (columns - 1)) * 100;
+
+    if (row % 2 === 1) {
+      xPosition += 4;
+    }
+
+    const yPosition =
+      rows === 1
+        ? 50
+        : (row / (rows - 1)) * 100;
+
+    const baseSize = isMobile ? 155 : 235;
+    const sizeVariation =
+      ((row + column) % 4) * (isMobile ? 18 : 28);
+
+    const rotation =
+      ((row * 17 + column * 23) % 34) - 17;
+
+    flower.style.setProperty(
+      "--flower-x",
+      Math.max(-3, Math.min(103, xPosition)) + "%"
+    );
+
+    flower.style.setProperty(
+      "--flower-y",
+      yPosition + "%"
+    );
+
+    flower.style.setProperty(
+      "--flower-size",
+      baseSize + sizeVariation + "px"
+    );
+
+    flower.style.setProperty(
+      "--field-rotation",
+      rotation + "deg"
+    );
+
+    flowerField.appendChild(flower);
+  }
+}
+
+frame.appendChild(flowerField);
 
   document.body.appendChild(frame);
 
