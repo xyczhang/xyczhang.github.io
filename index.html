@@ -861,6 +861,182 @@ body.flower-intro-finished .shell {
     width: min(calc(100% - 38px), 680px);
   }
 }
+
+/* ===== FLOWER VARIETIES ===== */
+
+/* Cherry blossom */
+.flower-cherry .frame-petal {
+  width: 42%;
+  height: 48%;
+  border-radius: 70% 70% 52% 52%;
+  background: linear-gradient(
+    to top,
+    #df6f9c,
+    #f5b6cd 55%,
+    #fff0f6
+  );
+}
+
+.flower-cherry .frame-flower-center {
+  background: radial-gradient(
+    circle,
+    #8f3458 0 12%,
+    #f1be61 14% 55%,
+    #fff0b5 58%
+  );
+}
+
+/* Light daisy */
+.flower-daisy .frame-petal {
+  width: 25%;
+  height: 58%;
+  border-radius: 55% 55% 35% 35%;
+  background: linear-gradient(
+    to top,
+    #efadc4,
+    #ffe4ee 55%,
+    #fffafd
+  );
+}
+
+.flower-daisy .frame-petal.inner {
+  width: 18%;
+  height: 40%;
+  background: linear-gradient(
+    to top,
+    #e88eaf,
+    #ffd7e6
+  );
+}
+
+.flower-daisy .frame-flower-center {
+  width: 25%;
+  height: 25%;
+  background: radial-gradient(
+    circle at 35% 35%,
+    #fff4ae,
+    #d99835 72%
+  );
+}
+
+/* Full peony */
+.flower-peony .frame-petal {
+  width: 46%;
+  height: 50%;
+  border-radius: 75% 75% 55% 55%;
+  background: linear-gradient(
+    to top,
+    #ba3f71,
+    #e978a2 52%,
+    #ffc6da
+  );
+}
+
+.flower-peony .frame-petal.inner {
+  width: 35%;
+  height: 42%;
+  background: linear-gradient(
+    to top,
+    #a62d60,
+    #df6f99 58%,
+    #ffb7cf
+  );
+}
+
+.flower-peony .frame-flower-center {
+  width: 17%;
+  height: 17%;
+  background: #f5bc67;
+}
+
+/* Pointed star blossom */
+.flower-star .frame-petal {
+  width: 31%;
+  height: 57%;
+  border-radius: 65% 65% 25% 25%;
+  clip-path: polygon(
+    50% 0%,
+    92% 35%,
+    78% 100%,
+    22% 100%,
+    8% 35%
+  );
+  background: linear-gradient(
+    to top,
+    #d55887,
+    #f1a0bd 55%,
+    #ffe6f0
+  );
+}
+
+.flower-star .frame-petal.inner {
+  width: 22%;
+  height: 41%;
+}
+
+/* Deep pink plum blossom */
+.flower-plum .frame-petal {
+  width: 43%;
+  height: 45%;
+  border-radius: 50% 50% 65% 65%;
+  background:
+    radial-gradient(
+      circle at 50% 82%,
+      #a52e5d 0 9%,
+      transparent 11%
+    ),
+    linear-gradient(
+      to top,
+      #bd376b,
+      #ec7da5 55%,
+      #ffc5d9
+    );
+}
+
+.flower-plum .frame-flower-center {
+  width: 28%;
+  height: 28%;
+  background: radial-gradient(
+    circle,
+    #7b2348 0 15%,
+    #e7a84e 17% 45%,
+    #ffe7a0 48%
+  );
+}
+
+/* Soft camellia */
+.flower-camellia .frame-petal {
+  width: 52%;
+  height: 48%;
+  border-radius: 80% 80% 48% 48%;
+  background: linear-gradient(
+    145deg,
+    #fff2f7,
+    #f7b5ca 52%,
+    #d86691
+  );
+}
+
+.flower-camellia .frame-petal.inner {
+  width: 40%;
+  height: 38%;
+  background: linear-gradient(
+    145deg,
+    #ffd9e7,
+    #ea8bad 55%,
+    #bd4a75
+  );
+}
+
+.flower-camellia .frame-flower-center {
+  width: 20%;
+  height: 20%;
+  background: radial-gradient(
+    circle,
+    #fff3ad,
+    #d49a39 70%
+  );
+}
   </style>
 </head>
 <script>
@@ -911,14 +1087,44 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   ];
 
-  /* Different petal counts create flower variety */
   const flowerDesigns = [
-    { outerPetals: 5, innerPetals: 5 },
-    { outerPetals: 6, innerPetals: 6 },
-    { outerPetals: 8, innerPetals: 8 },
-    { outerPetals: 10, innerPetals: 5 },
-    { outerPetals: 12, innerPetals: 8 }
-  ];
+  {
+    className: "flower-cherry",
+    outerPetals: 5,
+    innerPetals: 5,
+    sizeMultiplier: 0.9
+  },
+  {
+    className: "flower-daisy",
+    outerPetals: 12,
+    innerPetals: 8,
+    sizeMultiplier: 0.88
+  },
+  {
+    className: "flower-peony",
+    outerPetals: 12,
+    innerPetals: 10,
+    sizeMultiplier: 1.15
+  },
+  {
+    className: "flower-star",
+    outerPetals: 7,
+    innerPetals: 7,
+    sizeMultiplier: 0.95
+  },
+  {
+    className: "flower-plum",
+    outerPetals: 5,
+    innerPetals: 5,
+    sizeMultiplier: 0.82
+  },
+  {
+    className: "flower-camellia",
+    outerPetals: 9,
+    innerPetals: 7,
+    sizeMultiplier: 1.1
+  }
+];
 
   let flowerNumber = 0;
 
@@ -931,7 +1137,7 @@ document.addEventListener("DOMContentLoaded", function () {
         flowerDesigns[flowerNumber % flowerDesigns.length];
 
       const flower = document.createElement("div");
-      flower.className = "frame-flower";
+      flower.className = "frame-flower " + design.className;
       flower.dataset.flowerNumber = flowerNumber;
 
       /*
@@ -961,6 +1167,8 @@ document.addEventListener("DOMContentLoaded", function () {
             ? 175 + (i % 4) * 24
             : 140 + (i % 4) * 20;
       }
+
+      flowerSize = Math.round(flowerSize * design.sizeMultiplier);
 
       flower.style.setProperty(
         "--flower-position",
