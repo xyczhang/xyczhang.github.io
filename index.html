@@ -1766,6 +1766,15 @@ body.flower-intro-finished .flower-intro-message {
   }
 }
 
+.photo-deck {
+  cursor: pointer;
+}
+
+/* Send every click to the photo deck */
+.photo-deck .photo-card {
+  pointer-events: none;
+}
+
   </style>
 </head>
 <script>
@@ -2110,43 +2119,44 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 <script>
+document.addEventListener("DOMContentLoaded", function () {
   const photoDeck = document.querySelector(".photo-deck");
 
-  if (photoDeck) {
-    let photoCards = Array.from(
-      photoDeck.querySelectorAll(".photo-card")
-    );
+  if (!photoDeck) return;
 
-    function updatePhotoPositions() {
-      photoCards.forEach(function (card, index) {
-        card.dataset.position = index;
-      });
-    }
+  photoDeck.setAttribute("role", "button");
+  photoDeck.setAttribute("tabindex", "0");
+  photoDeck.setAttribute(
+    "aria-label",
+    "Show the next photograph"
+  );
 
-    photoCards.forEach(function (clickedCard) {
-      clickedCard.addEventListener("click", function () {
-        const clickedPosition =
-          photoCards.indexOf(clickedCard);
+  function showNextPhoto() {
+    const photoCards =
+      photoDeck.querySelectorAll(".photo-card");
 
-        if (clickedPosition === 0) {
-          /*
-            Clicking the front photo sends it to the back.
-          */
-          photoCards.push(photoCards.shift());
-        } else {
-          /*
-            Clicking a rear photo brings it directly forward.
-          */
-          photoCards.splice(clickedPosition, 1);
-          photoCards.unshift(clickedCard);
-        }
+    photoCards.forEach(function (card) {
+      const currentPosition =
+        Number(card.dataset.position);
 
-        updatePhotoPositions();
-      });
+      const nextPosition =
+        currentPosition === photoCards.length - 1
+          ? 0
+          : currentPosition + 1;
+
+      card.dataset.position = nextPosition;
     });
-
-    updatePhotoPositions();
   }
+
+  photoDeck.addEventListener("click", showNextPhoto);
+
+  photoDeck.addEventListener("keydown", function (event) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      showNextPhoto();
+    }
+  });
+});
 </script>
 
     <body>
