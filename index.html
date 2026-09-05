@@ -2494,177 +2494,8 @@ body.flower-intro-finished .vine-detail {
 
       updateCounter();
     });
-
   </script>
 
-  <script>
- const sectionMenu = document.querySelector(".section-menu");
-  const sectionMenuButton =
-    sectionMenu.querySelector(".flower-stamp");
-
-  let pointerIsDown = false;
-  let wasDragged = false;
-  let suppressNextClick = false;
-
-  let startingPointerX = 0;
-  let startingPointerY = 0;
-  let startingMenuLeft = 0;
-  let startingMenuTop = 0;
-
-  function closeSectionMenu() {
-    sectionMenu.classList.remove("open");
-    sectionMenuButton.setAttribute("aria-expanded", "false");
-  }
-
-  function updateMenuDirection() {
-    const rectangle = sectionMenu.getBoundingClientRect();
-
-    sectionMenu.classList.toggle(
-      "menu-near-left",
-      rectangle.left < 230
-    );
-
-    sectionMenu.classList.toggle(
-      "menu-near-bottom",
-      rectangle.top > window.innerHeight - 330
-    );
-  }
-
-  sectionMenuButton.addEventListener("pointerdown", function (event) {
-    if (event.button !== 0) return;
-
-    const rectangle = sectionMenu.getBoundingClientRect();
-
-    pointerIsDown = true;
-    wasDragged = false;
-
-    startingPointerX = event.clientX;
-    startingPointerY = event.clientY;
-    startingMenuLeft = rectangle.left;
-    startingMenuTop = rectangle.top;
-
-    sectionMenu.style.left = rectangle.left + "px";
-    sectionMenu.style.top = rectangle.top + "px";
-    sectionMenu.style.right = "auto";
-
-    sectionMenuButton.setPointerCapture(event.pointerId);
-  });
-
-  sectionMenuButton.addEventListener("pointermove", function (event) {
-    if (!pointerIsDown) return;
-
-    const movementX = event.clientX - startingPointerX;
-    const movementY = event.clientY - startingPointerY;
-
-    if (Math.hypot(movementX, movementY) > 5) {
-      wasDragged = true;
-    }
-
-    if (!wasDragged) return;
-
-    event.preventDefault();
-    closeSectionMenu();
-    sectionMenu.classList.add("dragging");
-
-    const menuWidth = sectionMenuButton.offsetWidth;
-    const menuHeight = sectionMenuButton.offsetHeight;
-
-    const newLeft = Math.max(
-      0,
-      Math.min(
-        window.innerWidth - menuWidth,
-        startingMenuLeft + movementX
-      )
-    );
-
-    const newTop = Math.max(
-      0,
-      Math.min(
-        window.innerHeight - menuHeight,
-        startingMenuTop + movementY
-      )
-    );
-
-    sectionMenu.style.left = newLeft + "px";
-    sectionMenu.style.top = newTop + "px";
-
-    updateMenuDirection();
-  });
-
-  function finishDragging(event) {
-    if (!pointerIsDown) return;
-
-    pointerIsDown = false;
-    sectionMenu.classList.remove("dragging");
-
-    if (
-      sectionMenuButton.hasPointerCapture(event.pointerId)
-    ) {
-      sectionMenuButton.releasePointerCapture(event.pointerId);
-    }
-
-    if (wasDragged) {
-      suppressNextClick = true;
-
-      setTimeout(function () {
-        suppressNextClick = false;
-      }, 0);
-    }
-
-    updateMenuDirection();
-  }
-
-  sectionMenuButton.addEventListener(
-    "pointerup",
-    finishDragging
-  );
-
-  sectionMenuButton.addEventListener(
-    "pointercancel",
-    finishDragging
-  );
-
-  sectionMenuButton.addEventListener("click", function (event) {
-    if (suppressNextClick) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      return;
-    }
-
-    sectionMenu.classList.add("hint-hidden");
-
-    const isOpen = sectionMenu.classList.toggle("open");
-
-    sectionMenuButton.setAttribute(
-      "aria-expanded",
-      String(isOpen)
-    );
-
-    updateMenuDirection();
-  });
-
-  sectionMenu
-    .querySelectorAll(".section-outline a")
-    .forEach(function (link) {
-      link.addEventListener("click", closeSectionMenu);
-    });
-
-  document.addEventListener("click", function (event) {
-    if (!sectionMenu.contains(event.target)) {
-      closeSectionMenu();
-    }
-  });
-
-  document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape") {
-      closeSectionMenu();
-    }
-  });
-
-  window.addEventListener("resize", updateMenuDirection);
-</script>
-
-  /* Website Text */
     <body>
   <nav class="nav shell" aria-label="Main navigation">
     <a class="wordmark" href="#top" aria-label="Your Name, home">XZ<span>.</span></a>
@@ -2683,7 +2514,6 @@ body.flower-intro-finished .vine-detail {
       <div class="hero-vine" aria-hidden="true">
   <svg viewBox="0 0 1200 170">
     <defs>
-      /* Header page vine */
       <linearGradient
         id="vine-gradient"
         x1="0"
@@ -3054,7 +2884,6 @@ body.flower-intro-finished .vine-detail {
     ✦
   </button>
 
-  /* Outline text */
   <nav
     class="section-outline"
     id="section-outline"
@@ -3069,113 +2898,110 @@ body.flower-intro-finished .vine-detail {
   </nav>
 </div>
 
-  </header>
+</header>
 
-  /* Project Section Text */
-
-  <main>
-    <section class="work" id="work">
-      <div class="shell">
-        <div class="section-heading">
-          <p class="section-kicker">Selected work · 2026 </p>
-          <h2>Incoming<br>Projects.</h2>
+<main>
+<section class="work" id="work">
+  <div class="shell">
+    <div class="section-heading">
+      <p class="section-kicker">Selected work · 2026 </p>
+      <h2>Incoming<br>Projects.</h2>
+    </div>
+    <div class="project-list">
+      <article class="project">
+        <div class="project-art project-placeholder" aria-label="Project image placeholder"></div>
+        <div class="project-copy">
+          <span class="project-number">01</span>
+          <div><p class="project-type">Project 1 Category</p><h3>Project 1 Placeholder</h3><p class="project-description">Project 1 Description Placeholder</p></div>
+          <span class="project-arrow" aria-hidden="true">↗</span>
         </div>
-        <div class="project-list">
-          <article class="project">
-            <div class="project-art project-placeholder" aria-label="Project image placeholder"></div>
-            <div class="project-copy">
-              <span class="project-number">01</span>
-              <div><p class="project-type">Project 1 Category</p><h3>Project 1 Placeholder</h3><p class="project-description">Project 1 Description Placeholder</p></div>
-              <span class="project-arrow" aria-hidden="true">↗</span>
-            </div>
-          </article>
-          <article class="project">
-            <div class="project-art project-placeholder" aria-label="Project image placeholder"></div>
-            <div class="project-copy">
-              <span class="project-number">02</span>
-              <div><p class="project-type">Project 2 Category</p><h3>Project 2 Placeholder</h3><p class="project-description">Project 2 Description Placeholder</p></div>
-              <span class="project-arrow" aria-hidden="true">↗</span>
-            </div>
-          </article>
-          <article class="project">
-           <div class="project-art project-placeholder" aria-label="Project image placeholder"></div>
-            <div class="project-copy">
-              <span class="project-number">03</span>
-              <div><p class="project-type">Project 3 Category</p><h3>Project 3 Placeholder</h3><p class="project-description">Project 3 Description Placeholder</p></div>
-              <span class="project-arrow" aria-hidden="true">↗</span>
-            </div>
-          </article>
+      </article>
+      <article class="project">
+        <div class="project-art project-placeholder" aria-label="Project image placeholder"></div>
+        <div class="project-copy">
+          <span class="project-number">02</span>
+          <div><p class="project-type">Project 2 Category</p><h3>Project 2 Placeholder</h3><p class="project-description">Project 2 Description Placeholder</p></div>
+          <span class="project-arrow" aria-hidden="true">↗</span>
         </div>
-      </div>
-    </section>
-
-   <section class="about shell" id="about">
-  <div class="about-photo-column">
-    <p class="section-kicker">Nice to meet you</p>
-
-    <div class="photo-stack">
-  <div class="photo-deck" aria-label="About me photographs">
-    <button
-      class="profile-photo photo-card"
-      data-position="0"
-      type="button"
-      aria-label="Show next photograph"
-    >
-      <img src="profile1.jpg" alt="Xuyao Zhang">
-    </button>
-
-    <button
-      class="profile-photo photo-card"
-      data-position="1"
-      type="button"
-      aria-label="Bring photograph two forward"
-    >
-      <img src="profile2.jpg" alt="Xuyao Zhang">
-    </button>
-
-    <button
-      class="profile-photo photo-card"
-      data-position="2"
-      type="button"
-      aria-label="Bring photograph three forward"
-    >
-      <img src="profile3.jpg" alt="Xuyao Zhang">
-    </button>
-
-    <button
-      class="profile-photo photo-card"
-      data-position="3"
-      type="button"
-      aria-label="Bring photograph four forward"
-    >
-      <img src="profile4.jpg" alt="Xuyao Zhang">
-    </button>
+      </article>
+      <article class="project">
+        <div class="project-art project-placeholder" aria-label="Project image placeholder"></div>
+        <div class="project-copy">
+          <span class="project-number">03</span>
+          <div><p class="project-type">Project 3 Category</p><h3>Project 3 Placeholder</h3><p class="project-description">Project 3 Description Placeholder</p></div>
+          <span class="project-arrow" aria-hidden="true">↗</span>
+        </div>
+      </article>
+    </div>
   </div>
-  <div class="photo-controls">
-    <button
-      class="photo-arrow photo-previous"
-      type="button"
-      aria-label="Previous photograph"
-    >
-      ←
-    </button>
+</section>
 
-    <span class="photo-counter" aria-live="polite">
-      1 / 4
-    </span>
+  <section class="about shell" id="about">
+<div class="about-photo-column">
+  <p class="section-kicker">Nice to meet you</p>
 
-    <button
-      class="photo-arrow photo-next"
-      type="button"
-      aria-label="Next photograph"
-    >
-      →
-    </button>
-  </div>
-  </div>
-  </div>
+  <div class="photo-stack">
+<div class="photo-deck" aria-label="About me photographs">
+  <button
+    class="profile-photo photo-card"
+    data-position="0"
+    type="button"
+    aria-label="Show next photograph"
+  >
+    <img src="profile1.jpg" alt="Xuyao Zhang">
+  </button>
 
-  /* About me text */
+  <button
+    class="profile-photo photo-card"
+    data-position="1"
+    type="button"
+    aria-label="Bring photograph two forward"
+  >
+    <img src="profile2.jpg" alt="Xuyao Zhang">
+  </button>
+
+  <button
+    class="profile-photo photo-card"
+    data-position="2"
+    type="button"
+    aria-label="Bring photograph three forward"
+  >
+    <img src="profile3.jpg" alt="Xuyao Zhang">
+  </button>
+
+  <button
+    class="profile-photo photo-card"
+    data-position="3"
+    type="button"
+    aria-label="Bring photograph four forward"
+  >
+    <img src="profile4.jpg" alt="Xuyao Zhang">
+  </button>
+</div>
+<div class="photo-controls">
+  <button
+    class="photo-arrow photo-previous"
+    type="button"
+    aria-label="Previous photograph"
+  >
+    ←
+  </button>
+
+  <span class="photo-counter" aria-live="polite">
+    1 / 4
+  </span>
+
+  <button
+    class="photo-arrow photo-next"
+    type="button"
+    aria-label="Next photograph"
+  >
+    →
+  </button>
+</div>
+</div>
+</div>
+
   <div class="about-copy">
     <h2 class="about-title">Hi again! I'm Xuyao,</h2>
 
@@ -3192,7 +3018,6 @@ body.flower-intro-finished .vine-detail {
   </div>
 </section>
 
-/* Experience Section text */
 <section class="services" id="services">
   <div class="shell services-grid">
     <div><p class="eyebrow">Experience</p><h2>Always looking for<br>opportunities to learn and grow.</h2></div>
@@ -3203,37 +3028,203 @@ body.flower-intro-finished .vine-detail {
     </ol>
   </div>
 </section>
-
 </main>
 
-  /* Contact info text */
-  <footer class="footer" id="contact">
-    <div class="shell">
-      <p class="eyebrow">Curious about anything?</p>
-      <h2>Feel free<br><em>to reach out!</em></h2>
-      <a class="email-link" href="mailto:hello@yourname.com">chloezha@andrew.cmu.edu <span aria-hidden="true">↗</span></a>
-      <div class="footer-meta">
-        <p>© 2026 Xuyao Zhang </p>
-        <div class="footer-links">
+<footer class="footer" id="contact">
+  <div class="shell">
+    <p class="eyebrow">Curious about anything?</p>
+    <h2>Feel free<br><em>to reach out!</em></h2>
+    <a class="email-link" href="mailto:hello@yourname.com">chloezha@andrew.cmu.edu <span aria-hidden="true">↗</span></a>
+    <div class="footer-meta">
+      <p>© 2026 Xuyao Zhang </p>
+      <div class="footer-links">
 
-          <a
-            href="https://www.linkedin.com/in/xuyao-zhang-1a4784348/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            LinkedIn
-          </a>
+        <a
+          href="https://www.linkedin.com/in/xuyao-zhang-1a4784348/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          LinkedIn
+        </a>
 
-          <a
-            href="https://github.com/xyczhang"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub
-          </a>
-        </div>
+        <a
+          href="https://github.com/xyczhang"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub
+        </a>
+
       </div>
     </div>
-  </footer>
+  </div>
+</footer>
+
+<script>
+ const sectionMenu = document.querySelector(".section-menu");
+  const sectionMenuButton =
+    sectionMenu.querySelector(".flower-stamp");
+
+  let pointerIsDown = false;
+  let wasDragged = false;
+  let suppressNextClick = false;
+
+  let startingPointerX = 0;
+  let startingPointerY = 0;
+  let startingMenuLeft = 0;
+  let startingMenuTop = 0;
+
+  function closeSectionMenu() {
+    sectionMenu.classList.remove("open");
+    sectionMenuButton.setAttribute("aria-expanded", "false");
+  }
+
+  function updateMenuDirection() {
+    const rectangle = sectionMenu.getBoundingClientRect();
+
+    sectionMenu.classList.toggle(
+      "menu-near-left",
+      rectangle.left < 230
+    );
+
+    sectionMenu.classList.toggle(
+      "menu-near-bottom",
+      rectangle.top > window.innerHeight - 330
+    );
+  }
+
+  sectionMenuButton.addEventListener("pointerdown", function (event) {
+    if (event.button !== 0) return;
+
+    const rectangle = sectionMenu.getBoundingClientRect();
+
+    pointerIsDown = true;
+    wasDragged = false;
+
+    startingPointerX = event.clientX;
+    startingPointerY = event.clientY;
+    startingMenuLeft = rectangle.left;
+    startingMenuTop = rectangle.top;
+
+    sectionMenu.style.left = rectangle.left + "px";
+    sectionMenu.style.top = rectangle.top + "px";
+    sectionMenu.style.right = "auto";
+
+    sectionMenuButton.setPointerCapture(event.pointerId);
+  });
+
+  sectionMenuButton.addEventListener("pointermove", function (event) {
+    if (!pointerIsDown) return;
+
+    const movementX = event.clientX - startingPointerX;
+    const movementY = event.clientY - startingPointerY;
+
+    if (Math.hypot(movementX, movementY) > 5) {
+      wasDragged = true;
+    }
+
+    if (!wasDragged) return;
+
+    event.preventDefault();
+    closeSectionMenu();
+    sectionMenu.classList.add("dragging");
+
+    const menuWidth = sectionMenuButton.offsetWidth;
+    const menuHeight = sectionMenuButton.offsetHeight;
+
+    const newLeft = Math.max(
+      0,
+      Math.min(
+        window.innerWidth - menuWidth,
+        startingMenuLeft + movementX
+      )
+    );
+
+    const newTop = Math.max(
+      0,
+      Math.min(
+        window.innerHeight - menuHeight,
+        startingMenuTop + movementY
+      )
+    );
+
+    sectionMenu.style.left = newLeft + "px";
+    sectionMenu.style.top = newTop + "px";
+
+    updateMenuDirection();
+  });
+
+  function finishDragging(event) {
+    if (!pointerIsDown) return;
+
+    pointerIsDown = false;
+    sectionMenu.classList.remove("dragging");
+
+    if (
+      sectionMenuButton.hasPointerCapture(event.pointerId)
+    ) {
+      sectionMenuButton.releasePointerCapture(event.pointerId);
+    }
+
+    if (wasDragged) {
+      suppressNextClick = true;
+
+      setTimeout(function () {
+        suppressNextClick = false;
+      }, 0);
+    }
+
+    updateMenuDirection();
+  }
+
+  sectionMenuButton.addEventListener(
+    "pointerup",
+    finishDragging
+  );
+
+  sectionMenuButton.addEventListener(
+    "pointercancel",
+    finishDragging
+  );
+
+  sectionMenuButton.addEventListener("click", function (event) {
+    if (suppressNextClick) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+
+    sectionMenu.classList.add("hint-hidden");
+
+    const isOpen = sectionMenu.classList.toggle("open");
+
+    sectionMenuButton.setAttribute(
+      "aria-expanded",
+      String(isOpen)
+    );
+
+    updateMenuDirection();
+  });
+
+  sectionMenu
+    .querySelectorAll(".section-outline a")
+    .forEach(function (link) {
+      link.addEventListener("click", closeSectionMenu);
+    });
+
+  document.addEventListener("click", function (event) {
+    if (!sectionMenu.contains(event.target)) {
+      closeSectionMenu();
+    }
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      closeSectionMenu();
+    }
+  });
+
+  window.addEventListener("resize", updateMenuDirection);
+</script>
 </body>
 </html>
