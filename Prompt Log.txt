@@ -1,0 +1,269 @@
+﻿I used Codex for this assignment. I created the layout of my website along with special features like the glowing and flower animations. There are a lot of pure code prompts (minor tweaks to improve lag) that is not included for the sake of space (if needed for the assignment I can retrieve). The bolded text are my prompts.
+
+
+Prompt Log:
+
+
+Build me a website to put my portfolio on with a baby pink color scheme
+Your baby-pink portfolio is live: [file]
+It includes selected work, about, services, contact sections, responsive mobile styling, and a custom social-sharing card. It’s private for now.
+The name, email, social links, and projects use placeholders—send me your details whenever you’re ready, and I can personalize everything.
+How do I make the header text glow and flash at different intensities
+You use CSS to create a glowing border.
+The relevant CSS properties are:
+* border — creates the visible pink outline.
+* border-radius — rounds the corners.
+* box-shadow — creates the glow outside the border.
+* @keyframes — defines how the glow changes intensity.
+* animation — applies the pulsing effect to the photo container.
+The HTML only identifies which element receives the styling, usually with a class such as project-photo. The glowing appearance itself belongs inside your existing <style> section, immediately before </style>.
+(Also attached code necessary for my website that is too long to paste here).
+How do I make flower vine animation for the title page
+A flower-vine animation usually uses three types of code:
+* SVG draws the vine, branches, leaves, and flowers.
+* CSS controls how those parts appear and move.
+* JavaScript decides when the animation begins, if needed.
+The vine-growing effect works by drawing the SVG stem as a path, then hiding that path using its dash settings. A CSS animation gradually changes the dash offset, making the stem look like it is being drawn from left to right.
+The flowers and leaves begin invisible and very small. After the stem starts growing, CSS animations gradually increase their opacity and size. Giving each flower a slightly different delay makes them bloom one after another along the vine.
+For your site, the sequence is:
+1. The opening flowers shrink away.
+2. JavaScript adds the flower-intro-finished class to the page.
+3. CSS detects that class and begins drawing the vine.
+4. Branches appear after the main stem.
+5. Leaves and flowers scale up with staggered delays.
+The SVG belongs in the title area of your HTML. Its animation styling belongs inside <style>. Your existing JavaScript already creates the class needed to start it.
+(Also attached code necessary for my website that is too long to paste here).
+How do I make the flowers bigger and layered and also have them cover the top and bottom so only the direct portion of the website shows
+1. HTML structure: Create one fixed floral-frame container with four child containers representing the top, bottom, left, and right edges.
+2. CSS design: Use fixed positioning so the frame stays around the browser. CSS variables control the width of the side borders and height of the top and bottom borders. Each flower uses multiple petal elements—large outer petals, smaller inner petals, and a center—to create the layered appearance. Oversized flowers are partially positioned outside the viewport and overlap each other.
+3. JavaScript generation: Use loops to generate multiple flowers for every edge, assign different sizes and positions, create their petals, and add an “open” class to trigger blooming animations.
+The central website content then receives matching padding or a reduced width based on the frame dimensions. That keeps the text inside the uncovered center while flowers fill the outer edges.
+So the written request becomes these coding requirements:
+* Four fixed flower rails
+* Layered flower components
+* Large overlapping sizes
+* Safe spacing around page content
+* Responsive mobile measurements
+* JavaScript-generated flowers
+* CSS-based blooming transitions
+* A high visual layer that does not block clicks
+(Also attached code necessary for my website that is too long to paste here).
+How do I make the cursor release a temporary flower stamp when clicked
+This feature combines CSS for the flower’s appearance and animation with JavaScript that creates a flower at the clicked position.
+1. Detect the click
+document.addEventListener("click", createFlowerStamp);
+This listens for clicks anywhere on the page. Every click calls createFlowerStamp and provides an event object containing the cursor coordinates.
+2. Create the temporary flower
+function createFlowerStamp(event) {
+  const stamp = document.createElement("div");
+  stamp.className = "cursor-flower-stamp";
+}
+A new <div> is created for every click. The class connects it to the flower styling in CSS.
+3. Position it at the cursor
+stamp.style.setProperty(
+  "--stamp-x",
+  event.clientX + "px"
+);
+
+
+stamp.style.setProperty(
+  "--stamp-y",
+  event.clientY + "px"
+);
+* event.clientX is the cursor’s horizontal position.
+* event.clientY is its vertical position.
+* The values are stored as CSS variables.
+The CSS uses those variables:
+.cursor-flower-stamp {
+  position: fixed;
+  left: var(--stamp-x);
+  top: var(--stamp-y);
+}
+Because it uses position: fixed, the flower appears at the correct visible-screen position even after scrolling.
+4. Choose a random pink color
+const colors =
+  stampColors[
+    Math.floor(Math.random() * stampColors.length)
+  ];
+Math.random() selects one palette from the stampColors array. The selected colors are then passed to CSS:
+stamp.style.setProperty(
+  "--stamp-color",
+  colors.light
+);
+
+
+stamp.style.setProperty(
+  "--stamp-dark",
+  colors.dark
+);
+This creates visual variation between clicks.
+5. Generate petals in a circle
+const petalCount = 7;
+
+
+for (let i = 0; i < petalCount; i++) {
+  const petal = document.createElement("span");
+  petal.className = "stamp-petal";
+
+
+  petal.style.setProperty(
+    "--stamp-angle",
+    i * (360 / petalCount) + "deg"
+  );
+
+
+  stamp.appendChild(petal);
+}
+The loop creates seven petal elements.
+Dividing 360 degrees by 7 gives equal spacing. Each petal receives a different rotation angle, arranging them around the flower center.
+CSS performs the rotation:
+.stamp-petal {
+  transform:
+    translate(-50%, -100%)
+    rotate(var(--stamp-angle));
+}
+6. Create the center
+Instead of generating another HTML element, CSS uses the flower’s ::after pseudo-element:
+.cursor-flower-stamp::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  background: gold;
+}
+This creates the circular golden center.
+7. Display and animate it
+document.body.appendChild(stamp);
+The finished flower is inserted into the webpage.
+Its CSS class includes a short animation:
+.cursor-flower-stamp {
+  animation: flowerStampPop 1.1s ease-out forwards;
+}
+The keyframes make it begin small, expand, and fade:
+@keyframes flowerStampPop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.15);
+  }
+
+
+  30% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.75);
+  }
+}
+8. Delete it afterward
+setTimeout(function () {
+  stamp.remove();
+}, 1100);
+The timeout matches the 1.1-second animation. Once the animation ends, the flower is removed from the page so invisible stamps do not accumulate and slow down the website.
+How do I make flower format varieties?
+Each flower variety has two connected pieces:
+1. A JavaScript entry defining its structure.
+2. A CSS class defining its appearance.
+The className must match in both places.
+1. Add a variety to flowerDesigns
+For example, add a lotus-style flower:
+{
+  className: "flower-lotus",
+  outerPetals: 8,
+  innerPetals: 5,
+  sizeMultiplier: 1.1
+}
+The settings mean:
+* className: connects the flower to its CSS.
+* outerPetals: number of large petals.
+* innerPetals: number of smaller center petals.
+* sizeMultiplier: changes its size relative to other flowers.
+Place the object inside the existing array:
+const flowerDesigns = [
+  /* Your existing flowers */
+
+
+  {
+    className: "flower-lotus",
+    outerPetals: 8,
+    innerPetals: 5,
+    sizeMultiplier: 1.1
+  }
+];
+Remember to put a comma between each flower object.
+2. Design the outer petals
+Add this inside your <style> section:
+.flower-lotus .frame-petal {
+  width: 30%;
+  height: 62%;
+
+
+  border-radius: 70% 70% 30% 30%;
+
+
+  background: linear-gradient(
+    to top,
+    #c94f7d,
+    #ee92b3 55%,
+    #ffe4ee
+  );
+}
+You can customize:
+* width: wider or thinner petals.
+* height: longer or shorter petals.
+* border-radius: roundness and petal shape.
+* background: petal colors.
+3. Design the inner petals
+.flower-lotus .frame-petal.inner {
+  width: 22%;
+  height: 45%;
+
+
+  background: linear-gradient(
+    to top,
+    #ad3b68,
+    #e2769e 60%,
+    #ffc3d8
+  );
+}
+Smaller measurements create a layered center.
+4. Customize the flower center
+.flower-lotus .frame-flower-center {
+  width: 18%;
+  height: 18%;
+
+
+  background: radial-gradient(
+    circle,
+    #fff2ad,
+    #d99b39 70%
+  );
+
+
+  box-shadow:
+    0 0 10px rgba(255, 225, 130, 0.7);
+}
+Useful shape recipes
+For round petals:
+border-radius: 70% 70% 55% 55%;
+For narrow daisy petals:
+width: 20%;
+height: 60%;
+border-radius: 60% 60% 30% 30%;
+For pointed petals:
+clip-path: polygon(
+  50% 0%,
+  100% 45%,
+  75% 100%,
+  25% 100%,
+  0% 45%
+);
+For wide peony petals:
+width: 48%;
+height: 50%;
+border-radius: 80% 80% 50% 50%;
+Once the matching JavaScript entry and CSS class exist, your current flower generator will automatically mix the new variety into the opening flower screen.
