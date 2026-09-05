@@ -2188,8 +2188,8 @@ document.addEventListener("DOMContentLoaded", function () {
     Only create full-screen background flowers.
     No border flowers are created.
   */
-  const columns = isMobile ? 3 : 5;
-  const rows = isMobile ? 5 : 4;
+  const columns = isMobile ? 4 : 6;
+  const rows = isMobile ? 6 : 5;
 
   let flowerNumber = 0;
 
@@ -2215,9 +2215,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const yPosition =
         (row / Math.max(rows - 1, 1)) * 100;
 
-      const baseSize = isMobile ? 205 : 325;
+      const baseSize = isMobile ? 175 : 270;
       const sizeVariation =
-        ((row + column) % 3) * (isMobile ? 18 : 32);
+        ((row + column) % 4) * (isMobile ? 16 : 26);
 
       const flowerSize = Math.round(
         (baseSize + sizeVariation) *
@@ -2479,7 +2479,7 @@ document.addEventListener("DOMContentLoaded", function () {
   <header class="hero shell" id="top">
     <div class="hero-kicker"><span class="status-dot"></span> Pittsburgh, PA · chloezha@andrew.cmu.edu</div>
     <div class="hero-heading">
-      <h1>Hi! I'm <br><em> Xuyao Zhang,</em></h1>
+      <h1>Hi! I'm <br><em> Xuyao Zhang ★ </em></h1>
       </div>
       <div class="hero-vine" aria-hidden="true">
   <svg viewBox="0 0 1200 170">
