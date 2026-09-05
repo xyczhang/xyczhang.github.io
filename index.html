@@ -1828,6 +1828,23 @@ body.flower-intro-finished .flower-intro-message {
   text-align: center;
 }
 
+/* Plain project image placeholders */
+.project-art.project-placeholder {
+  background: var(--pink-300);
+}
+
+.project-art.project-placeholder::before,
+.project-art.project-placeholder::after {
+  display: none;
+}
+
+.project-art.project-placeholder img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
   </style>
 </head>
 <script>
@@ -2258,7 +2275,6 @@ document.addEventListener("DOMContentLoaded", function () {
       <h1>Hi! I'm <br><em> Xuyao Zhang,</em></h1>
     </div>
     <div class="hero-bottom">
-      <p> a freshman studying Statistics and Machine Learning at Carnegie Mellon!</p>
     </div>
     <div class="section-menu">
   <svg
@@ -2324,26 +2340,26 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
         <div class="project-list">
           <article class="project">
-            <div class="project-art art-one" aria-label="Petal and Stem project artwork"><span>P&amp;S</span></div>
+            <div class="project-art project-placeholder" aria-label="Project image placeholder"></div>
             <div class="project-copy">
               <span class="project-number">01</span>
-              <div><p class="project-type">Brand identity · Art direction</p><h3>Petal &amp; Stem</h3><p class="project-description">A joyful visual world for a modern flower studio, made to feel tactile, generous, and a little unexpected.</p></div>
+              <div><p class="project-type">Project 1 Category</p><h3>Project 1 Placeholder</h3><p class="project-description">Project 1 Description Placeholder</p></div>
               <span class="project-arrow" aria-hidden="true">↗</span>
             </div>
           </article>
           <article class="project">
-            <div class="project-art art-two" aria-label="Sunday Journal project artwork"><span>SUNDAY / 07</span></div>
+            <div class="project-art project-placeholder" aria-label="Project image placeholder"></div>
             <div class="project-copy">
               <span class="project-number">02</span>
-              <div><p class="project-type">Editorial · Digital experience</p><h3>Sunday Journal</h3><p class="project-description">A slower, calmer reading experience that turns thoughtful stories into a beautiful weekly ritual.</p></div>
+              <div><p class="project-type">Project 2 Category</p><h3>Project 2 Placeholder</h3><p class="project-description">Project 2 Description Placeholder</p></div>
               <span class="project-arrow" aria-hidden="true">↗</span>
             </div>
           </article>
           <article class="project">
-            <div class="project-art art-three" aria-label="Soft Focus project artwork"><span>SOFT<br>FOCUS</span></div>
+           <div class="project-art project-placeholder" aria-label="Project image placeholder"></div>
             <div class="project-copy">
               <span class="project-number">03</span>
-              <div><p class="project-type">Campaign · Creative direction</p><h3>Soft Focus</h3><p class="project-description">A dreamy launch campaign built around softness, self-expression, and the confidence to be seen.</p></div>
+              <div><p class="project-type">Project 3 Category</p><h3>Project 3 Placeholder</h3><p class="project-description">Project 3 Description Placeholder</p></div>
               <span class="project-arrow" aria-hidden="true">↗</span>
             </div>
           </article>
@@ -2421,12 +2437,14 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 class="about-title">A little about me.</h2>
 
     <p class="about-lead">
-      Hello! little about me
+      Hi again! I'm Xuyao,
     </p>
 
     <p>
-      Add more information about your interests, education,
-      experience, goals, or creative work here.
+      a freshman studying Statistics and Machine Learning at Carnegie Mellon.
+      I'm interested in math, finance, and design. I can also code in Java and am currently learning
+      C++. Outside of academia, you can find me at the golf course, in an art studio, 
+      or just taking a walk in nature!
     </p>
 
     <a class="text-link" href="#contact">
@@ -2479,9 +2497,6 @@ document.addEventListener("DOMContentLoaded", function () {
             GitHub
           </a>
 
-          <a href="#top">
-            Back to top ↑
-          </a>
         </div>
       </div>
     </div>
