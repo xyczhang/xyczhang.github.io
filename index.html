@@ -6,13 +6,14 @@
   <meta name="description" content="A multidisciplinary designer creating thoughtful brands and digital experiences with feeling.">
   <title> Xuyao Zhang Portfolio </title>
   <style>
+
     /* Large layered floral frame */
 :root {
   --frame-side: clamp(85px, 9vw, 135px);
   --frame-top: clamp(75px, 8vw, 110px);
 }
 
-/* Reserve space so flowers do not cover text */
+/* Leaving space for text */
 body {
   padding-top: var(--frame-top);
   padding-bottom: var(--frame-top);
@@ -25,7 +26,7 @@ body {
   );
 }
 
-/* Fixed frame around the browser */
+/* Flower frame */
 .floral-frame {
   position: fixed;
   inset: 0;
@@ -2183,124 +2184,115 @@ document.addEventListener("DOMContentLoaded", function () {
     return flower;
   }
 
-  /*
-    Only create full-screen background flowers.
-    No border flowers are created.
-  */
-  /*
-  Create a scattered arrangement instead of rows.
-  Every reload produces a slightly different layout.
+/*
+  Divide the screen into invisible areas, then place each
+  flower randomly inside its area. This fills the screen
+  without making the flowers look like straight lines. Additionally, 
+  the flower variety is random and assorted.
 */
-const totalFlowers = isMobile ? 26 : 34;
-const flowerPositions = [];
-const minimumDistance = isMobile ? 13 : 11;
+const horizontalAreas = isMobile ? 4 : 7;
+const verticalAreas = isMobile ? 7 : 5;
 
-function createRandomPosition() {
-  let position = {
-    x: Math.random() * 110 - 5,
-    y: Math.random() * 110 - 5
-  };
+const areaWidth = 100 / horizontalAreas;
+const areaHeight = 100 / verticalAreas;
 
-  /*
-    Try several positions to prevent flowers from
-    sitting directly on top of one another.
-  */
-  for (let attempt = 0; attempt < 40; attempt++) {
-    const candidate = {
-      x: Math.random() * 110 - 5,
-      y: Math.random() * 110 - 5
-    };
+let flowerNumber = 0;
 
-    const hasEnoughSpace = flowerPositions.every(
-      function (existingPosition) {
-        const horizontalDistance =
-          candidate.x - existingPosition.x;
+for (let row = 0; row < verticalAreas; row++) {
+  for (
+    let column = 0;
+    column < horizontalAreas;
+    column++
+  ) {
+    const design =
+      flowerDesigns[
+        Math.floor(Math.random() * flowerDesigns.length)
+      ];
 
-        const verticalDistance =
-          (candidate.y - existingPosition.y) * 1.25;
+    const flower =
+      createFlower(design, flowerNumber);
 
-        return (
-          Math.hypot(
-            horizontalDistance,
-            verticalDistance
-          ) > minimumDistance
-        );
-      }
+    /*
+      Start at the center of an area, then add enough
+      randomness to prevent visible rows and columns.
+    */
+    const randomHorizontalMovement =
+      (Math.random() - 0.5) * areaWidth * 0.85;
+
+    const randomVerticalMovement =
+      (Math.random() - 0.5) * areaHeight * 0.85;
+
+    const xPosition =
+      (column + 0.5) * areaWidth +
+      randomHorizontalMovement;
+
+    const yPosition =
+      (row + 0.5) * areaHeight +
+      randomVerticalMovement;
+
+    /*
+      Calculate a flower size large enough to overlap
+      neighboring areas and cover the entire screen.
+    */
+    const areaWidthInPixels =
+      window.innerWidth / horizontalAreas;
+
+    const areaHeightInPixels =
+      window.innerHeight / verticalAreas;
+
+    const minimumFlowerSize =
+      Math.max(
+        areaWidthInPixels,
+        areaHeightInPixels
+      ) * 1.65;
+
+    const sizeVariation =
+      Math.random() * (isMobile ? 45 : 75);
+
+    const flowerSize = Math.round(
+      (minimumFlowerSize + sizeVariation) *
+        design.sizeMultiplier
     );
 
-    if (hasEnoughSpace) {
-      position = candidate;
-      break;
-    }
+    const rotation =
+      Math.round(Math.random() * 60 - 30);
+
+    const shrinkDelay =
+      Math.floor(Math.random() * 7) * 25;
+
+    flower.style.setProperty(
+      "--flower-x",
+      xPosition + "%"
+    );
+
+    flower.style.setProperty(
+      "--flower-y",
+      yPosition + "%"
+    );
+
+    flower.style.setProperty(
+      "--flower-size",
+      flowerSize + "px"
+    );
+
+    flower.style.setProperty(
+      "--field-rotation",
+      rotation + "deg"
+    );
+
+    flower.style.setProperty(
+      "--shrink-delay",
+      shrinkDelay + "ms"
+    );
+
+    flower.style.zIndex =
+      String(Math.floor(Math.random() * 5) + 1);
+
+    flowerField.appendChild(flower);
+    flowerNumber++;
   }
-
-  flowerPositions.push(position);
-  return position;
 }
 
-for (
-  let flowerNumber = 0;
-  flowerNumber < totalFlowers;
-  flowerNumber++
-) {
-  /*
-    Choose the flower design randomly so neighboring
-    flowers do not repeat in a fixed pattern.
-  */
-  const design =
-    flowerDesigns[
-      Math.floor(Math.random() * flowerDesigns.length)
-    ];
-
-  const flower =
-    createFlower(design, flowerNumber);
-
-  const position = createRandomPosition();
-
-  const minimumSize = isMobile ? 150 : 220;
-  const sizeRange = isMobile ? 85 : 135;
-
-  const flowerSize = Math.round(
-    (minimumSize + Math.random() * sizeRange) *
-      design.sizeMultiplier
-  );
-
-  const rotation =
-    Math.round(Math.random() * 50 - 25);
-
-  const shrinkDelay =
-    Math.floor(Math.random() * 7) * 25;
-
-  flower.style.setProperty(
-    "--flower-x",
-    position.x + "%"
-  );
-
-  flower.style.setProperty(
-    "--flower-y",
-    position.y + "%"
-  );
-
-  flower.style.setProperty(
-    "--flower-size",
-    flowerSize + "px"
-  );
-
-  flower.style.setProperty(
-    "--field-rotation",
-    rotation + "deg"
-  );
-
-  flower.style.setProperty(
-    "--shrink-delay",
-    shrinkDelay + "ms"
-  );
-
-  flower.style.zIndex =
-    String(Math.floor(Math.random() * 5) + 1);
-
-  flowerField.appendChild(flower);
-}
   frame.appendChild(flowerField);
 
   /* Centered opening message */
