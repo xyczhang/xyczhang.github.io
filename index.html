@@ -1775,6 +1775,59 @@ body.flower-intro-finished .flower-intro-message {
   pointer-events: none;
 }
 
+/* About photo arrow controls */
+.photo-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+
+  width: 260px;
+  max-width: 100%;
+  margin-top: 14px;
+}
+
+.photo-arrow {
+  display: grid;
+  place-items: center;
+
+  width: 44px;
+  height: 44px;
+  padding: 0;
+
+  color: var(--berry);
+  background: var(--pink-100);
+  border: 1px solid var(--pink-300);
+  border-radius: 50%;
+
+  font-size: 21px;
+  cursor: pointer;
+
+  transition:
+    color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.photo-arrow:hover {
+  color: white;
+  background: var(--pink-500);
+  transform: scale(1.08);
+}
+
+.photo-arrow:active {
+  transform: scale(0.92);
+}
+
+.photo-counter {
+  min-width: 48px;
+  color: var(--berry);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
   </style>
 </head>
 <script>
@@ -2118,46 +2171,76 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("click", createFlowerStamp);
 });
 </script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const photoDeck = document.querySelector(".photo-deck");
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const photoDeck = document.querySelector(".photo-deck");
+    const previousButton =
+      document.querySelector(".photo-previous");
+    const nextButton =
+      document.querySelector(".photo-next");
+    const photoCounter =
+      document.querySelector(".photo-counter");
 
-  if (!photoDeck) return;
-
-  photoDeck.setAttribute("role", "button");
-  photoDeck.setAttribute("tabindex", "0");
-  photoDeck.setAttribute(
-    "aria-label",
-    "Show the next photograph"
-  );
-
-  function showNextPhoto() {
-    const photoCards =
-      photoDeck.querySelectorAll(".photo-card");
-
-    photoCards.forEach(function (card) {
-      const currentPosition =
-        Number(card.dataset.position);
-
-      const nextPosition =
-        currentPosition === photoCards.length - 1
-          ? 0
-          : currentPosition + 1;
-
-      card.dataset.position = nextPosition;
-    });
-  }
-
-  photoDeck.addEventListener("click", showNextPhoto);
-
-  photoDeck.addEventListener("keydown", function (event) {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      showNextPhoto();
+    if (
+      !photoDeck ||
+      !previousButton ||
+      !nextButton
+    ) {
+      return;
     }
+
+    const photoCards = Array.from(
+      photoDeck.querySelectorAll(".photo-card")
+    );
+
+    function updateCounter() {
+      const frontPhoto = photoCards.find(function (card) {
+        return Number(card.dataset.position) === 0;
+      });
+
+      const photoNumber =
+        photoCards.indexOf(frontPhoto) + 1;
+
+      photoCounter.textContent =
+        photoNumber + " / " + photoCards.length;
+    }
+
+    function showNextPhoto() {
+      photoCards.forEach(function (card) {
+        const currentPosition =
+          Number(card.dataset.position);
+
+        card.dataset.position =
+          (currentPosition - 1 + photoCards.length) %
+          photoCards.length;
+      });
+
+      updateCounter();
+    }
+
+    function showPreviousPhoto() {
+      photoCards.forEach(function (card) {
+        const currentPosition =
+          Number(card.dataset.position);
+
+        card.dataset.position =
+          (currentPosition + 1) %
+          photoCards.length;
+      });
+
+      updateCounter();
+    }
+
+    nextButton.addEventListener("click", showNextPhoto);
+
+    previousButton.addEventListener(
+      "click",
+      showPreviousPhoto
+    );
+
+    updateCounter();
   });
-});
-</script>
+  </script>
 
     <body>
   <nav class="nav shell" aria-label="Main navigation">
@@ -2200,7 +2283,7 @@ document.addEventListener("DOMContentLoaded", function () {
           startOffset="50%"
           text-anchor="middle"
         >
-          DRAG ME AROUND • CLICK ON ME •
+          DRAG ME AROUND • CLICK ON ME
         </textPath>
       </text>
     </g>
@@ -2310,8 +2393,27 @@ document.addEventListener("DOMContentLoaded", function () {
       <img src="profile4.jpg" alt="Xuyao Zhang">
     </button>
   </div>
+  <div class="photo-controls">
+    <button
+      class="photo-arrow photo-previous"
+      type="button"
+      aria-label="Previous photograph"
+    >
+      ←
+    </button>
 
-  <p class="photo-deck-hint">Click a photo to rotate the stack ↻</p>
+    <span class="photo-counter" aria-live="polite">
+      1 / 4
+    </span>
+
+    <button
+      class="photo-arrow photo-next"
+      type="button"
+      aria-label="Next photograph"
+    >
+      →
+    </button>
+  </div>
   </div>
   </div>
 
