@@ -654,8 +654,7 @@ body {
       html { scroll-behavior: auto; }
       *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
     }
-
-/* Flower design variations */
+    /* Flower design variations */
 
 .flower-style-cherry .frame-petal {
   width: 38%;
@@ -689,7 +688,7 @@ body {
   background: linear-gradient(to top, #cc678d, #f3a9c3);
 }
 
-/* Hiding flowers after intro */
+/* Keep every flower permanently hidden after the intro */
 body.flower-intro-finished .floral-frame,
 body.flower-intro-finished .flower-border,
 body.flower-intro-finished .frame-flower,
@@ -737,7 +736,7 @@ body.flower-intro-finished .flower-rails {
   background: linear-gradient(to top, #c04f78, #f0a0bc);
 }
 
-/* Different centers (flower design) */
+/* Different centers */
 
 .flower-style-cherry .frame-flower-center {
   background:
@@ -762,7 +761,7 @@ body.flower-intro-finished .flower-rails {
     radial-gradient(circle, #ffd98c, #c7832b 72%);
 }
 
-/* Flower turning animation */
+/* Variables allow every side to use the same animation */
 
 .flower-border.left .frame-flower {
   --open-x: -36%;
@@ -815,8 +814,7 @@ body.flower-intro-finished .flower-rails {
       scale(1.08);
   }
 }
-
-/* Opening flower animation */
+    /* Opening flower animation */
 .floral-frame {
   opacity: 1;
   transition:
@@ -837,7 +835,8 @@ body:not(.flower-intro-finished) .shell {
   );
 }
 
-body.shell {
+body,
+.shell {
   transition:
     padding 700ms ease,
     width 700ms ease;
@@ -1083,7 +1082,6 @@ body.flower-intro-finished .shell {
 .flower-field .frame-flower:nth-child(3n + 2) {
   z-index: 1;
 }
-
 /* Text displayed above the opening flowers */
 .flower-intro-message {
   position: absolute;
@@ -1125,7 +1123,6 @@ body.flower-intro-finished .shell {
 body.flower-intro-finished .flower-intro-message {
   display: none;
 }
-
 /* Temporary flower stamp created by clicks */
 .cursor-flower-stamp {
   position: fixed;
@@ -1217,7 +1214,6 @@ body.flower-intro-finished .flower-intro-message {
       rotate(10deg);
   }
 }
-
 /* Reduce space between the main heading and description */
 .hero {
   justify-content: flex-start;
@@ -1234,6 +1230,303 @@ body.flower-intro-finished .flower-intro-message {
 @media (max-width: 800px) {
   .hero-heading {
     margin: 8vh 0 16px;
+  }
+}
+
+/* Expandable flower section menu */
+.hero {
+  overflow: visible;
+}
+
+.section-menu {
+  position: absolute;
+  right: 13%;
+  top: 27%;
+  z-index: 50;
+}
+
+.section-menu .flower-stamp {
+  position: relative;
+  inset: auto;
+  padding: 0;
+  border: 0;
+  font-family: inherit;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.section-menu .flower-stamp:hover {
+  box-shadow:
+    0 0 0 7px rgba(247, 214, 226, 0.55),
+    0 12px 30px rgba(123, 46, 75, 0.18);
+}
+
+.section-menu.open .flower-stamp {
+  animation: none;
+  transform: rotate(45deg) scale(1.05);
+}
+
+.section-outline {
+  position: absolute;
+  top: calc(100% + 16px);
+  right: 0;
+  width: 225px;
+  padding: 20px;
+
+  background: rgba(255, 249, 251, 0.97);
+  border: 1px solid var(--pink-300);
+  border-radius: 24px;
+  box-shadow: 0 18px 50px rgba(123, 46, 75, 0.2);
+  backdrop-filter: blur(12px);
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-12px) scale(0.94);
+  transform-origin: top right;
+
+  transition:
+    opacity 250ms ease,
+    visibility 250ms ease,
+    transform 250ms ease;
+}
+
+.section-menu.open .section-outline {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.section-outline p {
+  margin: 0 0 12px;
+  color: var(--pink-500);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.section-outline a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 5px;
+
+  color: var(--ink);
+  border-bottom: 1px solid var(--pink-200);
+  text-decoration: none;
+  font-size: 16px;
+
+  transition:
+    color 180ms ease,
+    padding 180ms ease;
+}
+
+.section-outline a:last-child {
+  border-bottom: 0;
+}
+
+.section-outline a span {
+  color: var(--pink-500);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.section-outline a:hover {
+  color: var(--pink-500);
+  padding-left: 10px;
+}
+
+@media (max-width: 800px) {
+  .section-menu {
+    right: 5%;
+    top: 25%;
+  }
+
+  .section-outline {
+    width: 200px;
+  }
+}
+
+/* Make the pink section-menu splotch draggable */
+.section-menu {
+  position: fixed;
+}
+
+.section-menu .flower-stamp {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.section-menu.dragging .flower-stamp {
+  cursor: grabbing;
+  animation: none;
+}
+
+/* Keep the menu outline visible near screen edges */
+.section-menu.menu-near-left .section-outline {
+  left: 0;
+  right: auto;
+  transform-origin: top left;
+}
+
+.section-menu.menu-near-bottom .section-outline {
+  top: auto;
+  bottom: calc(100% + 16px);
+  transform-origin: bottom right;
+}
+
+/* Circular drag instruction */
+.drag-hint {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 140px;
+  height: 140px;
+
+  overflow: visible;
+  pointer-events: none;
+
+  transform: translate(-50%, -50%);
+  opacity: 1;
+
+  transition:
+    opacity 350ms ease,
+    visibility 350ms ease;
+}
+
+.drag-hint path {
+  fill: none;
+}
+
+.drag-hint text {
+  fill: var(--berry);
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.drag-hint-orbit {
+  transform-origin: 70px 70px;
+  animation: rotateDragHint 12s linear infinite;
+}
+
+@keyframes rotateDragHint {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Hide the instruction after the first real click */
+.section-menu.hint-hidden .drag-hint {
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media (max-width: 800px) {
+  .drag-hint {
+    width: 112px;
+    height: 112px;
+  }
+
+  .drag-hint text {
+    font-size: 8px;
+  }
+}
+
+/* Smaller framed photograph with text on the right */
+.about {
+  grid-template-columns: minmax(220px, 310px) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(50px, 9vw, 130px);
+}
+
+.about-photo-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 28px;
+}
+
+.profile-photo {
+  width: 250px;
+  max-width: 100%;
+  aspect-ratio: 4 / 5;
+  padding: 10px;
+
+  background: var(--pink-200);
+  border: 2px solid var(--pink-300);
+  border-radius: 28px;
+
+  box-shadow:
+    12px 12px 0 var(--pink-100),
+    0 20px 45px rgba(123, 46, 75, 0.16);
+
+  transform: rotate(-2deg);
+}
+
+.profile-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 18px;
+}
+
+.about-copy {
+  align-self: center;
+  max-width: 650px;
+}
+
+.about-copy .about-title {
+  margin: 0 0 28px;
+  font-size: clamp(42px, 5vw, 72px);
+}
+
+@media (max-width: 800px) {
+  .about {
+    grid-template-columns: 1fr;
+    gap: 55px;
+  }
+
+  .profile-photo {
+    width: 210px;
+  }
+}
+
+/* Animated glow behind the main title */
+.hero-heading h1 {
+  animation: heroTitleGlow 3.2s ease-in-out infinite;
+  will-change: text-shadow;
+}
+
+@keyframes heroTitleGlow {
+  0%,
+  100% {
+    text-shadow:
+      0 0 5px rgba(216, 107, 147, 0.3),
+      0 0 12px rgba(216, 107, 147, 0.2);
+  }
+
+  35% {
+    text-shadow:
+      0 0 9px rgba(216, 107, 147, 0.65),
+      0 0 24px rgba(239, 184, 204, 0.55),
+      0 0 42px rgba(216, 107, 147, 0.35);
+  }
+
+  65% {
+    text-shadow:
+      0 0 14px rgba(216, 107, 147, 0.9),
+      0 0 34px rgba(239, 184, 204, 0.75),
+      0 0 60px rgba(216, 107, 147, 0.5);
   }
 }
 
@@ -1403,303 +1696,6 @@ body.flower-intro-finished .flower-intro-message {
   pointer-events: none;
 }
 
-/* Expandable flower section menu */
-.hero {
-  overflow: visible;
-}
-
-.section-menu {
-  position: absolute;
-  right: 13%;
-  top: 27%;
-  z-index: 50;
-}
-
-.section-menu .flower-stamp {
-  position: relative;
-  inset: auto;
-  padding: 0;
-  border: 0;
-  font-family: inherit;
-  cursor: pointer;
-  z-index: 2;
-}
-
-.section-menu .flower-stamp:hover {
-  box-shadow:
-    0 0 0 7px rgba(247, 214, 226, 0.55),
-    0 12px 30px rgba(123, 46, 75, 0.18);
-}
-
-.section-menu.open .flower-stamp {
-  animation: none;
-  transform: rotate(45deg) scale(1.05);
-}
-
-.section-outline {
-  position: absolute;
-  top: calc(100% + 16px);
-  right: 0;
-  width: 225px;
-  padding: 20px;
-
-  background: rgba(255, 249, 251, 0.97);
-  border: 1px solid var(--pink-300);
-  border-radius: 24px;
-  box-shadow: 0 18px 50px rgba(123, 46, 75, 0.2);
-  backdrop-filter: blur(12px);
-
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-12px) scale(0.94);
-  transform-origin: top right;
-
-  transition:
-    opacity 250ms ease,
-    visibility 250ms ease,
-    transform 250ms ease;
-}
-
-.section-menu.open .section-outline {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0) scale(1);
-}
-
-.section-outline p {
-  margin: 0 0 12px;
-  color: var(--pink-500);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.section-outline a {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 11px 5px;
-
-  color: var(--ink);
-  border-bottom: 1px solid var(--pink-200);
-  text-decoration: none;
-  font-size: 16px;
-
-  transition:
-    color 180ms ease,
-    padding 180ms ease;
-}
-
-.section-outline a:last-child {
-  border-bottom: 0;
-}
-
-.section-outline a span {
-  color: var(--pink-500);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-}
-
-.section-outline a:hover {
-  color: var(--pink-500);
-  padding-left: 10px;
-}
-
-@media (max-width: 800px) {
-  .section-menu {
-    right: 5%;
-    top: 25%;
-  }
-
-  .section-outline {
-    width: 200px;
-  }
-}
-
-/* Draggable outline section */
-.section-menu {
-  position: fixed;
-}
-
-.section-menu .flower-stamp {
-  cursor: grab;
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.section-menu.dragging .flower-stamp {
-  cursor: grabbing;
-  animation: none;
-}
-
-/* Keep the menu outline visible near screen edges */
-.section-menu.menu-near-left .section-outline {
-  left: 0;
-  right: auto;
-  transform-origin: top left;
-}
-
-.section-menu.menu-near-bottom .section-outline {
-  top: auto;
-  bottom: calc(100% + 16px);
-  transform-origin: bottom right;
-}
-
-/* Circular drag instruction */
-.drag-hint {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 140px;
-  height: 140px;
-
-  overflow: visible;
-  pointer-events: none;
-
-  transform: translate(-50%, -50%);
-  opacity: 1;
-
-  transition:
-    opacity 350ms ease,
-    visibility 350ms ease;
-}
-
-.drag-hint path {
-  fill: none;
-}
-
-.drag-hint text {
-  fill: var(--berry);
-  font-family: Arial, sans-serif;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1.4px;
-  text-transform: uppercase;
-}
-
-.drag-hint-orbit {
-  transform-origin: 70px 70px;
-  animation: rotateDragHint 12s linear infinite;
-}
-
-@keyframes rotateDragHint {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Hide the instruction after the first real click */
-.section-menu.hint-hidden .drag-hint {
-  opacity: 0;
-  visibility: hidden;
-}
-
-@media (max-width: 800px) {
-  .drag-hint {
-    width: 112px;
-    height: 112px;
-  }
-
-  .drag-hint text {
-    font-size: 8px;
-  }
-}
-
-/* About me photos */
-.about {
-  grid-template-columns: minmax(220px, 310px) minmax(0, 1fr);
-  align-items: center;
-  gap: clamp(50px, 9vw, 130px);
-}
-
-.about-photo-column {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 28px;
-}
-
-.profile-photo {
-  width: 250px;
-  max-width: 100%;
-  aspect-ratio: 4 / 5;
-  padding: 10px;
-
-  background: var(--pink-200);
-  border: 2px solid var(--pink-300);
-  border-radius: 28px;
-
-  box-shadow:
-    12px 12px 0 var(--pink-100),
-    0 20px 45px rgba(123, 46, 75, 0.16);
-
-  transform: rotate(-2deg);
-}
-
-.profile-photo img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 18px;
-}
-
-.about-copy {
-  align-self: center;
-  max-width: 650px;
-}
-
-.about-copy .about-title {
-  margin: 0 0 28px;
-  font-size: clamp(42px, 5vw, 72px);
-}
-
-@media (max-width: 800px) {
-  .about {
-    grid-template-columns: 1fr;
-    gap: 55px;
-  }
-
-  .profile-photo {
-    width: 210px;
-  }
-}
-
-/* Animated glow behind the main title */
-.hero-heading h1 {
-  animation: heroTitleGlow 3.2s ease-in-out infinite;
-  will-change: text-shadow;
-}
-
-@keyframes heroTitleGlow {
-  0%,
-  100% {
-    text-shadow:
-      0 0 5px rgba(216, 107, 147, 0.3),
-      0 0 12px rgba(216, 107, 147, 0.2);
-  }
-
-  35% {
-    text-shadow:
-      0 0 9px rgba(216, 107, 147, 0.65),
-      0 0 24px rgba(239, 184, 204, 0.55),
-      0 0 42px rgba(216, 107, 147, 0.35);
-  }
-
-  65% {
-    text-shadow:
-      0 0 14px rgba(216, 107, 147, 0.9),
-      0 0 34px rgba(239, 184, 204, 0.75),
-      0 0 60px rgba(216, 107, 147, 0.5);
-  }
-}
-
 /* Front photo */
 .photo-card[data-position="0"] {
   z-index: 4;
@@ -1850,133 +1846,133 @@ body.flower-intro-finished .flower-intro-message {
   object-fit: cover;
 }
 
-/* Detailed growing flower vine */
-.hero-vine {
-  width: 100%;
-  height: clamp(100px, 13vw, 165px);
-  margin: 4px 0 18px;
-  overflow: hidden;
-  opacity: 0;
-  pointer-events: none;
-}
+  /* Detailed growing flower vine */
+  .hero-vine {
+    width: 100%;
+    height: clamp(100px, 13vw, 165px);
+    margin: 4px 0 18px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
 
-.hero-vine svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
+  .hero-vine svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
 
-.vine-stem,
-.vine-tendril {
-  fill: none;
-  stroke: url("#vine-gradient");
-  stroke-width: 4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
+  .vine-stem,
+  .vine-tendril {
+    fill: none;
+    stroke: url("#vine-gradient");
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
 
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-}
-
-.vine-tendril {
-  stroke-width: 2.5;
-}
-
-.vine-leaf {
-  fill: #bc6382;
-}
-
-.vine-blossom {
-  filter: drop-shadow(0 3px 4px rgba(123, 46, 75, 0.18));
-}
-
-.vine-light {
-  color: #ffd8e5;
-}
-
-.vine-soft {
-  color: #ee9fba;
-}
-
-.vine-deep {
-  color: #d86790;
-}
-
-.vine-bud {
-  color: #de789d;
-}
-
-.vine-detail {
-  opacity: 0;
-  scale: 0.15;
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
-body.flower-intro-finished .hero-vine {
-  opacity: 1;
-}
-
-body.flower-intro-finished .vine-stem {
-  animation: growDetailedVine 2.2s ease-in-out forwards;
-}
-
-body.flower-intro-finished .vine-tendril {
-  animation: growDetailedVine 850ms ease-out
-    var(--vine-delay) forwards;
-}
-
-body.flower-intro-finished .vine-detail {
-  animation: revealVineFlower 550ms
-    cubic-bezier(0.22, 1, 0.36, 1)
-    var(--vine-delay) forwards;
-}
-
-@keyframes growDetailedVine {
-  from {
+    stroke-dasharray: 1;
     stroke-dashoffset: 1;
   }
 
-  to {
-    stroke-dashoffset: 0;
+  .vine-tendril {
+    stroke-width: 2.5;
   }
-}
 
-@keyframes revealVineFlower {
-  0% {
+  .vine-leaf {
+    fill: #bc6382;
+  }
+
+  .vine-blossom {
+    filter: drop-shadow(0 3px 4px rgba(123, 46, 75, 0.18));
+  }
+
+  .vine-light {
+    color: #ffd8e5;
+  }
+
+  .vine-soft {
+    color: #ee9fba;
+  }
+
+  .vine-deep {
+    color: #d86790;
+  }
+
+  .vine-bud {
+    color: #de789d;
+  }
+
+  .vine-detail {
     opacity: 0;
     scale: 0.15;
+    transform-box: fill-box;
+    transform-origin: center;
   }
 
-  70% {
+  body.flower-intro-finished .hero-vine {
     opacity: 1;
-    scale: 1.15;
   }
 
-  100% {
-    opacity: 1;
-    scale: 1;
-  }
-}
-
-@media (max-width: 800px) {
-  .hero-vine {
-    height: 105px;
-    margin: 8px 0 14px;
+  body.flower-intro-finished .vine-stem {
+    animation: growDetailedVine 2.2s ease-in-out forwards;
   }
 
-  .vine-stem {
-    stroke-width: 4.5;
+  body.flower-intro-finished .vine-tendril {
+    animation: growDetailedVine 850ms ease-out
+      var(--vine-delay) forwards;
   }
 
-  .vine-tendril {
-    stroke-width: 3;
+  body.flower-intro-finished .vine-detail {
+    animation: revealVineFlower 550ms
+      cubic-bezier(0.22, 1, 0.36, 1)
+      var(--vine-delay) forwards;
   }
-}
 
-/* Improving about me spacing */
+  @keyframes growDetailedVine {
+    from {
+      stroke-dashoffset: 1;
+    }
+
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes revealVineFlower {
+    0% {
+      opacity: 0;
+      scale: 0.15;
+    }
+
+    70% {
+      opacity: 1;
+      scale: 1.15;
+    }
+
+    100% {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .hero-vine {
+      height: 105px;
+      margin: 8px 0 14px;
+    }
+
+    .vine-stem {
+      stroke-width: 4.5;
+    }
+
+    .vine-tendril {
+      stroke-width: 3;
+    }
+  }
+
+/* Larger About gallery and smaller text */
 .about {
   grid-template-columns:
     minmax(330px, 400px)
@@ -2006,6 +2002,7 @@ body.flower-intro-finished .vine-detail {
   max-width: 100%;
 }
 
+/* Smaller text on the right */
 .about-copy .about-title {
   margin: 0 0 22px;
   font-size: clamp(34px, 4vw, 54px);
@@ -2053,888 +2050,897 @@ body.flower-intro-finished .vine-detail {
     font-size: 19px;
   }
 }
-</style>
 
+  </style>
 </head>
-  <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const flowerSelector =
-      ".floral-frame, .flower-field, .flower-border, " +
-      ".frame-flower, .edge-bloom, .flower-rails";
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const flowerSelector =
+    ".floral-frame, .flower-field, .flower-border, " +
+    ".frame-flower, .edge-bloom, .flower-rails";
 
-    function removeAllFlowers() {
-      document
-        .querySelectorAll(flowerSelector)
-        .forEach(function (element) {
-          element.remove();
-        });
-    }
-
-    /* Remove anything created by older flower code */
-    removeAllFlowers();
-    document.body.classList.remove("flower-intro-finished");
-
-    const isMobile = window.innerWidth <= 700;
-
-    const frame = document.createElement("div");
-    frame.className = "floral-frame";
-    frame.setAttribute("aria-hidden", "true");
-
-    const flowerField = document.createElement("div");
-    flowerField.className = "flower-field";
-
-    /* Lower petal counts keep the animation smooth while
-    preserving the different flower appearances.*/
-    const flowerDesigns = [
-      {
-        className: "flower-cherry",
-        outerPetals: 5,
-        innerPetals: 3,
-        sizeMultiplier: 0.9
-      },
-      {
-        className: "flower-daisy",
-        outerPetals: 8,
-        innerPetals: 4,
-        sizeMultiplier: 0.9
-      },
-      {
-        className: "flower-peony",
-        outerPetals: 8,
-        innerPetals: 6,
-        sizeMultiplier: 1.12
-      },
-      {
-        className: "flower-star",
-        outerPetals: 7,
-        innerPetals: 4,
-        sizeMultiplier: 0.94
-      },
-      {
-        className: "flower-plum",
-        outerPetals: 5,
-        innerPetals: 3,
-        sizeMultiplier: 0.84
-      },
-      {
-        className: "flower-camellia",
-        outerPetals: 8,
-        innerPetals: 5,
-        sizeMultiplier: 1.08
-      }
-    ];
-
-    function createFlower(design, flowerNumber) {
-      const flower = document.createElement("div");
-
-      flower.className =
-        "frame-flower " + design.className;
-
-      flower.dataset.flowerNumber = flowerNumber;
-
-      /* Outer petals */
-      for (
-        let petalIndex = 0;
-        petalIndex < design.outerPetals;
-        petalIndex++
-      ) {
-        const petal = document.createElement("span");
-        petal.className = "frame-petal";
-
-        petal.style.setProperty(
-          "--petal-angle",
-          petalIndex * (360 / design.outerPetals) + "deg"
-        );
-
-        petal.style.setProperty(
-          "--petal-number",
-          petalIndex
-        );
-
-        flower.appendChild(petal);
-      }
-
-      /* Inner petals */
-      for (
-        let petalIndex = 0;
-        petalIndex < design.innerPetals;
-        petalIndex++
-      ) {
-        const petal = document.createElement("span");
-        petal.className = "frame-petal inner";
-
-        petal.style.setProperty(
-          "--petal-angle",
-          petalIndex * (360 / design.innerPetals) +
-            180 / design.innerPetals +
-            "deg"
-        );
-
-        petal.style.setProperty(
-          "--petal-number",
-          petalIndex + 2
-        );
-
-        flower.appendChild(petal);
-      }
-
-      const center = document.createElement("span");
-      center.className = "frame-flower-center";
-      flower.appendChild(center);
-
-      return flower;
-    }
-
-  /* Divide the screen into invisible areas, then place each
-  flower randomly inside its area. This fills the screen
-  without making the flowers look like straight lines. Additionally, 
-  the flower variety is random and assorted. */
-  const horizontalAreas = isMobile ? 4 : 7;
-  const verticalAreas = isMobile ? 7 : 5;
-
-  const areaWidth = 100 / horizontalAreas;
-  const areaHeight = 100 / verticalAreas;
-
-  let flowerNumber = 0;
-
-  for (let row = 0; row < verticalAreas; row++) {
-    for (
-      let column = 0;
-      column < horizontalAreas;
-      column++
-    ) 
-    {
-      const design =
-        flowerDesigns[
-          Math.floor(Math.random() * flowerDesigns.length)
-        ];
-
-      const flower =
-        createFlower(design, flowerNumber);
-
-      /*
-        Start at the center of an area, then add enough
-        randomness to prevent visible rows and columns.
-      */
-      const randomHorizontalMovement =
-        (Math.random() - 0.5) * areaWidth * 0.85;
-
-      const randomVerticalMovement =
-        (Math.random() - 0.5) * areaHeight * 0.85;
-
-      const xPosition =
-        (column + 0.5) * areaWidth +
-        randomHorizontalMovement;
-
-      const yPosition =
-        (row + 0.5) * areaHeight +
-        randomVerticalMovement;
-
-      /*
-        Calculate a flower size large enough to overlap
-        neighboring areas and cover the entire screen.
-      */
-      const areaWidthInPixels =
-        window.innerWidth / horizontalAreas;
-
-      const areaHeightInPixels =
-        window.innerHeight / verticalAreas;
-
-      const minimumFlowerSize =
-        Math.max(
-          areaWidthInPixels,
-          areaHeightInPixels
-        ) * 1.65;
-
-      const sizeVariation =
-        Math.random() * (isMobile ? 45 : 75);
-
-      const flowerSize = Math.round(
-        (minimumFlowerSize + sizeVariation) *
-          design.sizeMultiplier
-        );
-
-      const rotation =
-        Math.round(Math.random() * 60 - 30);
-
-      const shrinkDelay =
-        Math.floor(Math.random() * 7) * 25;
-
-      flower.style.setProperty(
-        "--flower-x",
-        xPosition + "%"
-      );
-
-      flower.style.setProperty(
-        "--flower-y",
-        yPosition + "%"
-      );
-
-      flower.style.setProperty(
-        "--flower-size",
-        flowerSize + "px"
-      );
-
-      flower.style.setProperty(
-        "--field-rotation",
-        rotation + "deg"
-      );
-
-      flower.style.setProperty(
-        "--shrink-delay",
-        shrinkDelay + "ms"
-      );
-
-      flower.style.zIndex =
-        String(Math.floor(Math.random() * 5) + 1);
-
-      flowerField.appendChild(flower);
-        flowerNumber++;
-    }
+  function removeAllFlowers() {
+    document
+      .querySelectorAll(flowerSelector)
+      .forEach(function (element) {
+        element.remove();
+      });
   }
 
-    frame.appendChild(flowerField);
+  /* Remove anything created by older flower code */
+  removeAllFlowers();
+  document.body.classList.remove("flower-intro-finished");
 
-    /* Centered opening message */
-    const introMessage = document.createElement("div");
-    introMessage.className = "flower-intro-message";
+  const isMobile = window.innerWidth <= 700;
 
-    const introTitle = document.createElement("h2");
-    introTitle.textContent = "hey!";
+  const frame = document.createElement("div");
+  frame.className = "floral-frame";
+  frame.setAttribute("aria-hidden", "true");
 
-    const introHint = document.createElement("p");
-    introHint.textContent = "<click here>";
+  const flowerField = document.createElement("div");
+  flowerField.className = "flower-field";
 
-    introMessage.appendChild(introTitle);
-    introMessage.appendChild(introHint);
-    frame.appendChild(introMessage);
+  /*
+    Lower petal counts keep the animation smooth while
+    preserving the different flower appearances.
+  */
+  const flowerDesigns = [
+    {
+      className: "flower-cherry",
+      outerPetals: 5,
+      innerPetals: 3,
+      sizeMultiplier: 0.9
+    },
+    {
+      className: "flower-daisy",
+      outerPetals: 8,
+      innerPetals: 4,
+      sizeMultiplier: 0.9
+    },
+    {
+      className: "flower-peony",
+      outerPetals: 8,
+      innerPetals: 6,
+      sizeMultiplier: 1.12
+    },
+    {
+      className: "flower-star",
+      outerPetals: 7,
+      innerPetals: 4,
+      sizeMultiplier: 0.94
+    },
+    {
+      className: "flower-plum",
+      outerPetals: 5,
+      innerPetals: 3,
+      sizeMultiplier: 0.84
+    },
+    {
+      className: "flower-camellia",
+      outerPetals: 8,
+      innerPetals: 5,
+      sizeMultiplier: 1.08
+    }
+  ];
 
-    document.body.appendChild(frame);
+  function createFlower(design, flowerNumber) {
+    const flower = document.createElement("div");
 
-    const flowers =
-      flowerField.querySelectorAll(".frame-flower");
+    flower.className =
+      "frame-flower " + design.className;
 
-    /* Bloom all opening flowers together */
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        flowers.forEach(function (flower) {
-          flower.classList.add("open");
-        });
-      });
-    });
+    flower.dataset.flowerNumber = flowerNumber;
 
-    let flowersDismissed = false;
+    /* Outer petals */
+    for (
+      let petalIndex = 0;
+      petalIndex < design.outerPetals;
+      petalIndex++
+    ) {
+      const petal = document.createElement("span");
+      petal.className = "frame-petal";
 
-    function dismissOpeningFlowers() {
-      if (flowersDismissed) return;
+      petal.style.setProperty(
+        "--petal-angle",
+        petalIndex * (360 / design.outerPetals) + "deg"
+      );
 
-      flowersDismissed = true;
-      frame.classList.add("shrink-away");
+      petal.style.setProperty(
+        "--petal-number",
+        petalIndex
+      );
 
-      /*
-        Wait until the shrinking transition finishes
-        before deleting the flower screen.
-      */
-      setTimeout(function () {
-        document.body.classList.add(
-          "flower-intro-finished"
-        );
-
-        removeAllFlowers();
-      }, 1050);
+      flower.appendChild(petal);
     }
 
-    document.addEventListener(
-      "click",
-      dismissOpeningFlowers,
-      { once: true }
+    /* Inner petals */
+    for (
+      let petalIndex = 0;
+      petalIndex < design.innerPetals;
+      petalIndex++
+    ) {
+      const petal = document.createElement("span");
+      petal.className = "frame-petal inner";
+
+      petal.style.setProperty(
+        "--petal-angle",
+        petalIndex * (360 / design.innerPetals) +
+          180 / design.innerPetals +
+          "deg"
+      );
+
+      petal.style.setProperty(
+        "--petal-number",
+        petalIndex + 2
+      );
+
+      flower.appendChild(petal);
+    }
+
+    const center = document.createElement("span");
+    center.className = "frame-flower-center";
+    flower.appendChild(center);
+
+    return flower;
+  }
+
+  /*
+    Only create full-screen background flowers.
+    No border flowers are created.
+  */
+  /*
+  Create a scattered arrangement instead of rows.
+  Every reload produces a slightly different layout.
+*/
+/*
+  Divide the screen into invisible areas, then place each
+  flower randomly inside its area. This fills the screen
+  without making the flowers look like straight lines.
+*/
+const horizontalAreas = isMobile ? 4 : 7;
+const verticalAreas = isMobile ? 7 : 5;
+
+const areaWidth = 100 / horizontalAreas;
+const areaHeight = 100 / verticalAreas;
+
+let flowerNumber = 0;
+
+for (let row = 0; row < verticalAreas; row++) {
+  for (
+    let column = 0;
+    column < horizontalAreas;
+    column++
+  ) {
+    const design =
+      flowerDesigns[
+        Math.floor(Math.random() * flowerDesigns.length)
+      ];
+
+    const flower =
+      createFlower(design, flowerNumber);
+
+    /*
+      Start at the center of an area, then add enough
+      randomness to prevent visible rows and columns.
+    */
+    const randomHorizontalMovement =
+      (Math.random() - 0.5) * areaWidth * 0.85;
+
+    const randomVerticalMovement =
+      (Math.random() - 0.5) * areaHeight * 0.85;
+
+    const xPosition =
+      (column + 0.5) * areaWidth +
+      randomHorizontalMovement;
+
+    const yPosition =
+      (row + 0.5) * areaHeight +
+      randomVerticalMovement;
+
+    /*
+      Calculate a flower size large enough to overlap
+      neighboring areas and cover the entire screen.
+    */
+    const areaWidthInPixels =
+      window.innerWidth / horizontalAreas;
+
+    const areaHeightInPixels =
+      window.innerHeight / verticalAreas;
+
+    const minimumFlowerSize =
+      Math.max(
+        areaWidthInPixels,
+        areaHeightInPixels
+      ) * 1.65;
+
+    const sizeVariation =
+      Math.random() * (isMobile ? 45 : 75);
+
+    const flowerSize = Math.round(
+      (minimumFlowerSize + sizeVariation) *
+        design.sizeMultiplier
     );
 
-    /* Temporary flower stamps created by later clicks */
-    const stampColors = [
-      {
-        light: "#f4a9c2",
-        dark: "#c84f7d"
-      },
-      {
-        light: "#ffd2e1",
-        dark: "#df769b"
-      },
-      {
-        light: "#ee87ad",
-        dark: "#ad3866"
-      },
-      {
-        light: "#f8bfd1",
-        dark: "#d85f89"
-      }
-    ];
+    const rotation =
+      Math.round(Math.random() * 60 - 30);
 
-    function createFlowerStamp(event) {
-      const stamp = document.createElement("div");
-      stamp.className = "cursor-flower-stamp";
+    const shrinkDelay =
+      Math.floor(Math.random() * 7) * 25;
 
-      const colors =
-        stampColors[
-          Math.floor(Math.random() * stampColors.length)
-        ];
+    flower.style.setProperty(
+      "--flower-x",
+      xPosition + "%"
+    );
 
-      stamp.style.setProperty(
-        "--stamp-x",
-        event.clientX + "px"
+    flower.style.setProperty(
+      "--flower-y",
+      yPosition + "%"
+    );
+
+    flower.style.setProperty(
+      "--flower-size",
+      flowerSize + "px"
+    );
+
+    flower.style.setProperty(
+      "--field-rotation",
+      rotation + "deg"
+    );
+
+    flower.style.setProperty(
+      "--shrink-delay",
+      shrinkDelay + "ms"
+    );
+
+    flower.style.zIndex =
+      String(Math.floor(Math.random() * 5) + 1);
+
+    flowerField.appendChild(flower);
+    flowerNumber++;
+  }
+}
+
+  frame.appendChild(flowerField);
+
+  /* Centered opening message */
+  const introMessage = document.createElement("div");
+  introMessage.className = "flower-intro-message";
+
+  const introTitle = document.createElement("h2");
+  introTitle.textContent = "hey!";
+
+  const introHint = document.createElement("p");
+  introHint.textContent = "<click here>";
+
+  introMessage.appendChild(introTitle);
+  introMessage.appendChild(introHint);
+  frame.appendChild(introMessage);
+
+  document.body.appendChild(frame);
+
+  const flowers =
+    flowerField.querySelectorAll(".frame-flower");
+
+  /* Bloom all opening flowers together */
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      flowers.forEach(function (flower) {
+        flower.classList.add("open");
+      });
+    });
+  });
+
+  let flowersDismissed = false;
+
+  function dismissOpeningFlowers() {
+    if (flowersDismissed) return;
+
+    flowersDismissed = true;
+    frame.classList.add("shrink-away");
+
+    /*
+      Wait until the shrinking transition finishes
+      before deleting the flower screen.
+    */
+    setTimeout(function () {
+      document.body.classList.add(
+        "flower-intro-finished"
       );
 
-      stamp.style.setProperty(
-        "--stamp-y",
-        event.clientY + "px"
+      removeAllFlowers();
+    }, 1050);
+  }
+
+  document.addEventListener(
+    "click",
+    dismissOpeningFlowers,
+    { once: true }
+  );
+
+  /* Temporary flower stamps created by later clicks */
+  const stampColors = [
+    {
+      light: "#f4a9c2",
+      dark: "#c84f7d"
+    },
+    {
+      light: "#ffd2e1",
+      dark: "#df769b"
+    },
+    {
+      light: "#ee87ad",
+      dark: "#ad3866"
+    },
+    {
+      light: "#f8bfd1",
+      dark: "#d85f89"
+    }
+  ];
+
+  function createFlowerStamp(event) {
+    const stamp = document.createElement("div");
+    stamp.className = "cursor-flower-stamp";
+
+    const colors =
+      stampColors[
+        Math.floor(Math.random() * stampColors.length)
+      ];
+
+    stamp.style.setProperty(
+      "--stamp-x",
+      event.clientX + "px"
+    );
+
+    stamp.style.setProperty(
+      "--stamp-y",
+      event.clientY + "px"
+    );
+
+    stamp.style.setProperty(
+      "--stamp-color",
+      colors.light
+    );
+
+    stamp.style.setProperty(
+      "--stamp-dark",
+      colors.dark
+    );
+
+    const petalCount = 7;
+
+    for (let i = 0; i < petalCount; i++) {
+      const petal = document.createElement("span");
+      petal.className = "stamp-petal";
+
+      petal.style.setProperty(
+        "--stamp-angle",
+        i * (360 / petalCount) + "deg"
       );
 
-      stamp.style.setProperty(
-        "--stamp-color",
-        colors.light
-      );
-
-      stamp.style.setProperty(
-        "--stamp-dark",
-        colors.dark
-      );
-
-      const petalCount = 7;
-
-      for (let i = 0; i < petalCount; i++) {
-        const petal = document.createElement("span");
-        petal.className = "stamp-petal";
-
-        petal.style.setProperty(
-          "--stamp-angle",
-          i * (360 / petalCount) + "deg"
-        );
-
-        stamp.appendChild(petal);
-      }
-
-      document.body.appendChild(stamp);
-
-      setTimeout(function () {
-        stamp.remove();
-      }, 1100);
+      stamp.appendChild(petal);
     }
 
-    document.addEventListener("click", createFlowerStamp);
-  });
-  </script>
+    document.body.appendChild(stamp);
 
+    setTimeout(function () {
+      stamp.remove();
+    }, 1100);
+  }
+
+  document.addEventListener("click", createFlowerStamp);
+});
+</script>
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const photoDeck = document.querySelector(".photo-deck");
-      const previousButton =
-        document.querySelector(".photo-previous");
-      const nextButton =
-        document.querySelector(".photo-next");
-      const photoCounter =
-        document.querySelector(".photo-counter");
+  document.addEventListener("DOMContentLoaded", function () {
+    const photoDeck = document.querySelector(".photo-deck");
+    const previousButton =
+      document.querySelector(".photo-previous");
+    const nextButton =
+      document.querySelector(".photo-next");
+    const photoCounter =
+      document.querySelector(".photo-counter");
 
-      if (
-        !photoDeck ||
-        !previousButton ||
-        !nextButton
-      ) 
-      {
-        return;
-      }
+    if (
+      !photoDeck ||
+      !previousButton ||
+      !nextButton
+    ) {
+      return;
+    }
 
-      const photoCards = Array.from(
-        photoDeck.querySelectorAll(".photo-card")
-      );
+    const photoCards = Array.from(
+      photoDeck.querySelectorAll(".photo-card")
+    );
 
-      function updateCounter() {
-        const frontPhoto = photoCards.find(function (card) {
-          return Number(card.dataset.position) === 0;
-        });
+    function updateCounter() {
+      const frontPhoto = photoCards.find(function (card) {
+        return Number(card.dataset.position) === 0;
+      });
 
-        const photoNumber =
-          photoCards.indexOf(frontPhoto) + 1;
+      const photoNumber =
+        photoCards.indexOf(frontPhoto) + 1;
 
-        photoCounter.textContent =
-          photoNumber + " / " + photoCards.length;
-      }
+      photoCounter.textContent =
+        photoNumber + " / " + photoCards.length;
+    }
 
-      function showNextPhoto() {
-        photoCards.forEach(function (card) {
-          const currentPosition =
-            Number(card.dataset.position);
+    function showNextPhoto() {
+      photoCards.forEach(function (card) {
+        const currentPosition =
+          Number(card.dataset.position);
 
-          card.dataset.position =
-            (currentPosition - 1 + photoCards.length) %
-            photoCards.length;
-        });
-
-        updateCounter();
-      }
-
-      function showPreviousPhoto() {
-        photoCards.forEach(function (card) {
-          const currentPosition =
-            Number(card.dataset.position);
-
-          card.dataset.position =
-            (currentPosition + 1) %
-            photoCards.length;
-        });
-
-        updateCounter();
-      }
-
-      nextButton.addEventListener("click", showNextPhoto);
-
-      previousButton.addEventListener(
-        "click",
-        showPreviousPhoto
-      );
+        card.dataset.position =
+          (currentPosition - 1 + photoCards.length) %
+          photoCards.length;
+      });
 
       updateCounter();
-    });
-  </script>
+    }
 
-    <body>
-  <nav class="nav shell" aria-label="Main navigation">
-    <a class="wordmark" href="#top" aria-label="Your Name, home">XZ<span>.</span></a>
-    <div class="nav-links">
-      <a class="nav-link" href="#work">Projects</a>
-      <a class="nav-link" href="#about">About</a>
-      <a class="nav-contact" href="#contact">Connect with Me! <span aria-hidden="true">↗</span></a>
+    function showPreviousPhoto() {
+      photoCards.forEach(function (card) {
+        const currentPosition =
+          Number(card.dataset.position);
+
+        card.dataset.position =
+          (currentPosition + 1) %
+          photoCards.length;
+      });
+
+      updateCounter();
+    }
+
+    nextButton.addEventListener("click", showNextPhoto);
+
+    previousButton.addEventListener(
+      "click",
+      showPreviousPhoto
+    );
+
+    updateCounter();
+  });
+  
+</script>
+
+  <body>
+<nav class="nav shell" aria-label="Main navigation">
+  <a class="wordmark" href="#top" aria-label="Your Name, home">XZ<span>.</span></a>
+  <div class="nav-links">
+    <a class="nav-link" href="#work">Projects</a>
+    <a class="nav-link" href="#about">About</a>
+    <a class="nav-contact" href="#contact">Connect with Me! <span aria-hidden="true">↗</span></a>
+  </div>
+</nav>
+
+<header class="hero shell" id="top">
+  <div class="hero-kicker"><span class="status-dot"></span> Pittsburgh, PA · chloezha@andrew.cmu.edu</div>
+  <div class="hero-heading">
+    <h1>Hi! I'm <br><em> Xuyao Zhang </em></h1>
     </div>
-  </nav>
+    <div class="hero-vine" aria-hidden="true">
+<svg viewBox="0 0 1200 170">
+  <defs>
+    <linearGradient
+      id="vine-gradient"
+      x1="0"
+      y1="0"
+      x2="1"
+      y2="0"
+    >
+      <stop offset="0%" stop-color="#7b2e4b" />
+      <stop offset="50%" stop-color="#b94f76" />
+      <stop offset="100%" stop-color="#7b2e4b" />
+    </linearGradient>
 
-  <header class="hero shell" id="top">
-    <div class="hero-kicker"><span class="status-dot"></span> Pittsburgh, PA · chloezha@andrew.cmu.edu</div>
-    <div class="hero-heading">
-      <h1>Hi! I'm <br><em> Xuyao Zhang </em></h1>
-      </div>
-      <div class="hero-vine" aria-hidden="true">
-  <svg viewBox="0 0 1200 170">
-    <defs>
-      <linearGradient
-        id="vine-gradient"
-        x1="0"
-        y1="0"
-        x2="1"
-        y2="0"
-      >
-        <stop offset="0%" stop-color="#7b2e4b" />
-        <stop offset="50%" stop-color="#b94f76" />
-        <stop offset="100%" stop-color="#7b2e4b" />
-      </linearGradient>
-
-      <!-- Reusable flower -->
-      <g id="vine-flower-shape">
-        <ellipse
-          cx="0"
-          cy="-13"
-          rx="10"
-          ry="16"
-          fill="currentColor"
-        />
-        <ellipse
-          cx="0"
-          cy="-13"
-          rx="10"
-          ry="16"
-          fill="currentColor"
-          transform="rotate(72)"
-        />
-        <ellipse
-          cx="0"
-          cy="-13"
-          rx="10"
-          ry="16"
-          fill="currentColor"
-          transform="rotate(144)"
-        />
-        <ellipse
-          cx="0"
-          cy="-13"
-          rx="10"
-          ry="16"
-          fill="currentColor"
-          transform="rotate(216)"
-        />
-        <ellipse
-          cx="0"
-          cy="-13"
-          rx="10"
-          ry="16"
-          fill="currentColor"
-          transform="rotate(288)"
-        />
-
-        <circle
-          cx="0"
-          cy="0"
-          r="7"
-          fill="#f0bd63"
-        />
-        <circle
-          cx="-2"
-          cy="-2"
-          r="2"
-          fill="#fff3bc"
-        />
-      </g>
-
-      <!-- Reusable flower bud -->
-      <g id="vine-bud-shape">
-        <ellipse
-          cx="0"
-          cy="-5"
-          rx="11"
-          ry="16"
-          fill="currentColor"
-        />
-        <path
-          d="M -9 3 Q 0 12 9 3"
-          fill="#9c4563"
-        />
-      </g>
-    </defs>
-
-    <!-- Main vine -->
-    <path
-      class="vine-stem"
-      pathLength="1"
-      d="M 0 108
-         C 110 68, 205 132, 315 100
-         S 515 52, 620 91
-         S 810 130, 925 88
-         S 1090 45, 1200 78"
-    />
-
-    <!-- Curling branches -->
-    <path
-      class="vine-tendril"
-      style="--vine-delay: 0.4s"
-      pathLength="1"
-      d="M 135 94 Q 106 55 65 54 Q 42 54 48 73"
-    />
-
-    <path
-      class="vine-tendril"
-      style="--vine-delay: 0.55s"
-      pathLength="1"
-      d="M 268 110 Q 275 64 227 43"
-    />
-
-    <path
-      class="vine-tendril"
-      style="--vine-delay: 0.7s"
-      pathLength="1"
-      d="M 422 76 Q 445 37 497 42"
-    />
-
-    <path
-      class="vine-tendril"
-      style="--vine-delay: 0.85s"
-      pathLength="1"
-      d="M 587 81 Q 568 42 528 30"
-    />
-
-    <path
-      class="vine-tendril"
-      style="--vine-delay: 1s"
-      pathLength="1"
-      d="M 737 113 Q 758 70 806 56"
-    />
-
-    <path
-      class="vine-tendril"
-      style="--vine-delay: 1.15s"
-      pathLength="1"
-      d="M 914 92 Q 887 47 851 39"
-    />
-
-    <path
-      class="vine-tendril"
-      style="--vine-delay: 1.3s"
-      pathLength="1"
-      d="M 1055 62 Q 1081 25 1130 35 Q 1150 40 1140 56"
-    />
-
-    <!-- Leaves -->
-    <ellipse
-      class="vine-detail vine-leaf"
-      style="--vine-delay: 0.55s"
-      cx="105"
-      cy="72"
-      rx="22"
-      ry="9"
-      transform="rotate(28 105 72)"
-    />
-
-    <ellipse
-      class="vine-detail vine-leaf"
-      style="--vine-delay: 0.7s"
-      cx="190"
-      cy="107"
-      rx="23"
-      ry="9"
-      transform="rotate(-20 190 107)"
-    />
-
-    <ellipse
-      class="vine-detail vine-leaf"
-      style="--vine-delay: 0.85s"
-      cx="247"
-      cy="55"
-      rx="20"
-      ry="8"
-      transform="rotate(42 247 55)"
-    />
-
-    <ellipse
-      class="vine-detail vine-leaf"
-      style="--vine-delay: 1s"
-      cx="375"
-      cy="88"
-      rx="24"
-      ry="9"
-      transform="rotate(-30 375 88)"
-    />
-
-    <ellipse
-      class="vine-detail vine-leaf"
-      style="--vine-delay: 1.15s"
-      cx="472"
-      cy="44"
-      rx="21"
-      ry="8"
-      transform="rotate(16 472 44)"
-    />
-
-    <ellipse
-      class="vine-detail vine-leaf"
-      style="--vine-delay: 1.3s"
-      cx="550"
-      cy="48"
-      rx="22"
-      ry="9"
-      transform="rotate(35 550 48)"
-    />
-
-    <ellipse
-      class="vine-detail vine-leaf"
-      style="--vine-delay: 1.45s"
-      cx="680"
-      cy="101"
-      rx="24"
-      ry="9"
-      transform="rotate(20 680 101)"
-    />
-
-    <ellipse
-      class="vine-detail vine-leaf"
-      style="--vine-delay: 1.6s"
-      cx="783"
-      cy="63"
-      rx="22"
-      ry="8"
-      transform="rotate(-28 783 63)"
-    />
-
-    <ellipse
-      class="vine-detail vine-leaf"
-      style="--vine-delay: 1.75s"
-      cx="872"
-      cy="51"
-      rx="21"
-      ry="8"
-      transform="rotate(38 872 51)"
-    />
-
-    <ellipse
-      class="vine-detail vine-leaf"
-      style="--vine-delay: 1.9s"
-      cx="975"
-      cy="73"
-      rx="24"
-      ry="9"
-      transform="rotate(-25 975 73)"
-    />
-
-    <ellipse
-      class="vine-detail vine-leaf"
-      style="--vine-delay: 2.05s"
-      cx="1095"
-      cy="40"
-      rx="21"
-      ry="8"
-      transform="rotate(-18 1095 40)"
-    />
-
-    <!-- Flowers -->
-    <use
-      href="#vine-flower-shape"
-      class="vine-detail vine-blossom vine-light"
-      style="--vine-delay: 0.7s"
-      transform="translate(65 54) scale(0.8)"
-    />
-
-    <use
-      href="#vine-flower-shape"
-      class="vine-detail vine-blossom vine-deep"
-      style="--vine-delay: 0.9s"
-      transform="translate(225 43) scale(1.05)"
-    />
-
-    <use
-      href="#vine-flower-shape"
-      class="vine-detail vine-blossom vine-soft"
-      style="--vine-delay: 1.1s"
-      transform="translate(350 94) scale(0.75)"
-    />
-
-    <use
-      href="#vine-flower-shape"
-      class="vine-detail vine-blossom vine-light"
-      style="--vine-delay: 1.3s"
-      transform="translate(498 42) scale(1.15)"
-    />
-
-    <use
-      href="#vine-flower-shape"
-      class="vine-detail vine-blossom vine-deep"
-      style="--vine-delay: 1.5s"
-      transform="translate(625 91) scale(0.85)"
-    />
-
-    <use
-      href="#vine-flower-shape"
-      class="vine-detail vine-blossom vine-soft"
-      style="--vine-delay: 1.7s"
-      transform="translate(807 56) scale(1.1)"
-    />
-
-    <use
-      href="#vine-flower-shape"
-      class="vine-detail vine-blossom vine-light"
-      style="--vine-delay: 1.9s"
-      transform="translate(925 88) scale(0.8)"
-    />
-
-    <use
-      href="#vine-flower-shape"
-      class="vine-detail vine-blossom vine-deep"
-      style="--vine-delay: 2.1s"
-      transform="translate(1130 35) scale(1.05)"
-    />
-
-    <!-- Flower buds -->
-    <use
-      href="#vine-bud-shape"
-      class="vine-detail vine-bud"
-      style="--vine-delay: 1.25s"
-      transform="translate(528 30) rotate(-28)"
-    />
-
-    <use
-      href="#vine-bud-shape"
-      class="vine-detail vine-bud"
-      style="--vine-delay: 1.85s"
-      transform="translate(851 39) rotate(-35)"
-    />
-  </svg>
-</div>
-    <div class="hero-bottom">
-    </div>
-    <div class="section-menu">
-  <svg
-    class="drag-hint"
-    viewBox="0 0 140 140"
-    aria-hidden="true"
-  >
-    <defs>
-      <path
-        id="drag-hint-path"
-        d="M 70,70
-           m -54,0
-           a 54,54 0 1,1 108,0
-           a 54,54 0 1,1 -108,0"
+    <!-- Reusable flower -->
+    <g id="vine-flower-shape">
+      <ellipse
+        cx="0"
+        cy="-13"
+        rx="10"
+        ry="16"
+        fill="currentColor"
       />
-    </defs>
+      <ellipse
+        cx="0"
+        cy="-13"
+        rx="10"
+        ry="16"
+        fill="currentColor"
+        transform="rotate(72)"
+      />
+      <ellipse
+        cx="0"
+        cy="-13"
+        rx="10"
+        ry="16"
+        fill="currentColor"
+        transform="rotate(144)"
+      />
+      <ellipse
+        cx="0"
+        cy="-13"
+        rx="10"
+        ry="16"
+        fill="currentColor"
+        transform="rotate(216)"
+      />
+      <ellipse
+        cx="0"
+        cy="-13"
+        rx="10"
+        ry="16"
+        fill="currentColor"
+        transform="rotate(288)"
+      />
 
-    <g class="drag-hint-orbit">
-      <text>
-        <textPath
-          href="#drag-hint-path"
-          startOffset="50%"
-          text-anchor="middle"
-        >
-          DRAG ME AROUND • CLICK ON ME
-        </textPath>
-      </text>
+      <circle
+        cx="0"
+        cy="0"
+        r="7"
+        fill="#f0bd63"
+      />
+      <circle
+        cx="-2"
+        cy="-2"
+        r="2"
+        fill="#fff3bc"
+      />
     </g>
-  </svg>
 
-  <button
-    class="flower-stamp"
-    type="button"
-    aria-expanded="false"
-    aria-controls="section-outline"
-    aria-label="Open website sections"
-  >
-    ✦
-  </button>
+    <!-- Reusable flower bud -->
+    <g id="vine-bud-shape">
+      <ellipse
+        cx="0"
+        cy="-5"
+        rx="11"
+        ry="16"
+        fill="currentColor"
+      />
+      <path
+        d="M -9 3 Q 0 12 9 3"
+        fill="#9c4563"
+      />
+    </g>
+  </defs>
 
-  <nav
-    class="section-outline"
-    id="section-outline"
-    aria-label="Website sections"
-  >
-    <p>Explore</p>
-    <a href="#top"><span>01</span> Home</a>
-    <a href="#work"><span>02</span> Projects</a>
-    <a href="#about"><span>03</span> About</a>
-    <a href="#services"><span>04</span> Experience </a>
-    <a href="#contact"><span>05</span> Contact</a>
-  </nav>
+  <!-- Main vine -->
+  <path
+    class="vine-stem"
+    pathLength="1"
+    d="M 0 108
+        C 110 68, 205 132, 315 100
+        S 515 52, 620 91
+        S 810 130, 925 88
+        S 1090 45, 1200 78"
+  />
+
+  <!-- Curling branches -->
+  <path
+    class="vine-tendril"
+    style="--vine-delay: 0.4s"
+    pathLength="1"
+    d="M 135 94 Q 106 55 65 54 Q 42 54 48 73"
+  />
+
+  <path
+    class="vine-tendril"
+    style="--vine-delay: 0.55s"
+    pathLength="1"
+    d="M 268 110 Q 275 64 227 43"
+  />
+
+  <path
+    class="vine-tendril"
+    style="--vine-delay: 0.7s"
+    pathLength="1"
+    d="M 422 76 Q 445 37 497 42"
+  />
+
+  <path
+    class="vine-tendril"
+    style="--vine-delay: 0.85s"
+    pathLength="1"
+    d="M 587 81 Q 568 42 528 30"
+  />
+
+  <path
+    class="vine-tendril"
+    style="--vine-delay: 1s"
+    pathLength="1"
+    d="M 737 113 Q 758 70 806 56"
+  />
+
+  <path
+    class="vine-tendril"
+    style="--vine-delay: 1.15s"
+    pathLength="1"
+    d="M 914 92 Q 887 47 851 39"
+  />
+
+  <path
+    class="vine-tendril"
+    style="--vine-delay: 1.3s"
+    pathLength="1"
+    d="M 1055 62 Q 1081 25 1130 35 Q 1150 40 1140 56"
+  />
+
+  <!-- Leaves -->
+  <ellipse
+    class="vine-detail vine-leaf"
+    style="--vine-delay: 0.55s"
+    cx="105"
+    cy="72"
+    rx="22"
+    ry="9"
+    transform="rotate(28 105 72)"
+  />
+
+  <ellipse
+    class="vine-detail vine-leaf"
+    style="--vine-delay: 0.7s"
+    cx="190"
+    cy="107"
+    rx="23"
+    ry="9"
+    transform="rotate(-20 190 107)"
+  />
+
+  <ellipse
+    class="vine-detail vine-leaf"
+    style="--vine-delay: 0.85s"
+    cx="247"
+    cy="55"
+    rx="20"
+    ry="8"
+    transform="rotate(42 247 55)"
+  />
+
+  <ellipse
+    class="vine-detail vine-leaf"
+    style="--vine-delay: 1s"
+    cx="375"
+    cy="88"
+    rx="24"
+    ry="9"
+    transform="rotate(-30 375 88)"
+  />
+
+  <ellipse
+    class="vine-detail vine-leaf"
+    style="--vine-delay: 1.15s"
+    cx="472"
+    cy="44"
+    rx="21"
+    ry="8"
+    transform="rotate(16 472 44)"
+  />
+
+  <ellipse
+    class="vine-detail vine-leaf"
+    style="--vine-delay: 1.3s"
+    cx="550"
+    cy="48"
+    rx="22"
+    ry="9"
+    transform="rotate(35 550 48)"
+  />
+
+  <ellipse
+    class="vine-detail vine-leaf"
+    style="--vine-delay: 1.45s"
+    cx="680"
+    cy="101"
+    rx="24"
+    ry="9"
+    transform="rotate(20 680 101)"
+  />
+
+  <ellipse
+    class="vine-detail vine-leaf"
+    style="--vine-delay: 1.6s"
+    cx="783"
+    cy="63"
+    rx="22"
+    ry="8"
+    transform="rotate(-28 783 63)"
+  />
+
+  <ellipse
+    class="vine-detail vine-leaf"
+    style="--vine-delay: 1.75s"
+    cx="872"
+    cy="51"
+    rx="21"
+    ry="8"
+    transform="rotate(38 872 51)"
+  />
+
+  <ellipse
+    class="vine-detail vine-leaf"
+    style="--vine-delay: 1.9s"
+    cx="975"
+    cy="73"
+    rx="24"
+    ry="9"
+    transform="rotate(-25 975 73)"
+  />
+
+  <ellipse
+    class="vine-detail vine-leaf"
+    style="--vine-delay: 2.05s"
+    cx="1095"
+    cy="40"
+    rx="21"
+    ry="8"
+    transform="rotate(-18 1095 40)"
+  />
+
+  <!-- Flowers -->
+  <use
+    href="#vine-flower-shape"
+    class="vine-detail vine-blossom vine-light"
+    style="--vine-delay: 0.7s"
+    transform="translate(65 54) scale(0.8)"
+  />
+
+  <use
+    href="#vine-flower-shape"
+    class="vine-detail vine-blossom vine-deep"
+    style="--vine-delay: 0.9s"
+    transform="translate(225 43) scale(1.05)"
+  />
+
+  <use
+    href="#vine-flower-shape"
+    class="vine-detail vine-blossom vine-soft"
+    style="--vine-delay: 1.1s"
+    transform="translate(350 94) scale(0.75)"
+  />
+
+  <use
+    href="#vine-flower-shape"
+    class="vine-detail vine-blossom vine-light"
+    style="--vine-delay: 1.3s"
+    transform="translate(498 42) scale(1.15)"
+  />
+
+  <use
+    href="#vine-flower-shape"
+    class="vine-detail vine-blossom vine-deep"
+    style="--vine-delay: 1.5s"
+    transform="translate(625 91) scale(0.85)"
+  />
+
+  <use
+    href="#vine-flower-shape"
+    class="vine-detail vine-blossom vine-soft"
+    style="--vine-delay: 1.7s"
+    transform="translate(807 56) scale(1.1)"
+  />
+
+  <use
+    href="#vine-flower-shape"
+    class="vine-detail vine-blossom vine-light"
+    style="--vine-delay: 1.9s"
+    transform="translate(925 88) scale(0.8)"
+  />
+
+  <use
+    href="#vine-flower-shape"
+    class="vine-detail vine-blossom vine-deep"
+    style="--vine-delay: 2.1s"
+    transform="translate(1130 35) scale(1.05)"
+  />
+
+  <!-- Flower buds -->
+  <use
+    href="#vine-bud-shape"
+    class="vine-detail vine-bud"
+    style="--vine-delay: 1.25s"
+    transform="translate(528 30) rotate(-28)"
+  />
+
+  <use
+    href="#vine-bud-shape"
+    class="vine-detail vine-bud"
+    style="--vine-delay: 1.85s"
+    transform="translate(851 39) rotate(-35)"
+  />
+</svg>
+</div>
+  <div class="hero-bottom">
+  </div>
+  <div class="section-menu">
+<svg
+  class="drag-hint"
+  viewBox="0 0 140 140"
+  aria-hidden="true"
+>
+  <defs>
+    <path
+      id="drag-hint-path"
+      d="M 70,70
+          m -54,0
+          a 54,54 0 1,1 108,0
+          a 54,54 0 1,1 -108,0"
+    />
+  </defs>
+
+  <g class="drag-hint-orbit">
+    <text>
+      <textPath
+        href="#drag-hint-path"
+        startOffset="50%"
+        text-anchor="middle"
+      >
+        DRAG ME AROUND • CLICK ON ME
+      </textPath>
+    </text>
+  </g>
+</svg>
+
+<button
+  class="flower-stamp"
+  type="button"
+  aria-expanded="false"
+  aria-controls="section-outline"
+  aria-label="Open website sections"
+>
+  ✦
+</button>
+
+<nav
+  class="section-outline"
+  id="section-outline"
+  aria-label="Website sections"
+>
+  <p>Explore</p>
+  <a href="#top"><span>01</span> Home</a>
+  <a href="#work"><span>02</span> Projects</a>
+  <a href="#about"><span>03</span> About</a>
+  <a href="#services"><span>04</span> Experience </a>
+  <a href="#contact"><span>05</span> Contact</a>
+</nav>
 </div>
 
 </header>
 
 <main>
-<section class="work" id="work">
-  <div class="shell">
-    <div class="section-heading">
-      <p class="section-kicker">Selected work · 2026 </p>
-      <h2>Incoming<br>Projects.</h2>
+  <section class="work" id="work">
+    <div class="shell">
+      <div class="section-heading">
+        <p class="section-kicker">Selected work · 2026 </p>
+        <h2>Incoming<br>Projects.</h2>
+      </div>
+      <div class="project-list">
+        <article class="project">
+          <div class="project-art project-placeholder" aria-label="Project image placeholder"></div>
+          <div class="project-copy">
+            <span class="project-number">01</span>
+            <div><p class="project-type">Project 1 Category</p><h3>Project 1 Placeholder</h3><p class="project-description">Project 1 Description Placeholder</p></div>
+            <span class="project-arrow" aria-hidden="true">↗</span>
+          </div>
+        </article>
+        <article class="project">
+          <div class="project-art project-placeholder" aria-label="Project image placeholder"></div>
+          <div class="project-copy">
+            <span class="project-number">02</span>
+            <div><p class="project-type">Project 2 Category</p><h3>Project 2 Placeholder</h3><p class="project-description">Project 2 Description Placeholder</p></div>
+            <span class="project-arrow" aria-hidden="true">↗</span>
+          </div>
+        </article>
+        <article class="project">
+          <div class="project-art project-placeholder" aria-label="Project image placeholder"></div>
+          <div class="project-copy">
+            <span class="project-number">03</span>
+            <div><p class="project-type">Project 3 Category</p><h3>Project 3 Placeholder</h3><p class="project-description">Project 3 Description Placeholder</p></div>
+            <span class="project-arrow" aria-hidden="true">↗</span>
+          </div>
+        </article>
+      </div>
     </div>
-    <div class="project-list">
-      <article class="project">
-        <div class="project-art project-placeholder" aria-label="Project image placeholder"></div>
-        <div class="project-copy">
-          <span class="project-number">01</span>
-          <div><p class="project-type">Project 1 Category</p><h3>Project 1 Placeholder</h3><p class="project-description">Project 1 Description Placeholder</p></div>
-          <span class="project-arrow" aria-hidden="true">↗</span>
-        </div>
-      </article>
-      <article class="project">
-        <div class="project-art project-placeholder" aria-label="Project image placeholder"></div>
-        <div class="project-copy">
-          <span class="project-number">02</span>
-          <div><p class="project-type">Project 2 Category</p><h3>Project 2 Placeholder</h3><p class="project-description">Project 2 Description Placeholder</p></div>
-          <span class="project-arrow" aria-hidden="true">↗</span>
-        </div>
-      </article>
-      <article class="project">
-        <div class="project-art project-placeholder" aria-label="Project image placeholder"></div>
-        <div class="project-copy">
-          <span class="project-number">03</span>
-          <div><p class="project-type">Project 3 Category</p><h3>Project 3 Placeholder</h3><p class="project-description">Project 3 Description Placeholder</p></div>
-          <span class="project-arrow" aria-hidden="true">↗</span>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
+  </section>
 
   <section class="about shell" id="about">
 <div class="about-photo-column">
@@ -3002,32 +3008,32 @@ body.flower-intro-finished .vine-detail {
 </div>
 </div>
 
-  <div class="about-copy">
-    <h2 class="about-title">Hi again! I'm Xuyao,</h2>
+<div class="about-copy">
+  <h2 class="about-title">Hi again! I'm Xuyao,</h2>
 
-    <p class="about-lead">
-      a freshman studying Statistics and Machine Learning at Carnegie Mellon.
-      I'm interested in math, finance, and design. I can also code in Java and am currently learning
-      C++. Outside of academia, you can find me at the golf course, in an art studio, 
-      or just taking a walk in nature!
-    </p>
+  <p class="about-lead">
+    a freshman studying Statistics and Machine Learning at Carnegie Mellon.
+    I'm interested in math, finance, and design. I can also code in Java and am currently learning
+    C++. Outside of academia, you can find me at the golf course, in an art studio, 
+    or just taking a walk in nature!
+  </p>
 
-    <a class="text-link" href="#contact">
-      Contact me <span aria-hidden="true">→</span>
-    </a>
-  </div>
+  <a class="text-link" href="#contact">
+    Contact me <span aria-hidden="true">→</span>
+  </a>
+</div>
 </section>
 
-<section class="services" id="services">
-  <div class="shell services-grid">
-    <div><p class="eyebrow">Experience</p><h2>Always looking for<br>opportunities to learn and grow.</h2></div>
-    <ol>
-      <li><span>01</span>Placeholder 1</li>
-      <li><span>02</span>Placeholder 2 </li>
-      <li><span>03</span>Placeholder 3</li>
-    </ol>
-  </div>
-</section>
+  <section class="services" id="services">
+    <div class="shell services-grid">
+      <div><p class="eyebrow">Experience</p><h2>Always looking for<br>opportunities to learn and grow.</h2></div>
+      <ol>
+        <li><span>01</span>Placeholder 1</li>
+        <li><span>02</span>Placeholder 2 </li>
+        <li><span>03</span>Placeholder 3</li>
+      </ol>
+    </div>
+  </section>
 </main>
 
 <footer class="footer" id="contact">
@@ -3054,13 +3060,12 @@ body.flower-intro-finished .vine-detail {
         >
           GitHub
         </a>
-
       </div>
     </div>
   </div>
 </footer>
-
 <script>
+  
  const sectionMenu = document.querySelector(".section-menu");
   const sectionMenuButton =
     sectionMenu.querySelector(".flower-stamp");
