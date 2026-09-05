@@ -1971,6 +1971,86 @@ body.flower-intro-finished .flower-intro-message {
     }
   }
 
+  Add this CSS immediately before </style>. It enlarges the photo gallery and reduces the About text size:
+/* Larger About gallery and smaller text */
+.about {
+  grid-template-columns:
+    minmax(330px, 400px)
+    minmax(0, 1fr);
+
+  gap: clamp(45px, 7vw, 100px);
+}
+
+.photo-stack {
+  width: 400px;
+  max-width: 100%;
+}
+
+.photo-deck {
+  width: 380px;
+  height: 485px;
+  max-width: 100%;
+}
+
+.photo-deck .photo-card {
+  width: 345px;
+  height: 445px;
+}
+
+.photo-controls {
+  width: 380px;
+  max-width: 100%;
+}
+
+/* Smaller text on the right */
+.about-copy .about-title {
+  margin: 0 0 22px;
+  font-size: clamp(34px, 4vw, 54px);
+}
+
+.about-copy .about-lead {
+  font-size: clamp(18px, 1.8vw, 24px);
+  line-height: 1.5;
+}
+
+.about-copy p {
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+@media (max-width: 800px) {
+  .about {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+
+  .photo-stack {
+    width: 310px;
+  }
+
+  .photo-deck {
+    width: 295px;
+    height: 390px;
+  }
+
+  .photo-deck .photo-card {
+    width: 270px;
+    height: 350px;
+  }
+
+  .photo-controls {
+    width: 295px;
+  }
+
+  .about-copy .about-title {
+    font-size: 38px;
+  }
+
+  .about-copy .about-lead {
+    font-size: 19px;
+  }
+}
+
   </style>
 </head>
 <script>
