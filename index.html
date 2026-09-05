@@ -1845,6 +1845,109 @@ body.flower-intro-finished .flower-intro-message {
   object-fit: cover;
 }
 
+  /* Growing flower vine beneath the hero title */
+  .hero-vine {
+    width: 100%;
+    height: clamp(75px, 10vw, 130px);
+    margin: 10px 0 18px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .hero-vine svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .vine-stem,
+  .vine-branch {
+    fill: none;
+    stroke: var(--berry);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  .vine-branch {
+    stroke-width: 3;
+  }
+
+  .vine-leaf {
+    fill: var(--pink-500);
+  }
+
+  .vine-blossom {
+    fill: var(--pink-300);
+  }
+
+  .vine-blossom .vine-center {
+    fill: #e3a746;
+  }
+
+  .vine-detail {
+    opacity: 0;
+    scale: 0.2;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  /* Begin growing after the opening flowers disappear */
+  body.flower-intro-finished .hero-vine {
+    opacity: 1;
+  }
+
+  body.flower-intro-finished .vine-stem {
+    animation: growVine 1.9s ease-in-out forwards;
+  }
+
+  body.flower-intro-finished .vine-branch {
+    animation: growVine 750ms ease-out 0.65s forwards;
+  }
+
+  body.flower-intro-finished .vine-detail {
+    animation: revealVineDetail 500ms ease-out
+      var(--vine-delay) forwards;
+  }
+
+  @keyframes growVine {
+    from {
+      stroke-dashoffset: 1;
+    }
+
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes revealVineDetail {
+    from {
+      opacity: 0;
+      scale: 0.2;
+    }
+
+    to {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .hero-vine {
+      height: 75px;
+      margin: 8px 0 16px;
+    }
+
+    .vine-stem {
+      stroke-width: 5;
+    }
+  }
+
   </style>
 </head>
 <script>
@@ -2257,6 +2360,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     updateCounter();
   });
+  
   </script>
 
     <body>
@@ -2273,7 +2377,143 @@ document.addEventListener("DOMContentLoaded", function () {
     <div class="hero-kicker"><span class="status-dot"></span> Pittsburgh, PA · chloezha@andrew.cmu.edu</div>
     <div class="hero-heading">
       <h1>Hi! I'm <br><em> Xuyao Zhang,</em></h1>
-    </div>
+      </div>
+      <div class="hero-vine" aria-hidden="true">
+    <svg
+      viewBox="0 0 1000 140"
+      preserveAspectRatio="none"
+    >
+      <!-- Main vine -->
+      <path
+        class="vine-stem"
+        pathLength="1"
+        d="M 0 86
+          C 145 48, 292 115, 460 78
+          S 775 44, 1000 76"
+      />
+
+      <!-- Smaller branches -->
+      <path
+        class="vine-branch"
+        pathLength="1"
+        d="M 175 75 Q 153 45 125 37"
+      />
+
+      <path
+        class="vine-branch"
+        pathLength="1"
+        d="M 333 93 Q 345 56 378 40"
+      />
+
+      <path
+        class="vine-branch"
+        pathLength="1"
+        d="M 558 67 Q 535 38 501 27"
+      />
+
+      <path
+        class="vine-branch"
+        pathLength="1"
+        d="M 746 58 Q 780 86 820 92"
+      />
+
+      <path
+        class="vine-branch"
+        pathLength="1"
+        d="M 894 65 Q 920 36 958 29"
+      />
+
+      <!-- Leaves -->
+      <ellipse
+        class="vine-detail vine-leaf"
+        style="--vine-delay: 0.7s"
+        cx="135"
+        cy="43"
+        rx="20"
+        ry="8"
+        transform="rotate(24 135 43)"
+      />
+
+      <ellipse
+        class="vine-detail vine-leaf"
+        style="--vine-delay: 0.9s"
+        cx="365"
+        cy="48"
+        rx="21"
+        ry="8"
+        transform="rotate(-35 365 48)"
+      />
+
+      <ellipse
+        class="vine-detail vine-leaf"
+        style="--vine-delay: 1.1s"
+        cx="513"
+        cy="34"
+        rx="19"
+        ry="8"
+        transform="rotate(28 513 34)"
+      />
+
+      <ellipse
+        class="vine-detail vine-leaf"
+        style="--vine-delay: 1.3s"
+        cx="806"
+        cy="87"
+        rx="22"
+        ry="8"
+        transform="rotate(22 806 87)"
+      />
+
+      <ellipse
+        class="vine-detail vine-leaf"
+        style="--vine-delay: 1.5s"
+        cx="944"
+        cy="35"
+        rx="20"
+        ry="8"
+        transform="rotate(-24 944 35)"
+      />
+
+      <!-- First flower -->
+      <g
+        class="vine-detail vine-blossom"
+        style="--vine-delay: 1s"
+      >
+        <circle cx="180" cy="58" r="13" />
+        <circle cx="195" cy="70" r="13" />
+        <circle cx="189" cy="88" r="13" />
+        <circle cx="170" cy="88" r="13" />
+        <circle cx="164" cy="69" r="13" />
+        <circle class="vine-center" cx="180" cy="74" r="7" />
+      </g>
+
+      <!-- Second flower -->
+      <g
+        class="vine-detail vine-blossom"
+        style="--vine-delay: 1.4s"
+      >
+        <circle cx="555" cy="47" r="14" />
+        <circle cx="571" cy="61" r="14" />
+        <circle cx="564" cy="80" r="14" />
+        <circle cx="544" cy="80" r="14" />
+        <circle cx="537" cy="61" r="14" />
+        <circle class="vine-center" cx="554" cy="65" r="7" />
+      </g>
+
+      <!-- Third flower -->
+      <g
+        class="vine-detail vine-blossom"
+        style="--vine-delay: 1.8s"
+      >
+        <circle cx="890" cy="48" r="12" />
+        <circle cx="905" cy="60" r="12" />
+        <circle cx="899" cy="77" r="12" />
+        <circle cx="881" cy="77" r="12" />
+        <circle cx="875" cy="60" r="12" />
+        <circle class="vine-center" cx="890" cy="63" r="6" />
+      </g>
+    </svg>
+  </div>
     <div class="hero-bottom">
     </div>
     <div class="section-menu">
@@ -2434,13 +2674,9 @@ document.addEventListener("DOMContentLoaded", function () {
   </div>
 
   <div class="about-copy">
-    <h2 class="about-title">A little about me.</h2>
+    <h2 class="about-title">Hi again! I'm Xuyao,</h2>
 
     <p class="about-lead">
-      Hi again! I'm Xuyao,
-    </p>
-
-    <p>
       a freshman studying Statistics and Machine Learning at Carnegie Mellon.
       I'm interested in math, finance, and design. I can also code in Java and am currently learning
       C++. Outside of academia, you can find me at the golf course, in an art studio, 
@@ -2455,7 +2691,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     <section class="services" id="services">
       <div class="shell services-grid">
-        <div><p class="eyebrow">Experience</p><h2>Always looking for<br>opportunities to learn.</h2></div>
+        <div><p class="eyebrow">Experience</p><h2>Always looking for<br>opportunities to learn and grow.</h2></div>
         <ol>
           <li><span>01</span>Placeholder 1</li>
           <li><span>02</span>Placeholder 2 </li>
