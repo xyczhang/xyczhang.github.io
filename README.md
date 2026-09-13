@@ -1,65 +1,23 @@
-# 🐔 Crossy Road Game
+# Crossy Road Game
 
-A fun browser-based replica of the classic Crossy Road game built with HTML5 Canvas and vanilla JavaScript!
+Crossy Road is a replica of the original Crossy Road game. Crossy Road is a single-player game where players can move a chicken through either arrow keys or WASD to cross the roads and rivers. Along the way, they will encounter different obstacles the chicken must avoid or jump over. 
 
-## 🎮 How to Play
+## Crossy Road vs Crossy Road
 
-1. Open `index.html` in your web browser
-2. Click "Start Game" to begin
-3. Use **WASD** or **Arrow Keys** to move your chicken
-4. Cross roads while avoiding cars
-5. Jump on logs to cross rivers (don't fall in the water!)
-6. Try to get as far as you can without dying
+My Crossy Road is a much simpler version of the real Crossy Road, with less animations and easter egg features. Also, my version is full screen. 
 
-## 🎯 Game Features
+## Game Controls
 
-- **Smooth Controls**: WASD or Arrow key movement with grid-based positioning
-- **Dynamic Terrain**: Procedurally generated grass, roads, and rivers
-- **Moving Obstacles**: 
-  - Cars moving at different speeds on roads
-  - Logs floating on rivers that you must jump on
-- **Score Tracking**: Your score increases as you progress forward
-- **High Score**: Best score is saved to browser storage
-- **Responsive Camera**: Follows the player smoothly
-- **Polished UI**: Beautiful gradient design with animations
-- **Game Over & Restart**: Instant restart to try again
+- Players can use WASD or arrow keys to move the chicken
+- The chicken will die if hit by a vehicle, touches water, or is eaten up by the frame (if the player doesn't move in too long of a period)
+- The player earns one point for each row crossed and points reset once the chicken dies
 
-## 🕹️ Controls
+## AI Usage
 
-- **W** or **↑**: Move forward
-- **A** or **←**: Move left  
-- **S** or **↓**: Move backward
-- **D** or **→**: Move right
+I used Claude Sonnet 4.5 that is built into Kiro for most of the project, and cleaned up the animations and lag with Gemini. Claude built most of the actual functions and logistics of the game, and Gemini was only used for minor edits. I moved the files from Kiro to VSCode to sync with Github once I was done.
 
-## 🎨 Game Mechanics
+My main strategy was to first make sure the game was working properly movement and score wise, and then focus on the aesthetics. Being specific with what I wanted design wise and how the game should work was most effective.
 
-1. **Grass**: Safe zones where you can rest
-2. **Roads**: Avoid the moving cars or get hit!
-3. **Rivers**: You must jump on logs - falling in water is game over
-4. **Logs**: Move with the log and don't fall off the edges
+## Areas to Improve
 
-## 🚀 Technical Details
-
-- Built with vanilla JavaScript (no frameworks)
-- HTML5 Canvas for rendering
-- Smooth 60 FPS game loop
-- Efficient terrain generation and cleanup
-- LocalStorage for high score persistence
-
-## 📁 Files
-
-- `index.html` - Main HTML structure
-- `game.js` - Complete game logic and rendering
-- `style.css` - Styling and animations
-- `README.md` - This file
-
-## 🏆 Tips
-
-- Plan your moves ahead - don't rush!
-- On rivers, time your jumps to land on logs
-- Watch for car speeds and patterns on roads
-- The further you go, the more challenging it gets
-
-## 🎉 Have Fun!
-
-See how high you can score and challenge your friends!
+Adding details like the flattening motion when the chicken dies and the coins in the mobile Crossy Road would make the game more complete. The animation still looks a little weird so cleaning that up would overall make the game more sophisticated.
