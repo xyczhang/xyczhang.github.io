@@ -471,9 +471,9 @@ body {
     .project-list { display: grid; gap: 110px; }
     .project {
       display: grid;
-      grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.75fr);
-      gap: 54px;
-      align-items: end;
+      grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.8fr);
+      gap: 30px;
+      align-items: center;
     }
     .project:nth-child(even) { grid-template-columns: minmax(300px, 0.75fr) minmax(0, 1.55fr); }
     .project:nth-child(even) .project-art { grid-column: 2; }
@@ -2951,17 +2951,19 @@ for (let row = 0; row < verticalAreas; row++) {
     <div class="shell">
       <div class="section-heading">
         <p class="section-kicker">Selected work · 2026 </p>
-        <h2>(Incoming)<br>Projects.</h2>
+        <h2>Projects.</h2>
       </div>
       <div class="project-list">
-        <article class="project">
-          <div class="project-art project-placeholder">
-          <img src="project1.jpg" alt="Description of project one">
+      <article class="project">
+      <div class="project-art project-placeholder">
+        <a href="https://xyczhang.github.io/Crossy-Road/" target="_blank" rel="noopener noreferrer">
+          <img src="Project1.png" alt="Crossy Road project">
+        </a>
       </div>
       <div class="project-copy">
         <span class="project-number">01</span>
-        <div><p class="project-type">Website</p><h3>This Website!</h3><p class="project-description">Used HTML, JavaScript, CSS to create this webpage</p></div>
-        <span class="project-arrow" aria-hidden="true">↗</span>
+        <div><p class="project-type">Game</p><h3>Crossy Road</h3><p class="project-description">A replica of our favorite arcade game</p></div>
+        <a class="project-arrow" href="https://xyczhang.github.io/Crossy-Road/" target="_blank" rel="noopener noreferrer">↗</a>
       </div>
       </article>
         <article class="project">
