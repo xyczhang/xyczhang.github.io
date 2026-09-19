@@ -1,55 +1,25 @@
-# Bird's Eye flight tracker
+# Bird's Eye Flight Tracker
+Bird's Eye is a real-time flight tracker with a tropical island theme. Users can search up a flight by its flight number, route, or the airport board. After, they can click on the specific flight to see a map of where the flight currently is on a globe.
 
-Bird's Eye is a responsive HTML/CSS/JavaScript flight tracker deployed with Vercel Functions. It does not require Flask or a continuously running server.
+## How the API is Called
+I used three APIs for my website: Aviationstack for general flight schedule information, ADSB.lol for live flight coordinates, and Airport-Data.com for flight paths. Only the Aviationstack API needed a key, which I made private by storing it in a private Vercel environment variable. Aviationstack is called using the endpoint /api/flights to send a GET request with the private access key parameter and some other string data types like flight_iata which gets the IATA flight number. ADSB.lol is called using the endpoint /api/position to send a GET request with key parameters being strings like the aircraft registration and ICAO24 hex code (note that ABSD.lol does not need a key). Airport-Data.com is called using the endpoint /api/route, which calls airport information in JSON that the Javascript in my code can easily read.
 
-The Airport board includes Departures, Arrivals, and In air. In air shows active flights that departed from the selected airport.
+## How to Run
+Run:
+git clone https://github.com/xyczhang/xyczhang.github.io.git
+cd xyczhang.github.io/vector-flight-tracker-vercel
+npx vercel dev
 
-Select any flight result to open an interactive globe. Bird's Eye draws the airport-to-airport great-circle path and labels both endpoints. It uses Aviationstack's coordinates when available, then automatically checks ADSB.lol using every identifier Aviationstack supplies: the aircraft's ICAO24 transponder code, registration, and ICAO callsign. The globe shows the latest reported position, altitude, speed, heading, aircraft registration, and update time. Live ADS-B coverage varies, so some flights will still show an explicit unavailable state rather than an estimated position.
+Create a .env.local containing your own Aviationstack API key since mine is private and will not be cloned.
 
-The globe's continent and major-island outlines use Natural Earth's public-domain 1:110m land dataset. A small built-in outline set remains as a fallback if the map asset cannot be loaded.
+## Prompt Log
+I used Codex to generate the code for this website along with introducing me to how Vercel works. Vercel was used to host my website and keep my API key private. In the process, I spent a lot of time figuring out how to make the Vercel work and link to the correct part of my Github repository. The following is my prompt log:
 
-Route endpoints use cached airport reference coordinates from Airport-Data.com when an airport is not already in the built-in common-airport list. No additional key is required.
-
-The browser calls same-origin `/api` endpoints. Those functions add the Aviationstack key on Vercel, so the key is never embedded in the HTML, JavaScript bundle, browser storage, or browser requests.
-
-## Run in demo mode
-
-Install the [Vercel CLI](https://vercel.com/docs/cli), then run:
-
-```bash
-vercel dev
-```
-
-The site works immediately with clearly labeled sample data.
-
-## Add the private Aviationstack key
-
-1. [Open Aviationstack and create an account](https://aviationstack.com/?utm_source=Github&utm_medium=Referral&utm_campaign=Public-apis-repo-Best-sellers).
-2. Copy the access key from the Aviationstack dashboard.
-3. In Vercel, open **Project → Settings → Environment Variables**.
-4. Create `AVIATIONSTACK_API_KEY`, choose **Secret**, and enable it for Production and Preview.
-5. Redeploy the project so the new value is available to the functions.
-
-For local live-data testing, copy `.env.example` to `.env.local` and add the real value. Both `.env` and `.env.local` are ignored by Git and excluded from Vercel uploads.
-
-Never put the real key in `index.html`, `app.js`, `vercel.json`, or any committed file.
-
-ADSB.lol does not require another secret key. Its lookup runs through `api/position.js`, so the browser only talks to your own Vercel project.
-
-## Deploy
-
-You can import this folder into the Vercel dashboard, connect its Git repository, or deploy with:
-
-```bash
-vercel
-```
-
-Vercel serves `index.html`, `styles.css`, and `app.js` as the frontend. Files in `api/` become serverless endpoints automatically.
-
-## Verify
-
-```bash
-npm test
-```
-
-The checks cover demo mode, input validation, private-key proxying, ADSB.lol position normalization, and accidental key leakage in API responses.
+- build me a website using python that uses the aviationstack api to help people track flights and departures/arrivals
+- can i use vercel instead of flask
+- give me a detailed step by step of how to deploy my website on Vercel and keep the API key private
+- ok great, can you make it more interactive where when the flight gets searched up and clicked on, a globe appears with where the plane is at in the world
+- add a board option under airport board that is in air
+- make the globe have more accurate continent outlines
+- also have little birds fly around the website randomly (fly in then fly out)
+- turn the cursor into a paper plane as well
