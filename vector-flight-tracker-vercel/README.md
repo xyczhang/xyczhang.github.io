@@ -6,6 +6,7 @@ I used three APIs for my website: Aviationstack for general flight schedule info
 
 ## How to Run
 Run:
+
 git clone https://github.com/xyczhang/xyczhang.github.io.git
 
 cd xyczhang.github.io/vector-flight-tracker-vercel
