@@ -307,10 +307,10 @@ class FlightGlobe {
     const points = this.greatCirclePoints(this.route.departure, this.route.arrival);
     const ctx = this.ctx;
     ctx.save();
-    ctx.shadowColor = "rgba(200, 255, 70, .6)";
+    ctx.shadowColor = "rgba(255, 214, 107, .7)";
     ctx.shadowBlur = 8;
     ctx.setLineDash([7, 7]);
-    this.strokeGeoLine(points, radius, centerX, centerY, "rgba(200, 255, 70, .95)", 2.2);
+    this.strokeGeoLine(points, radius, centerX, centerY, "rgba(255, 220, 116, .98)", 2.6);
     ctx.restore();
 
     [this.route.departure, this.route.arrival].forEach((airport) => {
@@ -319,9 +319,9 @@ class FlightGlobe {
       ctx.save();
       ctx.beginPath();
       ctx.arc(marker.x, marker.y, 4, 0, Math.PI * 2);
-      ctx.fillStyle = "#f4ffd9";
+      ctx.fillStyle = "#fff3b0";
       ctx.fill();
-      ctx.strokeStyle = "#081715";
+      ctx.strokeStyle = "#2c735d";
       ctx.lineWidth = 1.5;
       ctx.stroke();
       ctx.font = "600 11px 'DM Mono', monospace";
@@ -351,13 +351,13 @@ class FlightGlobe {
     const radius = size * 0.405 * this.zoom;
 
     ctx.save();
-    ctx.shadowColor = "rgba(0, 0, 0, .45)";
+    ctx.shadowColor = "rgba(28, 79, 72, .34)";
     ctx.shadowBlur = size * 0.055;
     ctx.shadowOffsetY = size * 0.025;
     const ocean = ctx.createRadialGradient(centerX - radius * .35, centerY - radius * .4, radius * .08, centerX, centerY, radius * 1.08);
-    ocean.addColorStop(0, "#244d48");
-    ocean.addColorStop(.5, "#102f2b");
-    ocean.addColorStop(1, "#04110f");
+    ocean.addColorStop(0, "#a9ebda");
+    ocean.addColorStop(.52, "#65c4bb");
+    ocean.addColorStop(1, "#2d7f7d");
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
     ctx.fillStyle = ocean;
@@ -372,27 +372,27 @@ class FlightGlobe {
     for (let latitude = -60; latitude <= 60; latitude += 30) {
       const points = [];
       for (let longitude = -180; longitude <= 180; longitude += 3) points.push([longitude, latitude]);
-      this.strokeGeoLine(points, radius, centerX, centerY, "rgba(200, 255, 70, .12)", 1);
+      this.strokeGeoLine(points, radius, centerX, centerY, "rgba(255, 255, 235, .22)", 1);
     }
     for (let longitude = -180; longitude < 180; longitude += 30) {
       const points = [];
       for (let latitude = -88; latitude <= 88; latitude += 3) points.push([longitude, latitude]);
-      this.strokeGeoLine(points, radius, centerX, centerY, "rgba(200, 255, 70, .105)", 1);
+      this.strokeGeoLine(points, radius, centerX, centerY, "rgba(255, 255, 235, .19)", 1);
     }
-    WORLD_LINES.forEach((line) => this.strokeGeoLine(line, radius, centerX, centerY, "rgba(218, 255, 131, .75)", 1.35));
+    WORLD_LINES.forEach((line) => this.strokeGeoLine(line, radius, centerX, centerY, "rgba(255, 248, 204, .88)", 1.55));
 
     const shade = ctx.createLinearGradient(centerX - radius, centerY, centerX + radius, centerY);
-    shade.addColorStop(0, "rgba(0, 0, 0, .34)");
+    shade.addColorStop(0, "rgba(24, 78, 72, .22)");
     shade.addColorStop(.42, "rgba(0, 0, 0, 0)");
-    shade.addColorStop(1, "rgba(0, 0, 0, .19)");
+    shade.addColorStop(1, "rgba(24, 78, 72, .12)");
     ctx.fillStyle = shade;
     ctx.fillRect(centerX - radius, centerY - radius, radius * 2, radius * 2);
     ctx.restore();
 
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    ctx.strokeStyle = "rgba(200, 255, 70, .42)";
-    ctx.lineWidth = 1.4;
+    ctx.strokeStyle = "rgba(255, 248, 220, .8)";
+    ctx.lineWidth = 2;
     ctx.stroke();
 
     this.drawRoute(radius, centerX, centerY);
@@ -403,13 +403,13 @@ class FlightGlobe {
         const pulse = this.motionAllowed ? 8 + (Math.sin(timestamp / 430) + 1) * 5 : 11;
         ctx.beginPath();
         ctx.arc(marker.x, marker.y, pulse, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(200, 255, 70, .15)";
+        ctx.fillStyle = "rgba(243, 148, 114, .22)";
         ctx.fill();
         ctx.beginPath();
         ctx.arc(marker.x, marker.y, 5.5, 0, Math.PI * 2);
-        ctx.fillStyle = "#c8ff46";
+        ctx.fillStyle = "#f39472";
         ctx.fill();
-        ctx.strokeStyle = "#081715";
+        ctx.strokeStyle = "#fff8dc";
         ctx.lineWidth = 2;
         ctx.stroke();
         ctx.beginPath();

@@ -3,23 +3,23 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Track flights, departures, and arrivals with live Aviationstack data.">
-    <meta name="theme-color" content="#081715">
-    <title>Vector — Live flight intelligence</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23081715'/%3E%3Cpath d='M12 18 54 10 38 56l-8-19L12 18Z' fill='%23c8ff46'/%3E%3C/svg%3E">
+    <meta name="description" content="Bird's Eye is a cheerful flight tracker for live flights, airport boards, and globe routes.">
+    <meta name="theme-color" content="#69bdf4">
+    <title>Bird’s Eye — Friendly flight tracking</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23fff4ca'/%3E%3Cpath d='M13 35c10-1 13-12 20-18-1 8 5 10 18 9-5 8-14 14-25 14l-5 8-2-10-6-3Z' fill='%233a9470'/%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="app.js" defer></script>
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="/" aria-label="Vector home">
+      <a class="brand" href="/" aria-label="Bird’s Eye home">
         <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 30 30"><path d="M4 7.5 26 3l-8.4 24-3.8-9.2L4 7.5Z"/><path d="m13.8 17.8 5-6.5"/></svg>
+          <svg viewBox="0 0 32 32"><path d="M4 17c7-.5 9-8 14-12-.8 5.4 3.7 7.2 11 6.2-3.5 5.8-9.8 10-17.5 9.8L8 27l-1.5-7L4 17Z"/></svg>
         </span>
-        <span>VECTOR</span>
+        <span>BIRD’S EYE</span>
       </a>
       <div class="header-actions">
         <div class="api-status" id="api-status" aria-live="polite">
@@ -32,10 +32,10 @@
 
     <main>
       <section class="intro" aria-labelledby="page-title">
-        <p class="eyebrow">FLIGHT INTELLIGENCE / LIVE BOARD</p>
+        <p class="eyebrow">WELCOME TO THE ISLAND AIR DESK</p>
         <div class="intro-row">
-          <h1 id="page-title">Know what’s happening<br><span>before you reach the gate.</span></h1>
-          <p>Track a flight or scan an airport board for the latest route, gate, terminal, and timing details.</p>
+          <h1 id="page-title">Where are we<br><span>flying today?</span></h1>
+          <p>Follow a flight, check an airport board, and watch the journey travel across the globe.</p>
         </div>
       </section>
 
@@ -43,8 +43,8 @@
         <section class="tracker-panel" aria-labelledby="tracker-title">
           <div class="panel-heading">
             <div>
-              <p class="section-index">01 / TRACK</p>
-              <h2 id="tracker-title">Find a flight</h2>
+              <p class="section-index">YOUR TRAVEL DESK</p>
+              <h2 id="tracker-title">Find your flight</h2>
             </div>
             <span class="date-stamp" id="today-stamp"></span>
           </div>
@@ -93,7 +93,7 @@
                 </label>
               </div>
               <button class="search-button" type="submit">
-                <span>Search flights</span>
+                <span>Let’s fly</span>
                 <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h12M11 5l5 5-5 5"/></svg>
               </button>
             </form>
@@ -101,7 +101,7 @@
 
           <div class="result-toolbar">
             <div>
-              <p class="section-index">02 / RESULTS</p>
+              <p class="section-index">FLIGHT BOARD</p>
               <p class="results-meta" id="results-meta">Loading flight board…</p>
             </div>
             <button class="icon-button" id="refresh-results" type="button" aria-label="Refresh flight results" title="Refresh">
@@ -119,7 +119,7 @@
     <dialog id="setup-dialog" aria-labelledby="setup-title">
       <div class="dialog-header">
         <div>
-          <p class="section-index">API SETUP</p>
+          <p class="section-index">BIRD’S EYE SETUP</p>
           <h2 id="setup-title">Connect live data</h2>
         </div>
         <button id="close-setup" class="close-button" type="button" aria-label="Close setup">×</button>
@@ -155,7 +155,7 @@
     <dialog id="flight-dialog" class="flight-dialog" aria-labelledby="flight-detail-title">
       <div class="flight-dialog-header">
         <div>
-          <p class="section-index">LIVE FLIGHT VIEW</p>
+          <p class="section-index">SKY VIEW</p>
           <h2 id="flight-detail-title">Flight position</h2>
           <p id="flight-detail-airline" class="flight-detail-airline"></p>
         </div>

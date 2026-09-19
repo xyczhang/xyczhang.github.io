@@ -190,7 +190,7 @@ export async function handlePosition(request) {
       upstream = await fetch(`${ADSB_URL}/${lookup.path}`, {
         headers: {
           Accept: "application/json",
-          "User-Agent": `VectorFlightTracker/1.0 (+${url.origin})`,
+          "User-Agent": `BirdsEyeFlightTracker/1.0 (+${url.origin})`,
         },
       });
     } catch {
@@ -226,7 +226,7 @@ async function getAirport(iata, origin) {
     upstream = await fetch(`${AIRPORT_DATA_URL}?iata=${iata}`, {
       headers: {
         Accept: "application/json",
-        "User-Agent": `VectorFlightTracker/1.0 (+${origin})`,
+        "User-Agent": `BirdsEyeFlightTracker/1.0 (+${origin})`,
       },
     });
   } catch {
