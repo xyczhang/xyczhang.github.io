@@ -7,7 +7,9 @@ I used three APIs for my website: Aviationstack for general flight schedule info
 ## How to Run
 Run:
 git clone https://github.com/xyczhang/xyczhang.github.io.git
+
 cd xyczhang.github.io/vector-flight-tracker-vercel
+
 npx vercel dev
 
 Create a .env.local containing your own Aviationstack API key since mine is private and will not be cloned.
